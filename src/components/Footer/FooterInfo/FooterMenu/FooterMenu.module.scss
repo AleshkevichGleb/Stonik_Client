@@ -1,0 +1,103 @@
+.container {
+    padding: 10px 0;
+    display: flex;
+    width: 550px;
+    justify-content: space-between;
+}
+
+.menu {
+    font-family: "Raleway", sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #fff;
+}
+
+.menu__title {
+    font-weight: 700px;
+    font-size: 18px;
+    color: #fff;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.menu__link {
+    font-size: 16px;
+    font-weight: 400;
+    color: #c2c2c2;
+}
+
+.menu__link:hover {
+    color: #dad9d9;
+    font-weight: 700;
+}
+
+.getInTouch {
+    display: flex;
+    gap: 10px;
+}
+
+.getInTouch__title {
+    font-size: 16px;
+
+}
+
+.getInTouch__text  {
+    font-size: 16px;
+    color: #fff;
+    opacity: .8;
+}
+
+.images {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.image {
+    border-radius: 5px;
+    width: 32px;
+    height: 32px;
+    background-color: #444444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .2s linear;
+}
+
+.image:hover {
+    transform: scale(1.02);
+    background-color: #6d6d6d;
+}
+
+@media(max-width: 1180px)  {
+    .container {
+       width: 40%;
+    }
+}
+
+@media(max-width: 740px)  {
+    .container {
+        width: 50%;
+        margin-right: 10px;
+
+    }
+}
+
+@media(max-width: 640px)  {
+    .container {
+        justify-content: center;
+        width: 100%;
+        margin-right: 0;
+        gap: 80px;
+
+    }
+}
+
+
+@media(max-width: 380px)  {
+    .container {
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+}

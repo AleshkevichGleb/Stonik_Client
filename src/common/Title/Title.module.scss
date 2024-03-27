@@ -1,0 +1,40 @@
+.titleBlock {
+    text-transform: uppercase;
+    display: flex;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 50px;
+    white-space: break-spaces;
+}
+
+.title1 {}
+
+.title2 {
+    color: #28553F;
+}
+
+@media (max-width: 1310px) {
+    .titleBlock {
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 700px) {
+    .titleBlock {
+        font-size: 35px;
+    }
+}
+
+@media (max-width: 520px) {
+    .titleBlock {
+        font-size: 30px;
+
+    }
+}
+
+@media (max-width: 490px) {
+    .titleBlock {
+        font-size: 25px;
+    }
+
+}

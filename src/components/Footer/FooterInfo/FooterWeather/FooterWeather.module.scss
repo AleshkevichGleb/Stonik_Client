@@ -1,0 +1,20 @@
+.weatherContainer {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-weight: 700;
+    gap: 10px;
+    min-width: 120px;
+}
+
+.error {
+    color: #fff;
+    font-weight: 700;
+}
+
+@media(max-width: 740px)  {
+    .weatherContainer {
+        width: 100%;
+        align-items: center;
+    }
+}

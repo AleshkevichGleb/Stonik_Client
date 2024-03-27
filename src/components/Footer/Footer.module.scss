@@ -1,0 +1,141 @@
+.footer {
+    position: relative;
+    z-index: 0;
+    background-color: #000000;
+}
+
+.footer__form {
+    background-image: url('../../assets/images/footer.png');
+    min-height: 367px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    z-index: -1;
+}
+
+.footer__form::before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #000000 0, rgba(255, 255, 255, 0) 170%);
+    z-index: -1;
+}
+
+.footer__formContainer {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.footer__formTitles {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.addStylesForBlock {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 40px;
+}
+
+.addStylesForTitle {
+    color: #fff;
+}
+
+
+.footer__formSuptitle {
+    font-size: 18px;
+    color: #fff;
+}
+
+.footer__formSubmit {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.addStylesForButton {
+    min-width: 250px;
+    height: 50px;
+    background-color: #fff !important;
+    color: black !important;
+    font-weight: 700 !important;
+
+    &:hover {
+        box-shadow: none !important;
+    }
+}
+
+.footer__formCheckData {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.checkboxText {
+    font-size: 14px;
+    color: #F3F3F3;
+}
+
+.hr {
+    height: 1px;
+    width: 100%;
+    background-color: #323232;
+    margin-top: 10px;
+}
+
+.footer__agree {
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+@media (max-width: 1338px) {
+    .footer__formContainer {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 763px) {
+    .footer__formSubmit {
+        flex-wrap: wrap;
+    }
+
+}
+
+@media (max-width: 539px) {
+    .footer__formSubmit {
+        flex-direction: column;
+        align-items: start;
+    }
+}
+
+@media (max-width: 494px) {
+
+    .addStylesForInput {
+        width: 100% !important;
+        margin-top: 20px;
+    }
+
+    .addStylesForButton {
+        min-width: 100%;
+    }
+}
