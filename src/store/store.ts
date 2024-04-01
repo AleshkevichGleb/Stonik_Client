@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import CartCountSlice from "./slices/CartCount.slice";
+import cartCountSlice from "./slices/cartCount.slice";
 
 const rootReducer = combineReducers({
-    count: CartCountSlice,
+    count: cartCountSlice,
 })
 
 export const store = configureStore({

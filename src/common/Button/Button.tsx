@@ -1,9 +1,9 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, MouseEvent, PropsWithChildren } from 'react';
 import styles from "./Button.module.scss";
 
 interface ButtonProps {
     addStyles?: string,
-    onClick?: () => void,
+    onClick?: (e?: MouseEvent<HTMLButtonElement> | any) => void,
     id?: string,
     name?: string,
     value?: string,

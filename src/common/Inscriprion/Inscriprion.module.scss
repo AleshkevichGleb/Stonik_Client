@@ -1,0 +1,18 @@
+.arrow {
+    display: flex;
+    justify-content: end;
+    gap: 15px;
+    
+}
+
+.arrow__text {
+    color:#282A30;
+}
+
+.image {
+    transition: .3s linear;
+}
+
+.arrow:hover .image {
+    transform: translate(15px, 0);
+}

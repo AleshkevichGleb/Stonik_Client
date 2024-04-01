@@ -1,0 +1,39 @@
+.container {
+    width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+
+    .image {
+        width: 400px;
+        height: auto;
+    }
+
+    .text {
+        color: #000;
+        font-size: 28px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .button {
+        width: 200px;
+        height: 40px;
+        font-weight: 500;
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 670px) {
+
+    .container {
+        width: 100%;
+
+        .image {
+            width: 70%;
+            height: auto;
+        }
+    }
+}

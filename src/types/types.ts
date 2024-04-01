@@ -27,4 +27,5 @@ export interface IRegistrationUser extends ILoginUser {
     surname: string,
     phone: string,
     city: '',
+    role: 'User' | 'Admin' | ''
 }

@@ -1,0 +1,30 @@
+.button {
+    width: 247px;
+    height: 40px;
+    border-radius: 0;
+}
+
+.buttonsContainer {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.smallButton {
+    width: 50px;
+    height: 40px;
+    font-weight: 700;
+    font-size: 24px;
+    border-radius: 0;
+}
+
+.cartPrice {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.plusImage {
+    pointer-events: painted;
+    position: absolute;
+    font-size: 30px;
+}

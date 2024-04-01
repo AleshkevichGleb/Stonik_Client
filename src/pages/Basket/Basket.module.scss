@@ -1,0 +1,204 @@
+.basket__container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1300px;
+    gap: 20px;
+}
+
+.product {
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+    background: linear-gradient(90deg, #ede7e7 0%, #fcfafa 100%);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    align-items: center;
+    height: 180px;
+}
+
+.product__textBlock {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.produt__image {
+    height: 100%;
+}
+
+.product__textInfo {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 340px;
+    height: 100%;
+}
+
+.product__title {
+    font-weight: 700;
+}
+
+.product__description {
+    font-size: 17px;
+}
+
+.product__functional {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.product__price {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 22px;
+}
+
+.cartCount {
+    display: none !important;
+}
+
+.addStylePrice {
+    font-size: 22px;
+}
+
+.smallButton {
+    width: 40px;
+    height: 40px;
+    font-weight: 400;
+    border-radius: 50% !important;
+    font-size: 24px;
+    border-radius: 0;
+    margin: 0 30px;
+    background-color: #28553F;
+    outline: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: .2s linear;
+}
+
+.smallButton:hover {
+    box-shadow: 0px 0px 25px #28553F;
+}
+
+.smallButton:active {
+    transform: scale(.95);
+}
+
+.button {
+    margin-top: 20px;
+    width: 230px;
+    height: 52px;
+    font-weight: 700;
+}
+
+.finalPriceBlock {
+    margin-top: 40px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 10px;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    min-height: 60px;
+    font-size: 20px;
+    background: linear-gradient(90deg, #d6d4d4 0%, #e1dcdc 100%);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.finalPrice {
+    font-size: 22px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+@media(max-width: 1310px) {
+    .basket__container {
+        margin: 0 10px;
+    }
+}
+
+@media(max-width: 1110px) {
+    .smallButton {
+        margin: 0 15px;
+    }
+}
+
+@media(max-width: 850px) {
+    .product {
+        flex-direction: column;
+        height: auto;
+        gap: 40px;
+        padding: 0 0 20px 0;
+    }
+
+    .product__textBlock {
+        width: 100%;
+        height: 100%;
+    }
+
+    .product__textInfo {
+        width: 100%;
+        height: 220px;
+    }
+
+    .product__functional {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .smallButton {
+        width: 50px;
+        height: 50px;
+    }
+
+    .addStylePrice {
+        font-size: 24px;
+    }
+
+}
+
+@media(max-width: 479px) {
+    .product__textBlock {
+        flex-direction: column;
+    }
+
+    .produt__image {
+        width: 100%;
+    }
+
+    .product__textInfo {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media(max-width: 436px) {
+    .product__textBlock {
+        flex-direction: column;
+    }
+
+    .produt__image {
+        width: 100%;
+    }
+
+    .product__textInfo {
+        width: 100%;
+        height: auto;
+    }
+}

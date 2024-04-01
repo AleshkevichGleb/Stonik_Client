@@ -1,0 +1,162 @@
+.products {
+    padding: 50px 0;
+}
+
+.products__container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.productsTitle {
+    position: relative;
+}
+
+.productsTitle::before {
+    position: absolute;
+    content: '';
+    width: 15%;
+    height: 1px;
+    background-color: #28553F;
+    top: -10px;
+    left: 0;
+}
+
+.sortBlock {
+    display: flex;
+    gap: 20px;
+}
+
+
+.searchInput {
+    width: 300px;
+    outline: none;
+    height: 50px;
+    padding: 10px 15px;
+    border: 1px solid #2e2e2e;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.filter {
+    min-width: 288px;
+    height: 429px;
+    background-color: #F9F9F9;
+    padding: 15px 10px;
+}
+
+.typeBlock {
+    margin: 10px 0;
+}
+
+.filterBlock {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.filter__title {
+    font-size: 18px;
+    font-weight: 700;
+    width: 100%;
+}
+
+.filter__label {
+    font-size: 17px;
+}
+
+.input {
+    width: 48%;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 35px;
+    padding: 0px 10px;
+    /* color: #000 !important; */
+}
+
+.input__styles {
+    color: #000 !important;
+}
+
+
+.sort {
+    margin-bottom: 30px;
+}
+
+.products__block {
+    display: flex;
+    gap: 50px;
+}
+
+.empty {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+}
+
+.pages {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.page {
+    font-weight: 700;
+    width: 30px;
+    height: 30px;
+}
+
+.active_page {
+    font-weight: 700;
+    width: 30px;
+    height: 30px;
+    background-color: #2f2e2e;
+}
+
+
+@media(max-width: 1310px) {
+    .products__container {
+        margin: 0px 10px;
+    }
+
+
+}
+
+@media(max-width: 1270px) {
+    .products__block {
+        gap: 20px;
+    }
+}
+
+@media(max-width: 1167px) {
+    .products__block {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media(max-width: 785px) {
+    .productsTitle {
+        font-size: 32px;
+        flex-direction: column;
+    }
+}
+
+
+@media(max-width: 506px) {
+    .sortBlock {
+        flex-direction: column;
+    }
+
+    .searchInput {
+        width: 100%;
+    }
+
+    .productsTitle {
+        font-size: 28px;
+    }
+}

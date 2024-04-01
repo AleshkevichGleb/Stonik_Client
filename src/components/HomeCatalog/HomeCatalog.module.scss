@@ -1,0 +1,147 @@
+.home__container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 480px;
+}
+
+.titleContainer::before {
+    position: absolute;
+    content: '';
+    width: 20%;
+    height: 1px;
+    background-color: #28553F;
+    top: -10px;
+    left: 0;
+}
+
+.inscriprion {
+    margin: 20px 15px 20px 0;
+    font-size: 21px;
+}
+
+.photos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.photos__block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.photos__photo {
+    position: relative;
+    overflow: hidden;
+}
+
+.photos__photo__small {
+    position: relative;
+    overflow: hidden;
+}
+
+.photos__title {
+    z-index: 1;
+    position: absolute;
+    width: 70%;
+    padding: 15px 25px;
+    background-color: rgba(0,0,0,.6);
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: uppercase;
+    bottom: 20px;
+    left: 0;
+}
+
+.photos__image {
+    transition: .5s linear;
+}
+
+.photos__image:hover {
+    transform: scale(1.07);
+}
+
+
+@media(max-width: 1366px) {
+    .photos {
+        gap: 0;
+        margin: 0 10px;
+    }
+    .photos__block {
+        width: 100%;
+        margin: 0;
+        gap: 0;
+    }
+
+    .photos__photo {
+        width: 60%;
+    }
+
+    .photos__photo__small {
+        width: 40%;
+    }
+    .photos__image {
+        width: 100%;
+    }
+
+    .photos__image__small {
+       
+    }
+}
+
+@media(max-width: 1000px) {
+    .inscriprion {
+        margin: 30px 10px;
+    }
+}
+
+@media(max-width: 767.98px) {
+    .inscriprion {
+        font-size: 16px;
+        margin: 30px 10px;
+    }
+
+    .photos__title {
+        font-size: 20px;
+        width: 60%;
+        padding: 10px 20px;
+    }
+}
+
+@media(max-width: 744.98px) {
+    .photos {
+        margin: 0;
+    }
+
+    .photos__block {
+        flex-direction: column;
+    }
+    .photos__photo {
+        width: 100%;
+    }
+
+    .photos__photo__small {
+        order: 1;
+        width: 100%;
+    }
+    .inscriprion {
+        font-size: 16px;
+        margin: 30px 10px;
+    }
+
+    .photos__title {
+        font-size: 20px;
+        width: 60%;
+        padding: 10px 20px;
+    }
+}

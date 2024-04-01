@@ -1,7 +1,10 @@
 
+import { jwtDecode } from 'jwt-decode';
 import { ChangeEvent, FC, useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { toast } from 'react-toastify';
+import userService from '../../services/userService';
 import { ILoginUser, IRegistrationUser } from '../../types/types';
 import styles from "./Auth.module.scss";
 
@@ -14,7 +17,8 @@ const Auth: FC = () => {
         password: '',
         phone: '',
         surname: '',
-        city: ''
+        city: '',
+        role: 'User',
     });
 
     const [user, setUser] = useState<ILoginUser>({
@@ -30,57 +34,54 @@ const Auth: FC = () => {
         setRegistrationUser({...registrationUser, [name]: value})
     }
 
-    // const authorization = async () => {
-    //     if(isRegistration) {
-    //         setUser({
-    //             email: registrationUser.email,
-    //             password: registrationUser.password,
-    //         })
-    //         try {
-    //             setisDisabled(true)
-    //             const token = await userService.registration(registrationUser);
-    //             console.log(token);
+    const authorization = async () => {
+        if(isRegistration) {
+            setUser({
+                email: registrationUser.email,
+                password: registrationUser.password,
+            })
+            try {
+                setisDisabled(true)
+                const data = await userService.registration(registrationUser);
+                console.log(data.token);
                 
-    //             toast.success('Пользователь успешно зарегестрирован!')
-    //             navigate('/profile')
-    //             dispatch(setUserRedux(registrationUser));
-    //             dispatch(setAuth(true));
-    //             setRegistrationUser({email: '', name: '', password: '', phone: '', surname: '', city: ''})
-    //             localStorage.removeItem('basket');
+                toast.success('Пользователь успешно зарегестрирован!')
+                // navigate('/profile')
+                // dispatch(setUserRedux(registrationUser));
+                // dispatch(setAuth(true));
+                setRegistrationUser({email: '', name: '', password: '', phone: '', surname: '', city: '', role: 'User'})
+                localStorage.removeItem('basket');
 
-    //         } catch(e: any) {
-    //             toast.error(e.response.data.message);
-    //         } finally {
-    //             setisDisabled(false);
-    //         }          
+            } catch(e: any) {
+                toast.error(e.response.data.message);
+            } finally {
+                setisDisabled(false);
+            }          
 
-    //     } else {
-    //         try  {
-    //             setisDisabled(true);
-    //             const token = await userService.login(user);
-    //             const decodedUser: IRegistrationUser = jwtDecode(token);
-    //             if(decodedUser) 
-    //                 dispatch(setUserRedux({
-    //                     email: decodedUser.email || '',
-    //                     name: decodedUser.name || '',
-    //                     password: decodedUser.password || '',
-    //                     phone: decodedUser.phone || '',
-    //                     surname: decodedUser.surname || '',
-    //                     city: decodedUser.city || '',
-    //                 }))
+        } else {
+            try  {
+                setisDisabled(true);
+                const data= await userService.login(user);
+                const decodedUser: IRegistrationUser = jwtDecode(data.token);
+                if(decodedUser) 
+                    // dispatch(setUserRedux({
+                    //     email: decodedUser.email || '',
+                    //     name: decodedUser.name || '',
+                    //     password: decodedUser.password || '',
+                    //     phone: decodedUser.phone || '',
+                    //     surname: decodedUser.surname || '',
+                    //     city: decodedUser.city || '',
+                    // }))
                 
-    //             dispatch(setAuth(true));
-    //             navigate('/profile')
-    //             toast.success('Вы вошли в аккаунт');
-    //             localStorage.removeItem('basket');
-    //             dispatch(calc_cart_count())
-    //         } catch(e: any) {
-    //             toast.error(e.response.data.message);   
-    //         } finally {
-    //             setisDisabled(false)
-    //         }
-    //     }
-    // }
+                toast.success('Вы вошли в аккаунт');
+                localStorage.removeItem('basket');
+            } catch(e: any) {
+                toast.error(e.response.data.message);   
+            } finally {
+                setisDisabled(false)
+            }
+        }
+    }
 
     return (
         <div className={styles.container}>
@@ -147,7 +148,7 @@ const Auth: FC = () => {
                         </>
                 }
             </div>
-            <button disabled = {isDisabled} className={styles.button}>{isRegistration ? 'Зарегестрироваться' : 'Войти'}</button>
+            <button onClick={authorization} disabled = {isDisabled} className={styles.button}>{isRegistration ? 'Зарегестрироваться' : 'Войти'}</button>
             <div>
                 <span onClick={() => setIsRegistration(!isRegistration)} style={{cursor: 'pointer'}}>{isRegistration ? 'Уже есть аккаунт?':'Нет аккаунта?'}</span>
                 <span onClick={() => setIsRegistration(!isRegistration)} style={{cursor: 'pointer'}}>{isRegistration ? ' Войти' : ' Зарегестрироваться'}</span>

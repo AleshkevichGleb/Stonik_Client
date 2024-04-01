@@ -1,0 +1,29 @@
+.sliderDots {
+    background-color: rgba(232, 231, 231, 0.7);
+}
+
+.dots {
+    background-color: #fff;
+    display: block;
+    width: 30px;
+    height: 30px;
+}
+
+.image {
+    width: 1000px;
+    height: 600px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-clip: border-box;
+}
+
+@media(max-width: 1015px) {
+    .slider  {
+        width: 100%;
+    }
+    .image {
+        width: 100%;
+        height: 600px;
+    }
+}
+
