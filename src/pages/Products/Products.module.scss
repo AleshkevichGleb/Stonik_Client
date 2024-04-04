@@ -86,6 +86,7 @@
 
 .products__block {
     display: flex;
+    flex-wrap: wrap;
     gap: 50px;
 }
 

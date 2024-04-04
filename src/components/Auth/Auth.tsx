@@ -1,57 +1,59 @@
 
 import { jwtDecode } from 'jwt-decode';
-import { ChangeEvent, FC, useState } from 'react';
-import PhoneInput from 'react-phone-input-2';
+import {ChangeEvent, FC, useState} from 'react';
 import 'react-phone-input-2/lib/style.css';
 import { toast } from 'react-toastify';
 import userService from '../../services/userService';
-import { ILoginUser, IRegistrationUser } from '../../types/types';
+import {IRegistrationUser } from '../../types/types';
 import styles from "./Auth.module.scss";
+import {setUser as setUserRedux, setAuth} from "../../store/slices/user.slice.ts";
+import {useAppDispatch} from "../../hooks/useReduceer.ts";
+import {useNavigate} from "react-router-dom";
 
 const Auth: FC = () => {
+    const navigate = useNavigate();
     const [isDisabled, setisDisabled] = useState<boolean>(false);
-    
-    const [registrationUser, setRegistrationUser] = useState<IRegistrationUser>({
+    const dispatch = useAppDispatch();
+    const [user, setUser] = useState<IRegistrationUser>({
+        id: '',
         email: '',
         name: '',
         password: '',
-        phone: '',
         surname: '',
         city: '',
         role: 'User',
-    });
-
-    const [user, setUser] = useState<ILoginUser>({
-        email: '',
-        password: '',
+        image: '',
     });
 
     const [isRegistration, setIsRegistration] = useState<boolean>(false);
-
     const handleRegistration = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        
-        setRegistrationUser({...registrationUser, [name]: value})
+
+        setUser({...user, [name]: value})
     }
 
     const authorization = async () => {
         if(isRegistration) {
-            setUser({
-                email: registrationUser.email,
-                password: registrationUser.password,
-            })
             try {
                 setisDisabled(true)
-                const data = await userService.registration(registrationUser);
+                const data = await userService.registration(user);
                 console.log(data.token);
-                
-                toast.success('Пользователь успешно зарегестрирован!')
-                // navigate('/profile')
-                // dispatch(setUserRedux(registrationUser));
-                // dispatch(setAuth(true));
-                setRegistrationUser({email: '', name: '', password: '', phone: '', surname: '', city: '', role: 'User'})
-                localStorage.removeItem('basket');
 
+                const decodedUser: IRegistrationUser = jwtDecode(data.token);
+                if(decodedUser)
+                    dispatch(setUserRedux({
+                        id: decodedUser.id,
+                        email: decodedUser.email || '',
+                        name: decodedUser.name || '',
+                        password: decodedUser.password || '',
+                        surname: decodedUser.surname || '',
+                        city: decodedUser.city || '',
+                        role: decodedUser.role,
+                        image: decodedUser.image || ''
+                    }))
+                dispatch(setAuth(true));
+                toast.success('Пользователь успешно зарегестрирован!')
+                navigate('/profile')
             } catch(e: any) {
                 toast.error(e.response.data.message);
             } finally {
@@ -61,20 +63,24 @@ const Auth: FC = () => {
         } else {
             try  {
                 setisDisabled(true);
-                const data= await userService.login(user);
+                const data = await userService.login({email: user.email, password: user.password});
+
                 const decodedUser: IRegistrationUser = jwtDecode(data.token);
-                if(decodedUser) 
-                    // dispatch(setUserRedux({
-                    //     email: decodedUser.email || '',
-                    //     name: decodedUser.name || '',
-                    //     password: decodedUser.password || '',
-                    //     phone: decodedUser.phone || '',
-                    //     surname: decodedUser.surname || '',
-                    //     city: decodedUser.city || '',
-                    // }))
-                
+                console.log(decodedUser)
+                if(decodedUser)
+                    dispatch(setUserRedux({
+                        id: decodedUser.id,
+                        email: decodedUser.email || '',
+                        name: decodedUser.name || '',
+                        password: decodedUser.password || '',
+                        surname: decodedUser.surname || '',
+                        city: decodedUser.city || '',
+                        role: decodedUser.role,
+                        image: decodedUser.image || ''
+                    }))
+                dispatch(setAuth(true));
+                navigate('/profile')
                 toast.success('Вы вошли в аккаунт');
-                localStorage.removeItem('basket');
             } catch(e: any) {
                 toast.error(e.response.data.message);   
             } finally {
@@ -96,7 +102,7 @@ const Auth: FC = () => {
                                 className={styles.input} 
                                 placeholder='Почта*' 
                                 type="email" 
-                                value={registrationUser.email}
+                                value={user.email}
                                 onChange={handleRegistration}
                             />
                             <input 
@@ -104,7 +110,7 @@ const Auth: FC = () => {
                                 className={styles.input} 
                                 placeholder='Имя' 
                                 type="text" 
-                                value={registrationUser.name}
+                                value={user.name}
                                 onChange={handleRegistration}
                             />
                             <input 
@@ -112,46 +118,59 @@ const Auth: FC = () => {
                                 className={styles.input} 
                                 placeholder='Фамилия' 
                                 type="text" 
-                                value={registrationUser.surname}
+                                value={user.surname}
                                 onChange={handleRegistration}
-                            />
-                            <PhoneInput 
-                                value={registrationUser.phone} 
-                                onChange={phone => setRegistrationUser({...registrationUser, phone})} 
-                                inputStyle={{width: '100%'}}
                             />
                             <input 
                                 name='password'
                                 className={styles.input} 
                                 placeholder='Пароль*' 
                                 type="password" 
-                                value={registrationUser.password}
+                                value={user.password}
                                 onChange={handleRegistration}
                             />
                         </>
-                    : 
+                    :
                         <>
-                            <input 
-                                className={styles.input} 
-                                placeholder='Почта*' 
-                                type="email" 
+                            <input
+                                name='email'
+                                className={styles.input}
+                                placeholder='Почта*'
+                                type="email"
                                 value={user.email}
-                                onChange={(e) => setUser({...user, email: e.target.value})}
+                                onChange={handleRegistration}
                             />
-                            <input 
-                                className={styles.input} 
-                                placeholder='Пароль' 
-                                type="password" 
+                            <input
+                                name='password'
+                                className={styles.input}
+                                placeholder='Пароль*'
+                                type="password"
                                 value={user.password}
-                                  onChange={(e) => setUser({...user, password: e.target.value})}
+                                onChange={handleRegistration}
                             />
                         </>
                 }
             </div>
-            <button onClick={authorization} disabled = {isDisabled} className={styles.button}>{isRegistration ? 'Зарегестрироваться' : 'Войти'}</button>
+            <button onClick={authorization} disabled={isDisabled}
+                    className={styles.button}>{isRegistration ? 'Зарегестрироваться' : 'Войти'}</button>
             <div>
-                <span onClick={() => setIsRegistration(!isRegistration)} style={{cursor: 'pointer'}}>{isRegistration ? 'Уже есть аккаунт?':'Нет аккаунта?'}</span>
-                <span onClick={() => setIsRegistration(!isRegistration)} style={{cursor: 'pointer'}}>{isRegistration ? ' Войти' : ' Зарегестрироваться'}</span>
+                <span onClick={() => setIsRegistration(!isRegistration)}
+                      style={{cursor: 'pointer'}}>{isRegistration ? 'Уже есть аккаунт?' : 'Нет аккаунта?'}</span>
+                <span onClick={ () => {
+                        setIsRegistration(!isRegistration);
+                        setUser({
+                            id: '',
+                            email: '',
+                            name: '',
+                            password: '',
+                            surname: '',
+                            city: '',
+                            role: 'User',
+                            image: '',
+                        })}}
+                      style={{cursor: 'pointer'}}>
+                    {isRegistration ? ' Войти' : ' Зарегестрироваться'}
+                </span>
             </div>
         </div>
     )

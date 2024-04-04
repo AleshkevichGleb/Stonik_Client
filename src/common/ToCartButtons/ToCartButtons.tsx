@@ -4,15 +4,15 @@ import plusImage from "../../assets/images/plus.svg";
 import { FC, MouseEvent } from "react";
 import Button from "../Button/Button";
 import styles from "./ToCartButtons.module.scss";
+import {IProduct} from "../../types/types.ts";
 
 interface ToCartButtonsProps {
-    product: any,
+    product: IProduct,
     addStyles: any,
-    flag: boolean
 }
 
-const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
-
+const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles}) => {
+    console.log(product)
     const increasePrice = (e: MouseEvent<HTMLButtonElement>) => {
         // const {id} = e.target;
         // dispatch(increase_price({id: id}));
@@ -26,31 +26,31 @@ const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
     }
 
     return (
-        product.cartCount > 0
+        product.amount > 0
         ?   <div className={styles.buttonsContainer}>
-                <span className={addStyles.count}>{product.cartCount}</span>
+                <span className={addStyles.count}>{product.amount}</span>
                 <Button 
-                    id = {product.id} 
+                    id = {product?.id.toString()}
                     onClick={decreasePrice} 
                     addStyles={addStyles.button}
                 >
                     —
                 </Button>
-                {flag 
-                ?   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(product.cartCount)}</span>
-                :   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(product.cartPrice).toLocaleString()} ₽</span>
-                }
+                {/*{flag */}
+                {/*?   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(product.cartCount)}</span>*/}
+                {/*:   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(product.cartPrice).toLocaleString()} ₽</span>*/}
+                {/*}*/}
                 <Button 
-                    id = {product.id} 
+                    id = {product.id.toString()}
                     onClick={increasePrice} 
                     addStyles={addStyles.button}
                 >
-                    <img id = {product.id} className={styles.plusImage} src={plusImage} alt="" />
+                    <img id = {product.id.toString()} className={styles.plusImage} src={plusImage} alt="" />
                 </Button>
             </div>
         :   <Button 
                 onClick={increasePrice} 
-                id = {product.id} 
+                id = {product.id.toString()}
                 addStyles={`${addStyles.bigButton} ${styles.button}` }
             >
                 В корзину

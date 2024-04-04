@@ -1,0 +1,162 @@
+.products__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.products__block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.product {
+  position: relative;
+  width: 282px;
+  height: 465px;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px 15px 17px;
+  flex-direction: column;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.product__imageBlock {
+  position: relative;
+  width: 247px;
+  margin: 0 auto;
+}
+
+.product__imageBlock::after {
+  position: absolute;
+  content: 'Акция';
+  top: 0;
+  right: -2px;
+  font-size: 17px;
+  color: #000;
+  width: 86px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(250, 242, 242, 0.5);
+}
+.product__image {
+  width: 247px;
+  height: 220px;
+}
+
+
+.product__type {
+  font-weight: 700;
+  color: #28553F;
+  font-size: 14px;
+}
+
+.product__title {
+  font-size: 16px;
+  color: #000;
+  font-weight: 600;
+}
+
+.product__priceContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product__price {
+  font-weight: 700;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: #28553F;
+  font-size: 20px;
+}
+
+.product__beforePrice {
+  font-size: 15px;
+  color: #949981;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-decoration:line-through;
+}
+
+.button {
+  width: 247px;
+  height: 40px;
+  border-radius: 0;
+}
+
+.bigButton{
+  width: 100%;
+}
+
+.smallButton {
+  width: 50px;
+  height: 40px;
+  font-weight: 700;
+  font-size: 24px;
+  border-radius: 0;
+}
+
+.cartCount {
+  background-color: #244837;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: absolute;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  top: -394px;
+  left: 0px;
+}
+
+@media(max-width: 1167px)  {
+  .products__block {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .productsTitle {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media(max-width: 666px) {
+
+  .product {
+    width: 47%;
+  }
+
+  .button {
+    width: 100% ;
+  }
+
+  .product__imageBlock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product__imageBlockNotSale {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media(max-width: 596px) {
+  .product {
+    width: 100%;
+  }
+
+}
+
+

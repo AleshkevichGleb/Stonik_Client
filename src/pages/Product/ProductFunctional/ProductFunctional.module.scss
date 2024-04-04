@@ -1,0 +1,258 @@
+.product__functional {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.checkMark {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.inStock {
+  color:#28553F;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.notInStock  {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgb(147, 65, 65);
+  margin-bottom: 15px;
+}
+
+.priceBlock {
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: 400;
+  display: flex;
+  height: 40px;
+  align-items: center;
+  gap: 40px;
+  margin: 0px 0px 10px -4px;
+
+}
+
+.priceBlock__price {
+  font-size: 32px;
+}
+
+.priceBlock__beforePrice  {
+  font-size: 28px;
+  color: #9C9C9C;
+  text-decoration:line-through;
+}
+
+.priceBlock__procent {
+  background-color: #28553F;
+  width: 72px;
+  height: 41px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.product__NDS {
+  color: #9C9C9C;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.product__accordion {
+  margin-top: 30px;
+}
+
+.product__accordionTitleBLock {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.accordion__change {
+  width: 14px;
+  height: 14px;
+  transition: .2s linear;
+}
+
+.accordion__change_active {
+  transform: rotate(180deg)
+}
+
+.product__accordion__title {
+  font-size: 18px;
+  color: #282A30;
+}
+
+.product__accordion__item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transform:translateY(-3px);
+  opacity: 0;
+  max-height: 10px;
+  transition: .2s linear;
+}
+
+.product__accordion__item_active {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 15px;
+  opacity: 1;
+  transform:translateY(0px);
+  min-height: 260px;
+}
+
+.product__accordionBlock {
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product__accordionBlock_2 {
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F9F9F9;
+}
+
+.product__accordionTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color:#282A30;
+}
+
+.product__accordionText  {
+  font-size: 14px;
+  color:#282A30;
+  padding-left: 40px;
+  text-align: left;
+}
+
+.smallButton {
+  width: 50px;
+  height: 40px;
+  font-weight: 700;
+  font-size: 24px;
+  border-radius: 0;
+}
+
+.cartCount {
+  background-color: #244837;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  top: -117px;
+  left: -70px;
+}
+
+@media(max-width: 1180px) {
+  .product__accordionBlock_2 {
+    padding: 20 10px;
+  }
+  .product__accordionBlock {
+    padding: 20px 10px;
+  }
+
+  .product__accordionText  {
+    width: 300px;
+  }
+
+
+}
+
+@media(max-width: 1120px) {
+  .priceBlock {
+    width: 100%;
+    justify-content: space-between;
+
+  }
+
+  .product__accordionText  {
+    width:fit-content;
+  }
+
+  .product__accordionBlock {
+    width: 100%;
+  }
+
+  .product__accordionBlock_2 {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cartCount {
+    width: 40px;
+    height: 40px;
+    top: 0px;
+    font-size: 20px;
+    left: 60px;
+  }
+}
+
+@media(max-width: 460px) {
+  .cartCount {
+    width: 30px;
+    height: 30px;
+    top: 5px;
+    font-size: 20px;
+    left: 60px;
+  }
+  .product__functional {
+    padding: 0px;
+  }
+
+  .priceBlock {
+    gap: 20px;
+  }
+
+  .priceBlock__price {
+    font-size: 26px;
+  }
+
+  .priceBlock__beforePrice  {
+    font-size: 22px;
+  }
+
+  .priceBlock__procent {
+    width: 66px;
+    height: 40px;
+    font-size: 14px;
+  }
+  .product__accordion__item_active {
+    min-height: 300px;
+  }
+}
+
+@media(max-width: 395px) {
+  .product__accordion__item_active {
+    min-height: 330px;
+  }
+  .priceBlock__price {
+    font-size: 24px;
+  }
+  .priceBlock__beforePrice  {
+    font-size: 20px;
+  }
+
+  .priceBlock__procent {
+    width: 66px;
+    height: 40px;
+    font-size: 12px;
+  }
+}

@@ -15,6 +15,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         position='top-center'
         autoClose= {1500}
       />
-    </BrowserRouter>,
+    </BrowserRouter>
   </Provider>
 )

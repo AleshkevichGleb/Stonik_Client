@@ -1,0 +1,169 @@
+.product__container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.hr {
+  width: 100%;
+  border: 1px solid #E5E5E5;
+  margin: 15px 0;
+}
+
+.product {
+  display: flex;
+  max-width: 1300px;
+}
+
+.product__photos {
+  max-width: 602px;
+}
+
+.bigImage {
+  width: 100%;
+  height: 407px;
+}
+
+.product__description {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 70px 0 30px 0;
+}
+
+
+.product__description__title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.product__description__text {
+  font-size: 18px;
+}
+
+
+.line {
+  width: 100%;
+  height: 4px;
+  background-color:#EDF3F3;
+  position: relative;
+  border-radius: 5px;
+}
+
+.line::before {
+  position: absolute;
+  content: '';
+  background-color: #28553F;
+  width: 10%;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.slider {
+  max-width: 100%;
+}
+
+.slider__image {
+  width: 117px;
+  height: 103px;
+}
+
+.addStyleDots {
+  display: none;
+}
+
+.addStyleDot {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
+@media(max-width: 1310px) {
+  .product__container {
+    margin: 0 10px;
+  }
+}
+
+@media(max-width: 1120px) {
+  .product__photos {
+    margin: 0 auto;
+    margin-bottom: 30px;
+  }
+
+  .product {
+    flex-direction: column;
+  }
+
+}
+
+@media(max-width: 620px) {
+  .product__photos {
+    /* margin: 0 10px; */
+    margin-bottom: 30px;
+  }
+
+  .bigImage {
+    width: 500px;
+    height: auto;
+  }
+
+  .slider {
+    max-width: 500px;
+  }
+
+  .product {
+    flex-direction: column;
+  }
+
+}
+
+@media(max-width: 510px) {
+  .bigImage {
+    width: 450px;
+  }
+
+  .slider {
+    max-width: 450px;
+  }
+}
+
+@media(max-width: 460px) {
+  .bigImage {
+    width: 400px;
+  }
+
+  .slider {
+    max-width: 400px;
+  }
+}
+
+@media(max-width: 410px) {
+  .bigImage {
+    width: 370px;
+  }
+
+  .slider {
+    max-width: 370px;
+  }
+}
+
+@media(max-width: 380px) {
+  .bigImage {
+    width: 340px;
+  }
+
+  .slider {
+    max-width: 340px;
+  }
+}
+
+@media(max-width: 350px) {
+  .bigImage {
+    width: 310px;
+  }
+
+  .slider {
+    max-width: 310px;
+  }
+}

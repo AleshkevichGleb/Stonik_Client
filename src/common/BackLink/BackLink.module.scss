@@ -1,0 +1,31 @@
+
+.back {
+  font-size: 18px;
+  color: #000;
+  font-weight: 700;
+  padding-left: 11.5px;
+  position: relative;
+  cursor: pointer;
+}
+
+.back:hover{
+  color: #716969;
+}
+
+.back:hover::before {
+  border: 2px solid #776c6c;
+  border-top: none;
+  border-right: none;
+}
+.back::before {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 2px solid #000;
+  top: 6px;
+  left: 0;
+  border-top: none;
+  border-right: none;
+  transform: rotate(45deg);
+}

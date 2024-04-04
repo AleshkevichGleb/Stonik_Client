@@ -1,15 +1,17 @@
-import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
 import Title from '../../common/Title/Title';
-import MySelect from '../../components/MySelect/MySelect';
 import styles from "./Products.module.scss";
+import {IProduct} from "../../types/types.ts";
+import ProductService from "../../services/productService.ts";
+import ProductItem from "../../components/ProductItem/ProductItem.tsx";
 
 const Products: FC = () => {
-    const [prod, setProd] = useState<any[]>([]);
+    const [prod, setProd] = useState<IProduct[]>([]);
     const fetchProducts = async() => {
-        const {data} =  await axios.get<any[]>('http://localhost:5000/api/products')
-        setProd(data)
+        const products = await ProductService.getProducts(999,1,'');
+        setProd(products.rows)
     }
+
 
     useEffect(() => {
         fetchProducts();
@@ -17,7 +19,7 @@ const Products: FC = () => {
     }, []);
     // console.log(prod);
     console.log(prod);
-    
+
     
 
     return (
@@ -30,68 +32,73 @@ const Products: FC = () => {
                             title_p2='натурального камня'
                         />
                         <div className={styles.sortBlock}>
-                            {/* <input
+                             <input
                                 className={styles.searchInput}
                                 placeholder="Поиск"
-                                value = {filter.query}
-                                onChange={e => setFilter({...filter, query: e.target.value})}
-                            /> */}
-                            <MySelect 
-                                value={'sdfsdf'}
-                                // onChange={e => setFilter({...filter, sort: e})}
-                                defaultValue='Сортировка по'
-                                options={[
-                                    {value: 'default', name: 'Сортировка по'},
-                                    {value: 'type', name: 'Производителю'},
-                                    {value: 'title', name: 'Названию'},
-                                    {value: 'price', name: 'Цене'}
-                                ]}
-                            />
+                                // value = {filter.query}
+                                // onChange={e => setFilter({...filter, query: e.target.value})}
+                             />
+                            {/*<MySelect */}
+                            {/*    value={'sdfsdf'}*/}
+                            {/*    onChange={e => console.log(e)}*/}
+                            {/*    defaultValue='Сортировка по'*/}
+                            {/*    options={[*/}
+                            {/*        {value: 'default', name: 'Сортировка по'},*/}
+                            {/*        {value: 'type', name: 'Производителю'},*/}
+                            {/*        {value: 'title', name: 'Названию'},*/}
+                            {/*        {value: 'price', name: 'Цене'}*/}
+                            {/*    ]}*/}
+                            {/*/>*/}
                         </div>
                     </div>
-                    {/* <div className={styles.products__block}>
-                        <Filter filter= {filter} setFilter = {setFilter} dispatch = {dispatch}/>
+                    <div className={styles.products__block}>
                         {
-                            !filter.query.length && 
-                            !Object.keys(filter.price).length &&  
-                            !Object.keys(filter.brand).length && 
-                            !Object.keys(filter.color).length &&
-                            !Object.keys(filter.mm).length
-                                ?<SortProducts 
-                                    searchProducts = {FilterAndSearchedProducts}
-                                    pagesArray = {pagesArray}
-                                    subArray = {subArray}
-                                    currentPage = {currentPage}
-                                    dispatch = {dispatch}
-                                />
-                               
-                                :<>
-                                    {
-                                        !subArray.length
-                                        ?   <h3 className={styles.empty}>Ничего не найдено</h3>
-                                        :   <FilterProducts 
-                                                products={FilterAndSearchedProducts}
-                                                subArray = {subArray}
-                                                currentPage = {currentPage}
-                                            /> 
-                                    }
-                                </>
+                            prod.map(pr =>
+                                <ProductItem key = {pr.id} product={pr}/>
+                            )
                         }
-                    </div> */}
-                    {/* <div className={styles.pages}>
+                        {/*<Filter filter= {filter} setFilter = {setFilter} dispatch = {dispatch}/>*/}
+                        {
+                            // !filter.query.length &&
+                            // !Object.keys(filter.price).length &&
+                            // !Object.keys(filter.brand).length &&
+                            // !Object.keys(filter.color).length &&
+                            // !Object.keys(filter.mm).length
+                            //     ?<SortProducts
+                            //         searchProducts = {FilterAndSearchedProducts}
+                            //         pagesArray = {pagesArray}
+                            //         subArray = {subArray}
+                            //         currentPage = {currentPage}
+                            //         dispatch = {dispatch}
+                            //     />
+                            //
+                            //     :<>
+                            //         {
+                            //             !subArray.length
+                            //             ?   <h3 className={styles.empty}>Ничего не найдено</h3>
+                            //             :   <FilterProducts
+                            //                     products={FilterAndSearchedProducts}
+                            //                     subArray = {subArray}
+                            //                     currentPage = {currentPage}
+                            //                 />
+                            //         }
+                            //     </>
+                        }
+                    </div>
+                    <div className={styles.pages}>
                     {
-                        pagesArray.map(page => 
-                            <Button 
-                                onClick={changeCurrentPage}
-                                addStyles = {+currentPage === +page ? styles.active_page : styles.page}
-                                key = {page}
-                                id = {page}
-                            >
-                                {page}
-                            </Button>
-                        )
+                        // pagesArray.map(page =>
+                        //     <Button
+                        //         onClick={changeCurrentPage}
+                        //         addStyles = {+currentPage === +page ? styles.active_page : styles.page}
+                        //         key = {page}
+                        //         id = {page}
+                        //     >
+                        //         {page}
+                        //     </Button>
+                        // )
                     }
-                    </div> */}
+                    </div>
                 </div>
         </div>
     )

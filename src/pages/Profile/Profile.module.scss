@@ -1,0 +1,121 @@
+.container {
+  padding: 50px 0;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+
+  .userBlock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+
+
+    .userImageBlock {
+      display: flex;
+      flex-direction: column;
+      //justify-content: center;
+      gap: 10px;
+      align-items: center;
+
+
+      .image {
+        width: 250px;
+        height: 250px;
+      }
+    }
+
+    .userInfo {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+
+      .userChange {
+        display: flex;
+        flex-wrap: wrap;
+        //justify-content: center;
+        //align-items: center;
+        gap: 40px;
+      }
+    }
+  }
+}
+
+
+.addStyles {
+  margin-top: 50px !important;
+}
+.inpuStyles {
+  border: none !important;
+  border-bottom: 1px solid #28553F !important;
+  color: #000 !important;
+  width: 300px;
+  border-radius: 0px !important;
+  width: 400px !important;
+
+  &:focus {
+    border-bottom: 1px solid #000 !important;
+  }
+
+}
+
+.labelStyles {
+  color: #000 !important;
+}
+
+.buttonStyles {
+  padding: 10px 20px;
+}
+
+.button {
+  background-color: #28553F;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 19px;
+  font-weight: 500;
+  font-family: 'Raleway', sans-serif;
+  transition: .2s linear;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 10px;
+
+  &:disabled {
+    background-color: #414141;
+  }
+
+  &:disabled:active {
+    transform: none;
+  }
+
+  &:disabled:hover{
+    box-shadow: none;
+  }
+
+}
+
+.button:hover {
+  box-shadow: 0px 0px 25px #28553F;
+}
+
+.button:active {
+  transform: scale(.95);
+}
+
+.logoutButton {
+  background-color: red;
+  padding: 10px 20px;
+
+  &:hover {
+    box-shadow: 0px 0px 25px red;
+  }
+}

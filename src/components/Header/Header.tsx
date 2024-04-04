@@ -6,11 +6,12 @@ import { navLinks } from "../../constants/links";
 import BasketCount from "./BaketCount/BasketCount";
 import styles from "./Header.module.scss";
 import Menu from "./Menu/Menu";
+import {useAppSelector} from "../../hooks/useReduceer.ts";
 
 
 const Header = () => {
     const [isActiveMenu, setIsActiveMenu] = useState(false)
-    const isAuth = false;
+    const {isAuth} = useAppSelector(state => state.user);
 
     return (
         <header className={styles.header}>
@@ -39,7 +40,10 @@ const Header = () => {
                 </div>
                 <Link to = {isAuth ? '/profile' : '/auth'} className={styles.profile__block}>
                     <img src={ProfileImage} alt="ProfileImage" />
-                    {!isAuth &&  <span className={styles.profile__text}>Войти</span>}
+                    {!isAuth
+                        ? <span className={styles.profile__text}>Войти</span>
+                        : <span className={styles.profile__text}>Аккаунт</span>
+                    }
                 </Link>
                 <BasketCount onClick = {() => setIsActiveMenu(false)}/>
             </div>

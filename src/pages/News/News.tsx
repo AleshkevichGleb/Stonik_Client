@@ -13,13 +13,22 @@ import { FC, useEffect, useRef, useState } from 'react';
 
         const ref = useRef<HTMLInputElement | null>(null);
         const ref2 = useRef<HTMLInputElement | null>(null);
+        const isSale = false;
 
         const addProduct = async() => {
+
+
             const formData = new FormData();
             formData.append('name', 'vaza3');
             formData.append('description', 'sdfsdf');
             formData.append('price', '32.2');
-            formData.append('info', JSON.stringify({sdfsd: 'sdfsdfsdf'}));
+            formData.append('type', 'worktop')
+            formData.append('info', JSON.stringify([{ title: "sf", text: "sf" }]));
+
+            formData.append('isSale', 'false');
+            formData.append('salePrice', '30');
+            formData.append('amount', '300');
+
             if (ref.current && ref.current.files && ref.current.files.length > 0) {
                 formData.append('images', ref.current.files[0]);
             }
