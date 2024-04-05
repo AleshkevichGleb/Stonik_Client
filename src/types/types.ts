@@ -57,3 +57,34 @@ interface IProductInfo {
 }
 
 export type ProductType = 'sill' | 'shell' | 'worktop' | 'vase'
+
+
+export interface IBasketData {
+    count: number,
+    product: IProduct,
+}
+
+export interface IPersonData {
+    name: string,
+    phone: string,
+    email: string,
+    city: string,
+    street: string,
+    house: string,
+    flat: string,
+    payment: {
+        type: string,
+        surrender_of_money: string,
+    },
+    agreement: boolean,
+}
+
+export interface IErrorValidatePersonDate {
+    name: string,
+    phone: string,
+    street: string,
+    city: string,
+    email: string,
+    house: string,
+    flat: string,
+}

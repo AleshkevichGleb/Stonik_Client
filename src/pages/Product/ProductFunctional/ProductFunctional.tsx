@@ -11,7 +11,7 @@ interface ProductFunctionalProps {
 
 const ProductFunctional: FC<ProductFunctionalProps> = ({product}) => {
     const [isActive, setIsActive] = useState<boolean>(true);
-    console.log(product)
+
     return (
         <div className={styles.product__functional}>
             {product?.amount as number > 0
@@ -23,20 +23,20 @@ const ProductFunctional: FC<ProductFunctionalProps> = ({product}) => {
             }
             {product?.isSale
                 ? <div className={styles.priceBlock}>
-                    <span className={styles.priceBlock__price}>{(product.price).toLocaleString()} ₽</span>
+                    <span className={styles.priceBlock__price}>{(Number(product.price) - Number(product.salePrice)).toLocaleString()} BYN</span>
                     <span
-                        className={styles.priceBlock__beforePrice}>{(Number(product.price) + Number(product.salePrice)).toLocaleString()} ₽</span>
+                        className={styles.priceBlock__beforePrice}>{(Number(product.price)).toLocaleString()} BYN</span>
                     <span
-                        className={styles.priceBlock__procent}>{((product.salePrice / Number(product.price + product.salePrice)) * 100).toFixed(2)} %</span>
+                        className={styles.priceBlock__procent}>{(100 - ((Number(product.price) - Number(product.salePrice))/ Number(product.price) * 100)).toFixed(2)} %</span>
                 </div>
                 : <div className={styles.priceBlock}>
-                    <span className={styles.priceBlock__price}>{(product?.price as number)} ₽</span>
+                    <span className={styles.priceBlock__price}>{(product?.price as number)} BYN</span>
                 </div>
             }
             <span className={styles.product__NDS}>Цена указана с учетом НДС</span>
             <ToCartButtons
                 addStyles={{button: styles.smallButton, count: styles.cartCount}}
-                product={product as IProduct}
+                product={product ? product : undefined}
             />
             <div className={styles.product__accordion}>
                 <div className={styles.product__accordionTitleBLock} onClick={() => setIsActive(!isActive)}>

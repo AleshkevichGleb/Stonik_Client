@@ -1,83 +1,73 @@
-import { MouseEvent, useState } from "react";
-import { useDispatch } from "react-redux";
+import {MouseEvent, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../common/Button/Button";
 import ToCartButtons from "../../common/ToCartButtons/ToCartButtons";
-import { calc_cart_count } from "../../store/slices/cartCount.slice";
 import styles from "./Basket.module.scss";
 import EmptyBasket from "./EmptyBasket/EmptyBasket";
+import {useAppDispatch, useAppSelector} from "../../hooks/useReduceer.ts";
+import {removeFromBasket} from "../../store/slices/basket.slice.ts";
+import basketService from "../../services/basketService.ts";
+import crossImage from "../../assets/images/cross.svg";
 
 
 const Basket = () => {
     // const {products} = useSelector(state => state.products);
-    const [basket, setBasket] = useState<Array<any>>([]);
-    const dispatch = useDispatch();
+    const { products,basketPrice } = useAppSelector(state => state.basket);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const [basketCount, setBasketCount] = useState(0);
+    useEffect(() => {
+        let fullCount = 0;
+        products.forEach(product => {
+            fullCount += +product.count;
+        })
+        setBasketCount(fullCount);
+    }, [products])
 
-    const [basketPrice, setBasketPrice] = useState(0);
-    const [basketCount, setBaskeCount] = useState(0);
-    // useEffect(() => {
-    //     const storage = JSON.parse(localStorage.getItem('basket'));
-    //     if(storage !== null && storage.length) {
-    //         setBasket([...storage].filter(product => product.cartCount > 0));
-    //     } else {
-    //         setBasket([]);
-    //     }
-    // }, [products]);
+    const removeProduct = async (e: MouseEvent<HTMLButtonElement>) => {
+        const {id} = e.currentTarget;
+        const data = await basketService.changeCount(id, -99999)
+        console.log(data)
+        dispatch(removeFromBasket(id))
 
-    // useEffect(() => {
-    //     let fullCount = 0;
-    //     let fullPrice = 0;
-    //     basket.forEach(product => {
-    //         fullCount += +product.cartCount;
-    //         fullPrice += +product.cartPrice;
-    //     })
-    //     setBaskeCount(fullCount);
-    //     setBasketPrice(fullPrice);
-    // }, [setBasket, dispatch, basket])
-
-    const removeProduct = (e: MouseEvent<HTMLButtonElement>) => {
-        // const {id} = e.target;
-        // dispatch(remove_from_basket({id: id}));
-        dispatch(calc_cart_count());
     }
 
     
     return (
         <div className={styles.basket__container}>
             {
-                basket.length
+                products.length
                 ? <div className={styles.products}>
-                    {basket.map(product => 
-                        <div className={styles.product} key={product.id}>
+                    {products.map(product =>
+                        <div className={styles.product} key={product.product.id}>
                             <div className={styles.product__textBlock}>
                                 <img 
                                     className={styles.produt__image} 
-                                    src = {product.image.src} 
-                                    alt = {product.image.alt}
-                                    onClick={() => navigate(`/products/${product.id}`)}
+                                    src = {product.product.images[0]}
+                                    alt = {product.product.name}
+                                    onClick={() => navigate(`/products/${product.product.id}`)}
                                 />
                                 <div className={styles.product__textInfo}>
-                                    <span className={styles.product__title}>{product.title}</span>
-                                    <span className={styles.product__description}>{product.description}</span>
+                                    <span className={styles.product__title}>{product.product.name}</span>
+                                    <span className={styles.product__description}>{product.product.description}</span>
                                 </div>
                             </div>
                             <div className={styles.product__functional}>
-                                <ToCartButtons  flag={true} addStyles={{button: styles.smallButton, count: styles.cartCount, price: styles.addStylePrice}} product={product}/>
+                                <ToCartButtons  flag={true} addStyles={{button: styles.smallButton, count: styles.cartCount, price: styles.addStylePrice}} product={product.product}/>
                                 
-                                <span className={styles.product__price}>{(product.cartPrice).toLocaleString()} ₽</span>
+                                <span className={styles.product__price}>{(product.product.price * product.count).toLocaleString()} BYN</span>
                                 <button  
-                                    id = {product.id} 
+                                    id = {String(product.product.id)}
                                     className={styles.smallButton}
                                     onClick={removeProduct}
                                 >
-                                    X
+                                    <img src={crossImage} alt="cross"/>
                                 </button>
                              </div>
                         </div>
                     )}  
                     <div className={styles.finalPriceBlock}>
-                        <span>Сумма вашего заказа: <span className={styles.finalPrice}>{basketPrice} ₽</span></span>
+                        <span>Сумма вашего заказа: <span className={styles.finalPrice}>{basketPrice.toFixed(1)}  BYN</span></span>
                         <span>Количество товаров: <span className={styles.finalPrice}>{basketCount}</span></span>
                         <Button 
                             addStyles={styles.button}

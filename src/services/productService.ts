@@ -5,10 +5,6 @@ class productService {
     async getProducts(limit?: number, page?:number, types?: string) {
         const {data} =  await instance.get<{count: number, rows: IProduct[] }>
             (`/products?limit=${limit || 9999}&page=${page || 1}&type=${types || ''}`)
-        console.log(data)
-        // return data.rows.map(elem => {
-        //     return {...elem, info: JSON.parse(elem.info)}
-        // });
         return data
     }
 

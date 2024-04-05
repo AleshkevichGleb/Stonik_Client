@@ -8,7 +8,6 @@ import ProductFunctional from "./ProductFunctional/ProductFunctional.tsx";
 import Slider from "../../components/Slider/Slider.tsx";
 import Title from "../../common/Title/Title.tsx";
 import BackLink from "../../common/BackLink/BackLink.tsx";
-
 const Product: FC = () => {
     const [product, setProduct] = useState<IProduct | null>(null)
     const {id} = useParams();
@@ -24,7 +23,6 @@ const Product: FC = () => {
         setMainImage({src: src, alt: alt});
     }
     const getProduct = async() => {
-        console.log(id)
         const data = await productService.getOne(id as string);
         if(data) {
             setProduct(data);
@@ -39,6 +37,7 @@ const Product: FC = () => {
         getProduct();
     }, []);
 
+    console.log(product?.images)
     return (
         <div className={styles.product__container}>
             <BackLink title='Назад'/>
@@ -51,15 +50,18 @@ const Product: FC = () => {
                         <img className={styles.bigImage} src={mainImage.src} alt={mainImage.alt} />
                     </div>
                     <Slider addStyles={{dots: styles.addStyleDots, dot: styles.addStyleDot, toShow: toShowSlides, addSlider: styles.slider}}>
-                        {product?.images.map(image =>
-                            <img
-                                onClick={handleImage}
-                                className={styles.slider__image}
-                                key = {image}
-                                src={image}
-                                alt=""
-                            />
-                        )}
+                        {
+                            product &&
+                            product?.images.map(image =>
+                                    <img
+                                        onClick={handleImage}
+                                        className={styles.slider__image}
+                                        key = {image}
+                                        src={image}
+                                        alt={product?.name}
+                                    />
+                            )
+                        }
                     </Slider>
                 </div>
                 {product && <ProductFunctional product = {product}/>}

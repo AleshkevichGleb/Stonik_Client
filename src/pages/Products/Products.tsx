@@ -6,21 +6,20 @@ import ProductService from "../../services/productService.ts";
 import ProductItem from "../../components/ProductItem/ProductItem.tsx";
 
 const Products: FC = () => {
-    const [prod, setProd] = useState<IProduct[]>([]);
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const fetchProducts = async() => {
+        setIsLoading(true);
         const products = await ProductService.getProducts(999,1,'');
-        setProd(products.rows)
+        setProducts(products.rows)
+        setIsLoading(false);
     }
 
 
     useEffect(() => {
         fetchProducts();
-        
     }, []);
-    // console.log(prod);
-    console.log(prod);
 
-    
 
     return (
         <div className={styles.products}>
@@ -53,8 +52,10 @@ const Products: FC = () => {
                     </div>
                     <div className={styles.products__block}>
                         {
-                            prod.map(pr =>
-                                <ProductItem key = {pr.id} product={pr}/>
+                           isLoading
+                            ? <h2>Loading</h2>
+                            : products.map(pr =>
+                               <ProductItem key = {pr.id} product={pr}/>
                             )
                         }
                         {/*<Filter filter= {filter} setFilter = {setFilter} dispatch = {dispatch}/>*/}

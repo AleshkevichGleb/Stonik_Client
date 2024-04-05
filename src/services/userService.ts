@@ -48,8 +48,8 @@ class UserService {
 
     async getProfile() {
         try {
-            const response = await instance.get('/user/profile');
-            return response;
+            const {data} = await instance.get('/user/profile');
+            return data;
         } catch (e) {
             console.log(e)
             return e

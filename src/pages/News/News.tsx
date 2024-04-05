@@ -1,20 +1,11 @@
-    import axios from 'axios';
-import { FC, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { FC, useEffect, useRef } from 'react';
 
 
     const News: FC = () => {
 
-        const [state, setstate] = useState<any>({
-            name: '',
-            description: '',
-            price: '',
-            info: '',
-        });
-
         const ref = useRef<HTMLInputElement | null>(null);
         const ref2 = useRef<HTMLInputElement | null>(null);
-        const isSale = false;
-
         const addProduct = async() => {
 
 
@@ -22,10 +13,10 @@ import { FC, useEffect, useRef, useState } from 'react';
             formData.append('name', 'vaza3');
             formData.append('description', 'sdfsdf');
             formData.append('price', '32.2');
-            formData.append('type', 'worktop')
-            formData.append('info', JSON.stringify([{ title: "sf", text: "sf" }]));
+            formData.append('type', 'shell')
+            formData.append('info', JSON.stringify([{ title: "Тип камня", text: "600x2000, 700x2000, 800x2000, 900x2000 мм" }, {title: "Изделие", text: "38 мм"},{title: 'Месторождение', text: "Возможно изготовление нестандартных размеров (с удорожанием)"}]));
 
-            formData.append('isSale', 'false');
+            formData.append('isSale', 'true');
             formData.append('salePrice', '30');
             formData.append('amount', '300');
 

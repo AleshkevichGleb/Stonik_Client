@@ -1,56 +1,91 @@
 import plusImage from "../../assets/images/plus.svg";
-// import { calc_cart_count } from "../../reducers/fullCartCount.slice";
-// import { decrease_price, increase_price } from "../../reducers/productsSlice";
-import { FC, MouseEvent } from "react";
+import minusImage from "../../assets/images/minus.svg";
+import {FC, MouseEvent, useEffect, useState} from "react";
 import Button from "../Button/Button";
 import styles from "./ToCartButtons.module.scss";
 import {IProduct} from "../../types/types.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/useReduceer.ts";
+import {deleteProduct, IBasketProduct} from "../../store/slices/basket.slice.ts";
+import {addProduct} from "../../store/slices/basket.slice.ts";
+import BasketService from "../../services/basketService.ts";
+import {AxiosError} from "axios";
+import {toast} from "react-toastify";
 
+interface ICahngeCountData  {
+    existingProduct: any,
+}
 interface ToCartButtonsProps {
-    product: IProduct,
+    product: IProduct | undefined,
     addStyles: any,
+    flag?: boolean
 }
 
-const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles}) => {
-    console.log(product)
-    const increasePrice = (e: MouseEvent<HTMLButtonElement>) => {
-        // const {id} = e.target;
-        // dispatch(increase_price({id: id}));
-        // dispatch(calc_cart_count());
+const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
+    const { products} = useAppSelector(state => state.basket);
+
+    const [basketProduct, setBasketProduct] = useState<IBasketProduct | undefined>(undefined)
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        if(product) {
+            const productData = products.find(prod => +prod.product.id === +product?.id)
+            if(productData) setBasketProduct(productData);
+        }
+    }, []);
+    const increasePrice = async(e: MouseEvent<HTMLButtonElement>) => {
+        const {id} = e.currentTarget;
+        const data = await BasketService.changeCount(id, 1);
+
+        if(data instanceof AxiosError) {
+            return toast.error(data.response?.data.message)
+        }
+
+
+        if(product) dispatch(addProduct(product))
+        setBasketProduct({product: {...product}, count: data.existingProduct.count} as IBasketProduct)
     }
 
-    const decreasePrice = (e: MouseEvent<HTMLButtonElement>) => {
-        // const {id} = e.target;
-        // dispatch(decrease_price({id: id}));
-        // dispatch(calc_cart_count());
+
+    const decreasePrice = async (e: MouseEvent<HTMLButtonElement>) => {
+        const {id} = e.currentTarget;
+        const data:ICahngeCountData= await BasketService.changeCount(id, -1);
+
+        if(data instanceof AxiosError) {
+            return toast.error(data.response?.data.message)
+
+        }
+        if(product) dispatch(deleteProduct(product))
+
+        if(data.existingProduct) setBasketProduct({...basketProduct, count: data.existingProduct.count} as IBasketProduct)
+        else setBasketProduct({...basketProduct, count: 0} as IBasketProduct)
+
     }
 
     return (
-        product.amount > 0
+        (basketProduct && basketProduct?.count > 0)
         ?   <div className={styles.buttonsContainer}>
-                <span className={addStyles.count}>{product.amount}</span>
+                <span className={addStyles.count}>{basketProduct.count}</span>
                 <Button 
                     id = {product?.id.toString()}
                     onClick={decreasePrice} 
                     addStyles={addStyles.button}
                 >
-                    —
+                    <img src={minusImage} alt="minus"/>
                 </Button>
-                {/*{flag */}
-                {/*?   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(product.cartCount)}</span>*/}
-                {/*:   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(product.cartPrice).toLocaleString()} ₽</span>*/}
-                {/*}*/}
+                {flag
+                ?   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(basketProduct.count)}</span>
+                :   <span className={`${styles.cartPrice} ${addStyles.price}`}>{(+basketProduct?.product?.price * +basketProduct.count).toLocaleString()} BYN</span>
+                }
                 <Button 
-                    id = {product.id.toString()}
+                    id = {product?.id.toString()}
                     onClick={increasePrice} 
                     addStyles={addStyles.button}
                 >
-                    <img id = {product.id.toString()} className={styles.plusImage} src={plusImage} alt="" />
+                    <img src={plusImage} alt="" />
                 </Button>
             </div>
         :   <Button 
                 onClick={increasePrice} 
-                id = {product.id.toString()}
+                id = {product?.id.toString()}
                 addStyles={`${addStyles.bigButton} ${styles.button}` }
             >
                 В корзину

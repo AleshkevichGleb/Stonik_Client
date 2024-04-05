@@ -9,7 +9,10 @@ import {resetUser, setUser} from "../../store/slices/user.slice.ts";
 import {toast} from "react-toastify";
 import Button from "../../common/Button/Button.tsx";
 import {useNavigate} from "react-router-dom";
-import {removeTokenFromLocaleStorage} from "../../helpers/localStorageHelper.ts";
+import {
+    removeTokenFromLocaleStorage,
+    setTokenToLocaleStorage
+} from "../../helpers/localStorageHelper.ts";
 const Profile: FC = () => {
     const {user, isAuth} = useAppSelector(state => state.user);
     const [editUser, setEditUser] = useState<IRegistrationUser>({...user});
@@ -19,11 +22,7 @@ const Profile: FC = () => {
     useEffect(() => {
         if(!isAuth) navigate('/auth')
     }, [dispatch]);
-    // console.log()
-    // const getP = async() => {
-    //     const data = await userService.getProfile();
-    //     dispatch(setUser(data));
-    // }
+
     const isCompareUserData = useMemo(() =>
         JSON.stringify({name: user.name, email: user.email, surname: user.surname, city: user.city })
             === JSON.stringify({name: editUser.name, email: editUser.email, surname: editUser.surname, city: editUser.city }),
@@ -34,16 +33,15 @@ const Profile: FC = () => {
         setEditUser({...editUser, [id]: value})
     }
 
-
-
     const sendEditUser = async() => {
         try {
-            await userService.update({
+            const data = await userService.update({
                 email: editUser.email,
                 city: editUser.city,
                 name: editUser.name,
                 surname: editUser.surname,
-            }, user.id as string);
+            }, String(user.id));
+            setTokenToLocaleStorage('token',data.token);
 
             dispatch(setUser({...editUser, image: user.image}));
 
@@ -60,11 +58,10 @@ const Profile: FC = () => {
         }
 
         const data = await userService.updateAvatar(formData, user.id);
-        console.log(data)
-        dispatch(setUser(data))
+        setTokenToLocaleStorage('token',data.token);
+        dispatch(setUser(data.user))
     }
     const ref = useRef<HTMLInputElement | null>(null);
-
 
     return (
         <div className={styles.container}>

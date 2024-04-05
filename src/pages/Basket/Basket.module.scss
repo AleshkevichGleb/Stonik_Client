@@ -19,8 +19,8 @@
     justify-content: space-between;
     width: 100%;
     margin: 0 auto;
-    background: linear-gradient(90deg, #ede7e7 0%, #fcfafa 100%);
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    background: linear-gradient(90deg, #ececec 0%, #f1ebeb 100%);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
     align-items: center;
     height: 180px;
 }
@@ -34,6 +34,7 @@
 
 .produt__image {
     height: 100%;
+    width: 300px;
 }
 
 .product__textInfo {
@@ -113,11 +114,11 @@
     padding: 20px 10px;
     justify-content: center;
     align-items: center;
-    width: 320px;
+    min-width: 320px;
     min-height: 60px;
     font-size: 20px;
-    background: linear-gradient(90deg, #d6d4d4 0%, #e1dcdc 100%);
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    background: linear-gradient(90deg, #ececec 0%, #f1ebeb 100%);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 
 .finalPrice {
