@@ -32,6 +32,8 @@ const initialState: IInitialState = {
         city: '',
         role: '',
         image: '',
+        createdAt: '',
+        updatedAt: '',
     },
     error: null,
     isLoading: false,
@@ -60,6 +62,8 @@ const userSlice = createSlice({
                 city: '',
                 role: '',
                 image: '',
+                createdAt: '',
+                updatedAt: ''
             }
 
             state.isAuth = false;

@@ -1,8 +1,8 @@
-import {ChangeEvent, FC, useEffect, useState} from 'react';
-import {useAppSelector} from "../../hooks/useReduceer.ts";
+import {ChangeEvent, FC, useEffect, useState, MouseEvent} from 'react';
+import {useAppDispatch, useAppSelector} from "../../hooks/useReduceer.ts";
 import {useValidate} from "../../hooks/useValidate.ts";
-import {IPersonData} from "../../types/types.ts";
 import {createPortal} from "react-dom";
+import { TPersonDataField} from "../../types/types.ts";
 import CheckDataPopUp from "./CheckDataPopUp/CheckDataPopUp.tsx";
 import errorSendDataImg from "../../assets/images/errorSendData.png";
 import sendDataImg from "../../assets/images/errorSendData.png";
@@ -11,38 +11,30 @@ import MyInput from "../../common/Input/MyInput.tsx";
 import FormBlock from "./FormBlock/FormBlock.tsx";
 import Button from "../../common/Button/Button.tsx";
 import {Link} from "react-router-dom";
+import {check_person_data, setPerson, setPersonValue} from "../../store/slices/person.slice.ts";
 const FormComponent: FC = () => {
 
     const {user} = useAppSelector(state => state.user);
-    const [personData, setPersonData] = useState<IPersonData>({
-        name: user.name,
-        email: user.email,
-        city: user.city,
-        street: '',
-        house: '',
-        flat: '',
-        phone: '',
-        payment: {
-            surrender_of_money: '',
-            type: 'card',
-        },
-        agreement: false,
-    })
-
+    const {person : personData} = useAppSelector(state => state.person);
+    const dispatch = useAppDispatch();
     const {validate, error} = useValidate();
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [isShow, setIsShow] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     if(Object.values(user)[0].length && !personData.email){
-    //         for(let key in user) {
-    //             console.log(key, user[key]);
-    //             dispatch(setPersonValue({
-    //                 field: key, value: user[key],
-    //             }))
-    //         }
-    //     }
-    // }, []);
+    const isValidPersonDataField = (key: string): key is TPersonDataField => {
+        return ['name', 'phone', 'email', 'house', 'city', 'street', 'flat', 'agreement'].includes(key);
+    };
+
+
+    useEffect(() => {
+        if (!(Object.values(user)[0].length && !personData.email)) {
+            for (let key in user) {
+                if (isValidPersonDataField(key) && user[key].length) {
+                    dispatch(setPersonValue({ field: key as TPersonDataField, value: user[key]}));
+                }
+            }
+        }
+    }, []);
 
     useEffect(() => {
         const disabled = Object.values(error).find(el => el !== '') ||
@@ -53,23 +45,24 @@ const FormComponent: FC = () => {
         personData.street, personData.house, personData.agreement])
 
     const handlePersonData = (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const {id, value, checked, name, type} = e.currentTarget;
+        const {id, value, checked, name} = e.currentTarget;
+        if(name === 'payment') e.preventDefault();
+
         validate(id, value)
-        // dispatch(setPerson({
-        //     id, value, checked, name, type
-        // }))
+        dispatch(setPerson({
+            id: (id as TPersonDataField), value, checked, name
+        }))
     }
 
-    const sendData = (e) => {
+    const sendData = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setIsShow(true);
-        // if(!isDisabled)  {
-        //     dispatch(check_person_data());
+        if(!isDisabled)  {
+            dispatch(check_person_data());
         //     console.log(personData);
         //     dispatch(clear_basket());
         //     dispatch(calc_cart_count());
-        // }
+        }
     }
 
     return (
@@ -263,6 +256,9 @@ const FormComponent: FC = () => {
                         </div>
                     </FormBlock>
                 </form>
+                <pre>
+                    {JSON.stringify(personData)}
+                </pre>
             </div>
         </>
     )

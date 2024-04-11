@@ -7,7 +7,6 @@ interface SliderProps {
 }
 
 const Slider: FC<PropsWithChildren<SliderProps>> = ({addStyles, children}) => {
-    console.log(children)
     return (
         <div className={styles.slider}>
             <Carousel 

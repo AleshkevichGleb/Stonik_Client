@@ -1,120 +1,81 @@
 .container {
   padding: 50px 0;
   display: flex;
-  flex-direction: column;
-  color: black;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
+  max-width: 1280px;
+  margin: 0 auto;
 
-  .userBlock {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-
-
-    .userImageBlock {
+    .chooseBlock {
       display: flex;
       flex-direction: column;
-      //justify-content: center;
-      gap: 10px;
-      align-items: center;
+      gap: 15px;
+      height: max-content;
 
-
-      .image {
-        width: 250px;
-        height: 250px;
+      .userName {
+        font-weight: 700;
+        padding: 10px 0 0 10px;
       }
-    }
 
-    .userInfo {
-      display: flex;
-      flex-direction: column;
-      width: 50%;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-
-      .userChange {
+      .chooseList {
         display: flex;
-        flex-wrap: wrap;
-        //justify-content: center;
-        //align-items: center;
-        gap: 40px;
+        flex-direction: column;
+
+        .chooseItem {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          height: 100%;
+          padding: 15px 10px;
+          width: 200px;
+          border-left: 1px solid black;
+
+          &:hover {
+            background-color: #d0d0d0;
+            border-left: 3px solid green;
+
+            .text {
+              font-weight: 700;
+            }
+            .redText {
+              font-weight: 700;
+            }
+          }
+
+
+          .text {
+            color: black;
+            font-size: 16px;
+          }
+
+          .redText  {
+            color: red;
+            font-size: 16px;
+          }
+        }
+
+        .chooseItem_active {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          height: 100%;
+          padding: 15px 10px;
+          width: 200px;
+          background-color: #d0d0d0;
+          border-left: 3px solid green;
+
+          .text {
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          }
+
+          .redText  {
+            color: red;
+            font-size: 16px;
+            font-weight: 700;
+          }
+        }
       }
     }
-  }
-}
-
-
-.addStyles {
-  margin-top: 50px !important;
-}
-.inpuStyles {
-  border: none !important;
-  border-bottom: 1px solid #28553F !important;
-  color: #000 !important;
-  border-radius: 0px !important;
-  width: 350px !important;
-
-  &:focus {
-    border-bottom: 1px solid #000 !important;
-  }
-
-}
-
-.labelStyles {
-  color: #000 !important;
-}
-
-.buttonStyles {
-  padding: 10px 20px;
-}
-
-.button {
-  background-color: #28553F;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 19px;
-  font-weight: 500;
-  font-family: 'Raleway', sans-serif;
-  transition: .2s linear;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 10px;
-
-  &:disabled {
-    background-color: #414141;
-  }
-
-  &:disabled:active {
-    transform: none;
-  }
-
-  &:disabled:hover{
-    box-shadow: none;
-  }
-
-}
-
-.button:hover {
-  box-shadow: 0px 0px 25px #28553F;
-}
-
-.button:active {
-  transform: scale(.95);
-}
-
-.logoutButton {
-  background-color: red;
-  padding: 10px 20px;
-
-  &:hover {
-    box-shadow: 0px 0px 25px red;
-  }
 }

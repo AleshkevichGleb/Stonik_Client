@@ -51,7 +51,7 @@ class UserService {
             const {data} = await instance.get('/user/profile');
             return data;
         } catch (e) {
-            console.log(e)
+            // console.log(e)
             return e
         }
     }

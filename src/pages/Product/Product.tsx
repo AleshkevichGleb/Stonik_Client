@@ -33,11 +33,12 @@ const Product: FC = () => {
         }
     }
 
+    console.log(product)
+
     useEffect(() => {
         getProduct();
     }, []);
 
-    console.log(product?.images)
     return (
         <div className={styles.product__container}>
             <BackLink title='Назад'/>

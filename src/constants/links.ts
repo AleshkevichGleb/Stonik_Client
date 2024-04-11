@@ -15,6 +15,7 @@ import Product from "../pages/Product/Product";
 import Products from "../pages/Products/Products";
 import Profile from "../pages/Profile/Profile";
 import { IFooterImages, INavLinks, IRoutes } from "../types/types";
+import Settings from "../components/Settings/Settings.tsx";
 
 export const footerImages: IFooterImages[] = [
     { id: 1, img: facebook, url: "https://ru-ru.facebook.com/", },
@@ -41,6 +42,9 @@ export const routes: IRoutes[] = [
     { path: "/data", element: ControlData },
     { path: "/news", element: News },
     { path: "/auth", element: AuthPage },
-    { path: "/profile", element: Profile },
+    { path: "/profile", element: Profile, children: [
+            {path: 'settings', element: Settings}
+        ]
+    },
     { path: "*", element: ErrorPage },
 ];

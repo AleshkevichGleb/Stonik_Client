@@ -24,12 +24,12 @@ const ProductItem: FC<ProductItemProps> = ({product}) => {
             <div className={styles.product__priceContainer}>
 
                 <span className={styles.product__price}>
-                    {product.price.toLocaleString()} ₽
+                    {product.price.toLocaleString()} BYN
                 </span>
                 {
                     product.isSale &&
                     <span className={styles.product__beforePrice}>
-                        {(Number(product.price) + Number(product.salePrice)).toLocaleString()} ₽
+                        {(Number(product.price) + Number(product.salePrice)).toLocaleString()} BYN
                     </span>
                 }
             </div>

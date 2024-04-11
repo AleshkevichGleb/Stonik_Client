@@ -12,9 +12,14 @@ export interface IFooterImages {
     url: string;
 }
 
+interface IRouteChildren {
+    path: string,
+    element: FC,
+}
 export interface IRoutes {
     path: string,
     element: FC,
+    children?: IRouteChildren[],
 }
 
 export interface ILoginUser {
@@ -29,6 +34,8 @@ export interface IRegistrationUser extends ILoginUser {
     city: '',
     role: 'User' | 'Admin' | '',
     image: string,
+    createdAt: string,
+    updatedAt: string,
 }
 
 export interface IProduct {
@@ -88,3 +95,5 @@ export interface IErrorValidatePersonDate {
     house: string,
     flat: string,
 }
+
+export type TPersonDataField = 'name' | 'phone' | 'phone' | 'email' | 'house'| 'city' | 'street' | 'house' | 'flat' | 'agreement'

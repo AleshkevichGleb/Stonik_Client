@@ -1,7 +1,7 @@
 .prewiew {
     margin-bottom: 50px;
     width: 100%;
-    height: 100vh;
+    height:calc(100vh - 80px);
     background-image: url("../../assets/images/home-bcImage.png");
     background-size: cover;
     background-repeat: no-repeat;
@@ -95,8 +95,8 @@
 }
 
 .image {
-    width: 1000px;
-    height: 600px;
+    width: 950px;
+    height: 500px;
     background-size: cover;
     background-repeat: no-repeat;
     background-clip: border-box;

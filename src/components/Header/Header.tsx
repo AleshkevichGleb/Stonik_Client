@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import ProfileImage from "../../assets/images/Profile.svg";
 import Logo from "../../common/Logo/Logo";
 import { navLinks } from "../../constants/links";
 import BasketCount from "./BaketCount/BasketCount";
 import styles from "./Header.module.scss";
 import Menu from "./Menu/Menu";
 import {useAppSelector} from "../../hooks/useReduceer.ts";
+import ProfileImage from "../../assets/images/ProfileImage.tsx";
 
 
 const Header = () => {
@@ -39,7 +39,7 @@ const Header = () => {
                     </nav>
                 </div>
                 <Link to = {isAuth ? '/profile' : '/auth'} className={styles.profile__block}>
-                    <img src={ProfileImage} alt="ProfileImage" />
+                    <ProfileImage color={'white'}/>
                     {!isAuth
                         ? <span className={styles.profile__text}>Войти</span>
                         : <span className={styles.profile__text}>Аккаунт</span>

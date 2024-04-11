@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+
+  .user {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+
+      .user__title {
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .user__text {
+        font-size: 18px;
+      }
+    }
+  }
+}
