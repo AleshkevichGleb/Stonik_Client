@@ -1,7 +1,7 @@
 import {FC, useEffect} from 'react';
 import styles from "./AuthPage.module.scss";
 import Auth from '../../components/Auth/Auth';
-import {useAppSelector} from "../../hooks/useReduceer.ts";
+import {useAppSelector} from "../../hooks/useReducer.ts";
 import {useNavigate} from "react-router-dom";
 
 const AuthPage: FC = () => {

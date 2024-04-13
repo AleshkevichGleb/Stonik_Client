@@ -4,14 +4,13 @@ import Button from "../../common/Button/Button";
 import ToCartButtons from "../../common/ToCartButtons/ToCartButtons";
 import styles from "./Basket.module.scss";
 import EmptyBasket from "./EmptyBasket/EmptyBasket";
-import {useAppDispatch, useAppSelector} from "../../hooks/useReduceer.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
 import {removeFromBasket} from "../../store/slices/basket.slice.ts";
 import basketService from "../../services/basketService.ts";
 import crossImage from "../../assets/images/cross.svg";
 
 
 const Basket = () => {
-    // const {products} = useSelector(state => state.products);
     const { products,basketPrice } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -29,7 +28,6 @@ const Basket = () => {
         const data = await basketService.changeCount(id, -99999)
         console.log(data)
         dispatch(removeFromBasket(id))
-
     }
 
     

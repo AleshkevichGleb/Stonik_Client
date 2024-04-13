@@ -1,7 +1,16 @@
-import axios from "axios";
+import axios, {AxiosInstance} from "axios";
 import {getTokenFromLocaleStorage} from "../helpers/localStorageHelper.ts";
 
-export const instance = axios.create({
+export const instance: AxiosInstance = axios.create({
     baseURL: process.env.HOST_URL,
-    headers: {Authorization: 'Bearer ' + getTokenFromLocaleStorage()}
-})
+});
+
+instance.interceptors.request.use(config => {
+    const token = getTokenFromLocaleStorage();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+}, error => {
+    return Promise.reject(error);
+});

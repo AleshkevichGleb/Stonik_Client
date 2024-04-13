@@ -28,6 +28,11 @@ class BasketService {
         }
     }
 
+    async sendOrder() {
+        const response  = await instance.delete('/basket')
+        return response;
+    }
+
 }
 
 export default new BasketService();

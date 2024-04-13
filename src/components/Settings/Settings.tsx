@@ -1,4 +1,4 @@
-import {useAppDispatch, useAppSelector} from "../../hooks/useReduceer.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
 import {ChangeEvent, useMemo, useRef, useState} from "react";
 import {IRegistrationUser} from "../../types/types.ts";
 import userService from "../../services/userService.ts";

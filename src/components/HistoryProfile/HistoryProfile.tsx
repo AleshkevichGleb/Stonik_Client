@@ -2,19 +2,44 @@ import styles from "./HistoryProfile.module.scss"
 import orderService from "../../services/orderService.ts";
 import {ChangeEvent, useEffect, useState} from "react";
 import {AxiosError} from "axios";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
+import Loader from "../../assets/images/loader-icon.svg";
+import {IOrder, IProduct, OrderStatusTypes} from "../../types/types.ts";
+import ReviewModal from "../ReviewModal/ReviewModal.tsx";
+
+const getStatusClassName = (status: OrderStatusTypes) => {
+    switch (status) {
+        case 'В обработке':
+            return styles.processing;
+        case 'В пути':
+            return styles.inTransit;
+        case 'Доставлено':
+            return styles.delivered;
+        default:
+            return '';
+    }
+};
+
 const HistoryProfile = () => {
-    const [history, setHistory] = useState<any[]>([]);
+    const [history, setHistory] = useState<IOrder[]>([]);
     const [page, setPage] = useState(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const navigate = useNavigate();
-    const getHistory = async() => {
-        const response = await orderService.getOrders();
-        if(response instanceof AxiosError) {
-            console.log(response)
+    const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
+    const [modalProduct, setModalProduct] = useState<IProduct | null>(null);
+    const getHistory = async(): Promise<void> => {
+        try {
+            setIsLoading(true);
+            const response = await orderService.getOrders();
+            if(response instanceof AxiosError) {
+                console.log(response)
+            }
+            setHistory(response?.data);
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setIsLoading(false);
         }
-        setHistory(response?.data);
     }
 
     useEffect(() => {
@@ -30,28 +55,67 @@ const HistoryProfile = () => {
         setPage(0);
     };
 
+    if(isLoading) {
+        return (
+            <div className={styles.loaderContaienr}>
+                <img width = {250} src={Loader} alt=""/>
+            </div>
+        )
+    }
     return (
         <div className={styles.container}>
+            {
+                isActiveModal && <ReviewModal
+                    setIsActiveModal={setIsActiveModal}
+                    isActiveModal={isActiveModal}
+                    product={modalProduct}
+                />
+            }
             {history.length > 0 ? (
                         <TableContainer>
-                            <Table>
+                            <Table className = {styles.table}>
                                 <TableHead>
-                                    <TableRow>
-                                        <TableCell>Название</TableCell>
-                                        <TableCell>Изображение</TableCell>
-                                        <TableCell>Количество</TableCell>
-                                        <TableCell>Статус</TableCell>
-                                        <TableCell>Дата</TableCell>
+                                    <TableRow className={styles.tableRow}>
+                                        <TableCell><div className = {styles.TableCell}>Название</div></TableCell>
+                                        {/*<TableCell><div className = {styles.TableCell}>Изображение</div></TableCell>*/}
+                                        <TableCell><div className = {styles.TableCell}>Количество</div></TableCell>
+                                        <TableCell><div className = {styles.TableCell}>Цена</div></TableCell>
+                                        <TableCell><div className = {styles.TableCell}>Статус</div></TableCell>
+                                        <TableCell><div className = {styles.TableCell}>Дата заказа</div></TableCell>
+                                        <TableCell></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order) => (
                                         <TableRow key={order.id}>
-                                            <TableCell>{order.product.name}</TableCell>
-                                            <TableCell><img onClick={() => navigate(`/products/${order.productId}`)} width  = {200}  src={order.product.images[0]} alt=""/></TableCell>
-                                            <TableCell>{order.count}</TableCell>
-                                            <TableCell>{order.status}</TableCell>
-                                            <TableCell>{order.createdAt}</TableCell>
+                                            <TableCell><div className = {styles.TableCell}>{order.product.name}</div></TableCell>
+                                            {/*<TableCell>*/}
+                                            {/*    <div>*/}
+                                            {/*        <img onClick={() => navigate(`/products/${order.productId}`)} width  = {200}  src={order.product.images[0]} alt=""/>*/}
+                                            {/*    </div>*/}
+                                            {/*</TableCell>*/}
+                                            <TableCell><div className = {styles.TableCell}>{order.count}</div></TableCell>
+                                            <TableCell><div className = {styles.TableCell}>{(order.count * order.product.price).toFixed(1)}р.</div></TableCell>
+                                            <TableCell>
+                                                <div className = {styles.TableCell}>
+                                                    <span className = {getStatusClassName(order.status)}>
+                                                        {order.status}
+                                                    </span>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell><div className = {styles.TableCell}>{new Date(order.createdAt).toLocaleString()}</div></TableCell>
+                                            {
+                                                order.status === 'Доставлено' ?
+                                                <TableCell>
+                                                    <Button onClick = {() => {
+                                                        setModalProduct(order.product)
+                                                        setIsActiveModal(true)
+                                                    }}>
+                                                        Оставить отзыв
+                                                    </Button>
+                                                </TableCell> :
+                                                    <TableCell></TableCell>
+                                            }
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -67,7 +131,9 @@ const HistoryProfile = () => {
                         />
                         </TableContainer>
             ) : (
-                <h2>No history available</h2>
+                <div className={styles.loaderContaienr}>
+                    <h2>Ваша истоирия пуста</h2>
+                </div>
             )}
         </div>
     );

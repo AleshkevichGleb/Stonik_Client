@@ -1,4 +1,4 @@
-import {useAppSelector} from "../../hooks/useReduceer.ts";
+import {useAppSelector} from "../../hooks/useReducer.ts";
 import styles from "./PersonalAccountProfile.module.scss"
 const PersonalAccountProfile = () => {
     const {user} = useAppSelector(state => state.user);
@@ -27,8 +27,8 @@ const PersonalAccountProfile = () => {
                     <span className={styles.user__text}>{date}</span>
                 </div>
             </div>
-            <div>
-                <img src={user.image} alt=""/>
+            <div className = {styles.imageBlock}>
+                <img className = {styles.image} src={user.image} alt=""/>
             </div>
         </div>
     )

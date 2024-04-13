@@ -4,7 +4,7 @@ import {FC, MouseEvent, useEffect, useState} from "react";
 import Button from "../Button/Button";
 import styles from "./ToCartButtons.module.scss";
 import {IProduct} from "../../types/types.ts";
-import {useAppDispatch, useAppSelector} from "../../hooks/useReduceer.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
 import {deleteProduct, IBasketProduct} from "../../store/slices/basket.slice.ts";
 import {addProduct} from "../../store/slices/basket.slice.ts";
 import BasketService from "../../services/basketService.ts";
@@ -59,7 +59,7 @@ const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
         else setBasketProduct({...basketProduct, count: 0} as IBasketProduct)
 
     }
-
+    console.log(product)
     return (
         (basketProduct && basketProduct?.count > 0)
         ?   <div className={styles.buttonsContainer}>

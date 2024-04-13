@@ -19,10 +19,11 @@
     justify-content: space-between;
     width: 100%;
     margin: 0 auto;
-    background: linear-gradient(90deg, #ececec 0%, #f1ebeb 100%);
+    background: linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
     align-items: center;
     height: 180px;
+    border: 1px solid #dadada;
 }
 
 .product__textBlock {

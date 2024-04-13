@@ -14,6 +14,7 @@ import Settings from "./components/Settings/Settings.tsx";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.tsx";
 import PersonalAccountProfile from "./components/PersonalAccountProfile/PersonalAccountProfile.tsx";
 import HistoryProfile from "./components/HistoryProfile/HistoryProfile.tsx";
+import ReviewsProfile from "./components/ReviewsProfile/ReviewsProfile.tsx";
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
                     { path: "settings", element: <Settings /> },
                     { path: "account", element: <PersonalAccountProfile /> },
                     { path: "history", element: <HistoryProfile /> },
+                    { path: "reviews", element: <ReviewsProfile /> },
                 ],
             },
             {

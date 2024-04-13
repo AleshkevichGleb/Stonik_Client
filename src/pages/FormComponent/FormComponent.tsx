@@ -1,17 +1,20 @@
 import {ChangeEvent, FC, useEffect, useState, MouseEvent} from 'react';
-import {useAppDispatch, useAppSelector} from "../../hooks/useReduceer.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
 import {useValidate} from "../../hooks/useValidate.ts";
 import {createPortal} from "react-dom";
 import { TPersonDataField} from "../../types/types.ts";
 import CheckDataPopUp from "./CheckDataPopUp/CheckDataPopUp.tsx";
 import errorSendDataImg from "../../assets/images/errorSendData.png";
-import sendDataImg from "../../assets/images/errorSendData.png";
+import sendDataImg from "../../assets/images/sendData.svg";
 import styles from "./FormComponent.module.scss"
 import MyInput from "../../common/Input/MyInput.tsx";
 import FormBlock from "./FormBlock/FormBlock.tsx";
 import Button from "../../common/Button/Button.tsx";
 import {Link} from "react-router-dom";
-import {check_person_data, setPerson, setPersonValue} from "../../store/slices/person.slice.ts";
+import {setPerson, setPersonValue} from "../../store/slices/person.slice.ts";
+import basketService from "../../services/basketService.ts";
+import {AxiosError} from "axios";
+import {clearBasket} from "../../store/slices/basket.slice.ts";
 const FormComponent: FC = () => {
 
     const {user} = useAppSelector(state => state.user);
@@ -20,6 +23,7 @@ const FormComponent: FC = () => {
     const {validate, error} = useValidate();
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [isShow, setIsShow] = useState<boolean>(false);
+    const [errorSend, setErrorSend] = useState<string>('');
 
     const isValidPersonDataField = (key: string): key is TPersonDataField => {
         return ['name', 'phone', 'email', 'house', 'city', 'street', 'flat', 'agreement'].includes(key);
@@ -54,15 +58,20 @@ const FormComponent: FC = () => {
         }))
     }
 
-    const sendData = (e: MouseEvent<HTMLButtonElement>) => {
+    const sendData = async(e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setIsShow(true);
-        if(!isDisabled)  {
-            dispatch(check_person_data());
-        //     console.log(personData);
-        //     dispatch(clear_basket());
-        //     dispatch(calc_cart_count());
+        try {
+            const data = await basketService.sendOrder();
+            dispatch(clearBasket());
+        } catch (e) {
+            if(e instanceof AxiosError) {
+                setErrorSend(e.response?.data.message)
+            }
+        } finally {
+            setIsShow(true);
         }
+
+        console.log(errorSend)
     }
 
     return (
@@ -80,9 +89,9 @@ const FormComponent: FC = () => {
                         : <CheckDataPopUp
                             isDisabled={isDisabled}
                             setIsShow={setIsShow}
-                            img = {sendDataImg}
-                            title = 'Ожидайте'
-                            text = 'Ваш заказ отправлен на обработу'
+                            img = {errorSend.length ? errorSendDataImg : sendDataImg}
+                            title = {errorSend.length ? 'Ошибка' : 'Ожидайте'}
+                            text = {errorSend.length ? errorSend : 'Ваш заказ отправлен на обработу'}
                         />
                     , document.body)
             }

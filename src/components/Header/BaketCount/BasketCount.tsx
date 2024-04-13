@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import styles from "./BasketCount.module.scss";
-import {useAppSelector} from "../../../hooks/useReduceer.ts";
+import {useAppSelector} from "../../../hooks/useReducer.ts";
 import BasketImage from "../../../assets/images/BasketImage.tsx";
 
 interface BasketCountProps {

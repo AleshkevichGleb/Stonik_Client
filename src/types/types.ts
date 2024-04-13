@@ -97,3 +97,16 @@ export interface IErrorValidatePersonDate {
 }
 
 export type TPersonDataField = 'name' | 'phone' | 'phone' | 'email' | 'house'| 'city' | 'street' | 'house' | 'flat' | 'agreement'
+
+export type OrderStatusTypes = 'В обработке' | 'В пути' | 'Доставлено'
+
+export interface IOrder {
+    id: number
+    userId: number
+    productId: number
+    count: number
+    status: OrderStatusTypes
+    createdAt: string
+    updatedAt: string
+    product: IProduct
+}

@@ -5,7 +5,7 @@ import { navLinks } from "../../constants/links";
 import BasketCount from "./BaketCount/BasketCount";
 import styles from "./Header.module.scss";
 import Menu from "./Menu/Menu";
-import {useAppSelector} from "../../hooks/useReduceer.ts";
+import {useAppSelector} from "../../hooks/useReducer.ts";
 import ProfileImage from "../../assets/images/ProfileImage.tsx";
 
 
@@ -38,7 +38,7 @@ const Header = () => {
                         )}
                     </nav>
                 </div>
-                <Link to = {isAuth ? '/profile' : '/auth'} className={styles.profile__block}>
+                <Link to = {isAuth ? '/profile/account' : '/auth'} className={styles.profile__block}>
                     <ProfileImage color={'white'}/>
                     {!isAuth
                         ? <span className={styles.profile__text}>Войти</span>

@@ -70,6 +70,11 @@ const basketSlice = createSlice({
             state.basketPrice = state.products.reduce((acc, basketProduct) => {
                 return  acc + +basketProduct.count * +basketProduct.product.price;
             }, 0);
+        },
+
+        clearBasket: (state) => {
+            state.products = [];
+            state.basketPrice = 0;
         }
 
 
@@ -79,6 +84,7 @@ const basketSlice = createSlice({
 export const {addProduct,
               setBasket,
               deleteProduct,
-              removeFromBasket
+              removeFromBasket,
+              clearBasket
 } = basketSlice.actions;
 export default basketSlice.reducer;

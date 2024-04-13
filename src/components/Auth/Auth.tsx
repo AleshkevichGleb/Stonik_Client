@@ -1,5 +1,3 @@
-
-import { jwtDecode } from 'jwt-decode';
 import {ChangeEvent, FC, useState} from 'react';
 import 'react-phone-input-2/lib/style.css';
 import { toast } from 'react-toastify';
@@ -7,8 +5,11 @@ import userService from '../../services/userService';
 import {IRegistrationUser } from '../../types/types';
 import styles from "./Auth.module.scss";
 import {setUser as setUserRedux, setAuth} from "../../store/slices/user.slice.ts";
-import {useAppDispatch} from "../../hooks/useReduceer.ts";
+import {useAppDispatch} from "../../hooks/useReducer.ts";
 import {useNavigate} from "react-router-dom";
+import {AxiosError} from "axios";
+import BasketService from "../../services/basketService.ts";
+import {setBasket} from "../../store/slices/basket.slice.ts";
 
 const Auth: FC = () => {
     const navigate = useNavigate();
@@ -23,6 +24,8 @@ const Auth: FC = () => {
         city: '',
         role: 'User',
         image: '',
+        createdAt: '',
+        updatedAt: ''
     });
 
     const [isRegistration, setIsRegistration] = useState<boolean>(false);
@@ -36,24 +39,17 @@ const Auth: FC = () => {
         if(isRegistration) {
             try {
                 setisDisabled(true)
-                const data = await userService.registration(user);
-                console.log(data.token);
+                await userService.registration(user);
+                const userData = await userService.getProfile();
+                if(userData instanceof AxiosError) {
+                    throw new Error('Ошибка полученя профиля')
+                }
 
-                const decodedUser: IRegistrationUser = jwtDecode(data.token);
-                if(decodedUser)
-                    dispatch(setUserRedux({
-                        id: decodedUser.id,
-                        email: decodedUser.email || '',
-                        name: decodedUser.name || '',
-                        password: decodedUser.password || '',
-                        surname: decodedUser.surname || '',
-                        city: decodedUser.city || '',
-                        role: decodedUser.role,
-                        image: decodedUser.image || ''
-                    }))
+                if(userData)
+                    dispatch(setUserRedux(userData))
                 dispatch(setAuth(true));
                 toast.success('Пользователь успешно зарегестрирован!')
-                navigate('/profile')
+                navigate('/profile/account')
             } catch(e: any) {
                 toast.error(e.response.data.message);
             } finally {
@@ -63,23 +59,20 @@ const Auth: FC = () => {
         } else {
             try  {
                 setisDisabled(true);
-                const data = await userService.login({email: user.email, password: user.password});
+                await userService.login({email: user.email, password: user.password});
+                const userData = await userService.getProfile();
+                if(userData instanceof AxiosError) {
+                    throw new Error('Ошибка полученя профиля')
+                }
 
-                const decodedUser: IRegistrationUser = jwtDecode(data.token);
-                console.log(decodedUser)
-                if(decodedUser)
-                    dispatch(setUserRedux({
-                        id: decodedUser.id,
-                        email: decodedUser.email || '',
-                        name: decodedUser.name || '',
-                        password: decodedUser.password || '',
-                        surname: decodedUser.surname || '',
-                        city: decodedUser.city || '',
-                        role: decodedUser.role,
-                        image: decodedUser.image || ''
-                    }))
+                if(userData)
+                    dispatch(setUserRedux(userData))
+
+                const basketProducts = await BasketService.getForUser();
+                if(basketProducts.length) dispatch(setBasket(basketProducts));
+
                 dispatch(setAuth(true));
-                navigate('/profile')
+                navigate('/profile/account')
                 toast.success('Вы вошли в аккаунт');
             } catch(e: any) {
                 toast.error(e.response.data.message);   
@@ -167,6 +160,8 @@ const Auth: FC = () => {
                             city: '',
                             role: 'User',
                             image: '',
+                            createdAt: '',
+                            updatedAt: '',
                         })}}
                       style={{cursor: 'pointer'}}>
                     {isRegistration ? ' Войти' : ' Зарегестрироваться'}

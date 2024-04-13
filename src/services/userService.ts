@@ -20,7 +20,7 @@ class UserService {
         })
         // console.log(data);
 
-        setTokenToLocaleStorage('token', data.token);
+         setTokenToLocaleStorage('token', data.token);
         return data;
     }
 
@@ -48,8 +48,9 @@ class UserService {
 
     async getProfile() {
         try {
-            const {data} = await instance.get('/user/profile');
-            return data;
+            const response = await instance.get('/user/profile');
+            console.log(response)
+            return response.data;
         } catch (e) {
             // console.log(e)
             return e

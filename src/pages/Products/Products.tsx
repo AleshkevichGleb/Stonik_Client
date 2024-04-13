@@ -1,13 +1,22 @@
-import { FC, useEffect, useState } from 'react';
+import {ChangeEvent, FC, useEffect, useState} from 'react';
 import Title from '../../common/Title/Title';
 import styles from "./Products.module.scss";
 import {IProduct} from "../../types/types.ts";
 import ProductService from "../../services/productService.ts";
 import ProductItem from "../../components/ProductItem/ProductItem.tsx";
+import {useSearchProducts} from "../../hooks/useSearchProducts.ts";
 
 const Products: FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [searchValue, setSearchValue] = useState<string>('');
+    const searchProfucts = useSearchProducts(products, searchValue);
+    const search = (e: ChangeEvent<HTMLInputElement>) => {
+        const {value} = e.target;
+        setSearchValue(value);
+        console.log(searchProfucts);
+
+    }
     const fetchProducts = async() => {
         setIsLoading(true);
         const products = await ProductService.getProducts(999,1,'');
@@ -34,6 +43,8 @@ const Products: FC = () => {
                              <input
                                 className={styles.searchInput}
                                 placeholder="Поиск"
+                                value = {searchValue}
+                                onChange = {search}
                                 // value = {filter.query}
                                 // onChange={e => setFilter({...filter, query: e.target.value})}
                              />
@@ -54,7 +65,7 @@ const Products: FC = () => {
                         {
                            isLoading
                             ? <h2>Loading</h2>
-                            : products.map(pr =>
+                            : searchProfucts.map(pr =>
                                <ProductItem key = {pr.id} product={pr}/>
                             )
                         }
