@@ -110,3 +110,21 @@ export interface IOrder {
     updatedAt: string
     product: IProduct
 }
+
+export interface IReview {
+    id: number
+    message: string
+    rating: number
+    userId: number
+    productId: number
+    createdAt: string
+    updatedAt: string
+    user: IUserReview
+}
+
+export interface IUserReview {
+    name: string
+    surname: string
+    email: string
+    image: string
+}

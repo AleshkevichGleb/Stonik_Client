@@ -4,9 +4,10 @@ import styles from "./ProductFunctional.module.scss";
 import checkMarkImage from "../../../assets/images/checkMark.svg"
 import ToCartButtons from "../../../common/ToCartButtons/ToCartButtons.tsx";
 import arrowImage from "../../../assets/images/arrow.svg"
+import Rating from '@mui/material/Rating';
 
 interface ProductFunctionalProps {
-    product: IProduct | undefined,
+    product: IProduct | null,
 }
 
 const ProductFunctional: FC<ProductFunctionalProps> = ({product}) => {
@@ -21,6 +22,9 @@ const ProductFunctional: FC<ProductFunctionalProps> = ({product}) => {
                 </div>
                 : <span className={styles.notInStock}>Нету в наличии</span>
             }
+            <div>
+                <Rating name="read-only" value={Number(product?.rating)} precision={0.5} readOnly />
+            </div>
             {product?.isSale
                 ? <div className={styles.priceBlock}>
                     <span className={styles.priceBlock__price}>{(Number(product.price)).toLocaleString()} BYN</span>

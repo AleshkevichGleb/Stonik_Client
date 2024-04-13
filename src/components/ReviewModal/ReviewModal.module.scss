@@ -50,6 +50,10 @@
       }
     }
 
+    .ratingBlock {
+      display: flex;
+      justify-content: center;
+    }
     .textAreaBlock {
       display: flex;
       flex-direction: column;

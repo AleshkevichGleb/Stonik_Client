@@ -1,6 +1,6 @@
 import {FC, useEffect, useState, MouseEvent} from 'react';
 import {useParams} from "react-router-dom";
-import {IProduct} from "../../types/types.ts";
+import {IProduct, IReview} from "../../types/types.ts";
 import productService from "../../services/productService.ts";
 import CheckMark from "../../common/CheckMark/CheckMark.tsx";
 import styles from "./Product.module.scss";
@@ -8,6 +8,7 @@ import ProductFunctional from "./ProductFunctional/ProductFunctional.tsx";
 import Slider from "../../components/Slider/Slider.tsx";
 import Title from "../../common/Title/Title.tsx";
 import BackLink from "../../common/BackLink/BackLink.tsx";
+import reviewService from "../../services/reviewService.ts";
 const Product: FC = () => {
     const [product, setProduct] = useState<IProduct | null>(null)
     const {id} = useParams();
@@ -15,6 +16,7 @@ const Product: FC = () => {
         src: '',
         alt: ''
     });
+    const [reviews, setReviews] = useState<IReview[]>([]);
 
     const width = window.screen.width;
     const toShowSlides = width < 600 ? 4 : 5 ;
@@ -30,11 +32,12 @@ const Product: FC = () => {
                 src: data.images[0],
                 alt: data.name
             })
+
+            const reviews = await reviewService.getReviews(data.id);
+            setReviews(reviews?.data)
         }
+
     }
-
-    console.log(product)
-
     useEffect(() => {
         getProduct();
     }, []);
@@ -65,13 +68,45 @@ const Product: FC = () => {
                         }
                     </Slider>
                 </div>
-                {product && <ProductFunctional product = {product}/>}
+                <ProductFunctional product = {product}/>
             </div>
             <div className={styles.product__description}>
                 <p className={styles.product__description__title}>Описание</p>
                 <div className={styles.line}></div>
                 <span className={styles.product__description__text}>{product?.description}</span>
             </div>
+
+            {
+                reviews.length > 0 &&
+                <div>
+                    <div className={styles.product__description}>
+                        <p className={styles.product__description__title}>Отзывы</p>
+                        <div className={styles.line}></div>
+                        <div>
+                            {reviews.map(review =>
+                                <div>
+                                    <div>
+                                        <div>
+                                            <img width={50} height={50} src={review.user.image} alt=""/>
+                                            <div>
+                                                <span>{review.user.name} {review.user.surname}</span>
+                                                <span>{review.rating}</span>
+                                            </div>
+                                        </div>
+                                        <span>
+                                            {review.message}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>{review.createdAt}</span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            }
+
             <CheckMark/>
         </div>
     )

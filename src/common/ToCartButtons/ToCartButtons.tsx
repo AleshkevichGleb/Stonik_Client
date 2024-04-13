@@ -59,7 +59,7 @@ const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
         else setBasketProduct({...basketProduct, count: 0} as IBasketProduct)
 
     }
-    console.log(product)
+
     return (
         (basketProduct && basketProduct?.count > 0)
         ?   <div className={styles.buttonsContainer}>

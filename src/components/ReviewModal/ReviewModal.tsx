@@ -3,9 +3,11 @@ import styles from "./ReviewModal.module.scss";
 import closeImage from "../../assets/images/cross.svg";
 import {IProduct} from "../../types/types.ts";
 import Button from "../../common/Button/Button.tsx";
-import {Rating} from "@mui/material";
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Rating from '@mui/material/Rating';
+import reviewService from "../../services/reviewService.ts";
+import {AxiosError} from "axios";
+import {toast} from "react-toastify";
+
 interface ReviewModalProps {
     isActiveModal: boolean
     setIsActiveModal: (isActiveModal: boolean) => void
@@ -13,8 +15,10 @@ interface ReviewModalProps {
 }
 
 const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, product}) => {
-
-    const [review, setReview] = useState<string>('');
+    const [review, setReview] = useState<{ratingValue: number, message: string}>({
+        ratingValue: 5,
+        message: ''
+    });
 
     useEffect(() => {
         if(isActiveModal) {
@@ -27,12 +31,22 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
         }
     }, []);
 
+
     const closePopUp = (e: KeyboardEvent) => {
         const keyPressed = e.key;
 
         if(keyPressed === 'Escape') {
             setIsActiveModal(false)
         }
+    }
+
+    const sendReview = async() => {
+        const data = await reviewService.sendReview(review.ratingValue, review.message, (product?.id as number));
+        if(data instanceof AxiosError) {
+            return toast.success('Ошибка, попробуйте позже');
+        }
+
+        setIsActiveModal(false);
     }
 
     return(
@@ -48,16 +62,15 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
                         <span className={styles.product__desc}>{product?.description}</span>
                     </div>
                 </div>
-                <div>
+                <div className = {styles.ratingBlock}>
                     <Rating
-                        name="text-feedback"
-                        // value={value}
-                        readOnly
-                        defaultValue={2}
-                        getLabelText={(value: number) => `${value} Heart${value !== 1 ? 's' : ''}`}
+                        name="customized-5"
+                        value={review.ratingValue} // Значение рейтинга
+                        max={5}
                         precision={0.5}
-                        // icon={<FavoriteIcon fontSize="inherit" />}
-                        // emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                        onChange={(_: any, newValue) => {
+                            setReview({...review, ratingValue: Number(newValue) as number})
+                        }}
                     />
                 </div>
                 <div className={styles.textAreaBlock}>
@@ -72,12 +85,12 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
                         id="story"
                         rows={5}
                         cols={33}
-                        value={review}
-                        onChange={(e) => setReview(e.target.value)}
+                        value={review.message}
+                        onChange={(e) => setReview({...review, message: e.target.value})}
                     >
                     </textarea>
                 </div>
-                <Button addStyles={styles.button}>
+                <Button addStyles={styles.button} onClick={sendReview}>
                     Отправить
                 </Button>
             </div>
