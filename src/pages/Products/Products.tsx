@@ -1,34 +1,47 @@
 import {ChangeEvent, FC, useEffect, useState} from 'react';
 import Title from '../../common/Title/Title';
 import styles from "./Products.module.scss";
-import {IProduct} from "../../types/types.ts";
+import {IFilter, IProduct} from "../../types/types.ts";
 import ProductService from "../../services/productService.ts";
 import ProductItem from "../../components/ProductItem/ProductItem.tsx";
-import {useSearchProducts} from "../../hooks/useSearchProducts.ts";
+import {TSort, useSearchProducts} from "../../hooks/useSearchProducts.ts";
+import MySelect from '../../components/MySelect/MySelect.tsx';
+import Filter from "../../components/Filter/Filter.tsx";
+import Button from "../../common/Button/Button.tsx";
+import scrollToTop from "../../helpers/scrollToTop.ts";
 
 const Products: FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [searchValue, setSearchValue] = useState<string>('');
-    const searchProfucts = useSearchProducts(products, searchValue);
-    const search = (e: ChangeEvent<HTMLInputElement>) => {
-        const {value} = e.target;
-        setSearchValue(value);
-        console.log(searchProfucts);
+    // const [searchValue, setSearchValue] = useState<string>('');
+    const [filter, setFilter] = useState<IFilter>({
+        sort: 'default',
+        searchValue: '',
+        isSale: false,
+    })
+    const searchProducts = useSearchProducts(products, filter.searchValue, filter.sort, filter.isSale);
+    const [pagesArray, setPagesArray] = useState<number[]>([])
+    const [viewsSettings, setViewsSettings] = useState<{limit: number, page: number}>({
+        limit: 9,
+        page: 1,
+    })
 
-    }
+
     const fetchProducts = async() => {
         setIsLoading(true);
-        const products = await ProductService.getProducts(999,1,'');
+        const products = await ProductService.getProducts(viewsSettings.limit,viewsSettings.page,'');
         setProducts(products.rows)
+
+        const arrLength = Math.ceil(products.count / viewsSettings.limit);
+        const pagesArray = Array.from({ length: arrLength }, (_, index) => index + 1)
+        setPagesArray(pagesArray)
+
         setIsLoading(false);
     }
 
-
     useEffect(() => {
         fetchProducts();
-    }, []);
-
+    }, [viewsSettings]);
 
     return (
         <div className={styles.products}>
@@ -43,33 +56,49 @@ const Products: FC = () => {
                              <input
                                 className={styles.searchInput}
                                 placeholder="Поиск"
-                                value = {searchValue}
-                                onChange = {search}
-                                // value = {filter.query}
-                                // onChange={e => setFilter({...filter, query: e.target.value})}
+                                value = {filter.searchValue}
+                                onChange = {(e) => setFilter({...filter, searchValue: e.target.value})}
                              />
-                            {/*<MySelect */}
-                            {/*    value={'sdfsdf'}*/}
-                            {/*    onChange={e => console.log(e)}*/}
-                            {/*    defaultValue='Сортировка по'*/}
-                            {/*    options={[*/}
-                            {/*        {value: 'default', name: 'Сортировка по'},*/}
-                            {/*        {value: 'type', name: 'Производителю'},*/}
-                            {/*        {value: 'title', name: 'Названию'},*/}
-                            {/*        {value: 'price', name: 'Цене'}*/}
-                            {/*    ]}*/}
-                            {/*/>*/}
+                            <MySelect
+                                value={filter.sort}
+                                onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilter({...filter, sort: e.target.value as TSort})}
+                                options={[
+                                    {value: 'default', name: 'Сортировка по'},
+                                    {value: 'type', name: 'Виду изделия'},
+                                    {value: 'name', name: 'Названию'},
+                                    {value: 'price', name: 'Цене'}
+                                ]}
+                            />
+                            <MySelect
+                                value={filter.sort}
+                                onChange={(e: ChangeEvent<HTMLSelectElement>) => setViewsSettings({page: 1, limit: +e.target.value})}
+                                options={[
+                                    {value: '9', name: `Показывать по ${viewsSettings.limit}`},
+                                    {value: '9', name: '9'},
+                                    {value: '12', name: '12'},
+                                    {value: '15', name: '15'}
+                                ]}
+                            />
                         </div>
                     </div>
                     <div className={styles.products__block}>
-                        {
-                           isLoading
-                            ? <h2>Loading</h2>
-                            : searchProfucts.map(pr =>
-                               <ProductItem key = {pr.id} product={pr}/>
-                            )
-                        }
-                        {/*<Filter filter= {filter} setFilter = {setFilter} dispatch = {dispatch}/>*/}
+                        <div className={styles.filterBlock}>
+                            <Filter
+                                filter={filter}
+                                setFilter={setFilter}
+                            />
+                        </div>
+                        <div className={styles.products__list}>
+                            {
+                               isLoading
+                                ? <h2>Loading</h2>
+                                : searchProducts.length
+                                       ?  searchProducts.map(product =>
+                                       <ProductItem key = {product.id} product={product}/>
+                                        )
+                                       : <h2>Нихуя не найдено</h2>
+                            }
+                        </div>
                         {
                             // !filter.query.length &&
                             // !Object.keys(filter.price).length &&
@@ -99,16 +128,19 @@ const Products: FC = () => {
                     </div>
                     <div className={styles.pages}>
                     {
-                        // pagesArray.map(page =>
-                        //     <Button
-                        //         onClick={changeCurrentPage}
-                        //         addStyles = {+currentPage === +page ? styles.active_page : styles.page}
-                        //         key = {page}
-                        //         id = {page}
-                        //     >
-                        //         {page}
-                        //     </Button>
-                        // )
+                        pagesArray.map(page =>
+                            <Button
+                                onClick={() => {
+                                    setViewsSettings({...viewsSettings, page: page});
+                                    scrollToTop();
+                                }}
+                                addStyles = {+viewsSettings.page === +page ? styles.active_page : styles.page}
+                                key = {page}
+                                id = {String(page)}
+                            >
+                                {page}
+                            </Button>
+                        )
                     }
                     </div>
                 </div>

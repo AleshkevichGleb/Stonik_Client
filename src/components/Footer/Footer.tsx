@@ -20,9 +20,21 @@ const Footer: FC = () => {
         }
     }
 
-    const sendData =  (event: FormEvent<HTMLFormElement>) => {
+    const sendData =  async(event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(personInfo);
+        try {
+            const response = await fetch('http://localhost:5000/api/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(personInfo)
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error sending data:', error);
+        }
     }
 
     return (
@@ -63,9 +75,9 @@ const Footer: FC = () => {
                         </Button>
                     </div>
                     <div className={styles.footer__formCheckData}>
-                        <input 
+                        <input
                             id = "data"
-                            className={styles.checkbox} 
+                            className={styles.checkbox}
                             type = "checkbox"
                         />
                         <label htmlFor="data" className={styles.checkboxText}>Согласен на обработку персональных данных</label>

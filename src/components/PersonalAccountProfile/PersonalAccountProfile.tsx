@@ -1,5 +1,6 @@
 import {useAppSelector} from "../../hooks/useReducer.ts";
 import styles from "./PersonalAccountProfile.module.scss"
+import clearImage from "../../assets/images/clearUser.png"
 const PersonalAccountProfile = () => {
     const {user} = useAppSelector(state => state.user);
     const date = new Date(user.createdAt).toLocaleDateString();
@@ -28,7 +29,7 @@ const PersonalAccountProfile = () => {
                 </div>
             </div>
             <div className = {styles.imageBlock}>
-                <img className = {styles.image} src={user.image} alt=""/>
+                <img className = {styles.image} src={user.image ? user.image : clearImage} alt=""/>
             </div>
         </div>
     )

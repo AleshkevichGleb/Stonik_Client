@@ -28,7 +28,7 @@ export const navLinks: INavLinks[] = [
     { path: '/', element: Home, title: "Главная" },
     { path: '/products', element: Products, title: "Каталог" },
     { path: '/basket', element: Basket, title: "Корзина" },
-    { path: '/news', element: News, title: "News" },
+    { path: '/news', element: News, title: "Новости" },
     { path: '/FAQ', element: FAQPage, title: "FAQ's" },
 ]
 

@@ -9,13 +9,25 @@ import Slider from "../../components/Slider/Slider.tsx";
 import Title from "../../common/Title/Title.tsx";
 import BackLink from "../../common/BackLink/BackLink.tsx";
 import reviewService from "../../services/reviewService.ts";
+import Rating from '@mui/material/Rating';
+import getTimeAgo from "../../helpers/getTimeAgo.ts";
+import Button from "../../common/Button/Button.tsx";
+import ReviewModal from "../../components/ReviewModal/ReviewModal.tsx";
+import clearUser from "../../assets/images/clearUser.png";
+import {AxiosError} from "axios";
+import loadImage from "../../assets/images/loader-icon.svg";
+import {instance} from "../../api/axios.ts";
+
 const Product: FC = () => {
     const [product, setProduct] = useState<IProduct | null>(null)
     const {id} = useParams();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
     const [mainImage, setMainImage] = useState<{src: string, alt: string}>({
         src: '',
         alt: ''
     });
+    const [isActiveModal, setIsActiveModal] = useState<boolean>(false)
     const [reviews, setReviews] = useState<IReview[]>([]);
 
     const width = window.screen.width;
@@ -25,8 +37,9 @@ const Product: FC = () => {
         setMainImage({src: src, alt: alt});
     }
     const getProduct = async() => {
-        const data = await productService.getOne(id as string);
-        if(data) {
+        try {
+            setIsLoading(true);
+            const {data} = await instance.get<IProduct>(`/products/${id}`)
             setProduct(data);
             setMainImage({
                 src: data.images[0],
@@ -35,15 +48,48 @@ const Product: FC = () => {
 
             const reviews = await reviewService.getReviews(data.id);
             setReviews(reviews?.data)
+
+        } catch (e) {
+            console.log(e)
+            if(e instanceof AxiosError) {
+                setError(e.response?.data.message)
+            }
+
+        } finally {
+            setIsLoading(false);
         }
 
     }
     useEffect(() => {
         getProduct();
-    }, []);
+    }, [isActiveModal]);
+
+    const sendReview = async () => {
+        setIsActiveModal(true);
+    }
+
+    if(error) {
+        return (
+            <div className={styles.errorContainer}>
+                <BackLink title={'Назад'}/>
+                <h2 className={styles.errorText}>{error}</h2>
+            </div>
+        )
+    }
+
+    if(isLoading) {
+        return (
+            <div className={styles.loadContainer}>
+                <img width={300} height={300} src={loadImage} alt=""/>
+            </div>
+        )
+    }
 
     return (
         <div className={styles.product__container}>
+            {
+                isActiveModal && <ReviewModal isActiveModal={isActiveModal} setIsActiveModal={setIsActiveModal} product={product}/>
+            }
             <BackLink title='Назад'/>
             <div className={styles.hr}></div>
             <Title title_p1={product?.name}/>
@@ -68,44 +114,53 @@ const Product: FC = () => {
                         }
                     </Slider>
                 </div>
-                <ProductFunctional product = {product}/>
+                <ProductFunctional product = {product} productId={id}/>
             </div>
             <div className={styles.product__description}>
                 <p className={styles.product__description__title}>Описание</p>
                 <div className={styles.line}></div>
                 <span className={styles.product__description__text}>{product?.description}</span>
             </div>
-
-            {
-                reviews.length > 0 &&
-                <div>
-                    <div className={styles.product__description}>
-                        <p className={styles.product__description__title}>Отзывы</p>
-                        <div className={styles.line}></div>
-                        <div>
+            <div className={styles.product__description}>
+                <p className={styles.product__description__title}>Отзывы</p>
+                <div className={styles.line}></div>
+                {
+                    reviews.length === 0
+                    ?
+                     <div className={styles.clearReviewContainer}>
+                        <h4>Еще нет отзывов, будьте первым! </h4>
+                         <Button onClick={sendReview} addStyles={styles.review__button}>
+                             Оставить отзыв
+                         </Button>
+                     </div>
+                    :<>
+                        <Button onClick={sendReview} addStyles={styles.review__button}>
+                            Оставить отзыв
+                        </Button>
+                        <div className = {styles.reviewContainer}>
                             {reviews.map(review =>
-                                <div>
-                                    <div>
-                                        <div>
-                                            <img width={50} height={50} src={review.user.image} alt=""/>
-                                            <div>
+                                <div key = {review.id} className = {styles.review}>
+                                    <div className={styles.reviewInfo}>
+                                        <div className={styles.review__user}>
+                                            <img className = {styles.review__image} src={review.user.image ? review.user.image : clearUser} alt=""/>
+                                            <div className={styles.review__userInfo}>
                                                 <span>{review.user.name} {review.user.surname}</span>
-                                                <span>{review.rating}</span>
+                                                <Rating name="read-only" size="small"  value={Number(review.rating)} precision={0.5} readOnly />
                                             </div>
                                         </div>
-                                        <span>
+                                        <span className={styles.review__message}>
                                             {review.message}
                                         </span>
                                     </div>
-                                    <div>
-                                        <span>{review.createdAt}</span>
+                                    <div className={styles.reviewDate}>
+                                        <span>{getTimeAgo(review.createdAt)}</span>
                                     </div>
                                 </div>
                             )}
                         </div>
-                    </div>
-                </div>
-            }
+                    </>
+                }
+            </div>
 
             <CheckMark/>
         </div>

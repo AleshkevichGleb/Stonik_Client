@@ -7,6 +7,8 @@ import Rating from '@mui/material/Rating';
 import reviewService from "../../services/reviewService.ts";
 import {AxiosError} from "axios";
 import {toast} from "react-toastify";
+import sliceText from "../../helpers/sliceText.ts";
+import {useNavigate} from "react-router-dom";
 
 interface ReviewModalProps {
     isActiveModal: boolean
@@ -19,6 +21,8 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
         ratingValue: 5,
         message: ''
     });
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(isActiveModal) {
@@ -43,7 +47,7 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
     const sendReview = async() => {
         const data = await reviewService.sendReview(review.ratingValue, review.message, (product?.id as number));
         if(data instanceof AxiosError) {
-            return toast.success('Ошибка, попробуйте позже');
+            return toast.error('Ошибка, попробуйте позже');
         }
 
         setIsActiveModal(false);
@@ -56,14 +60,15 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
                     <img src={closeImage} alt=""/>
                 </button>
                 <div className={styles.productInfo}>
-                    <img width={100} height={100} src={product?.images[0]} alt=""/>
+                    <img onClick={() => navigate(`/products/${product?.type}/${product?.id}`)} width={100} height={100} src={product?.images[0]} alt=""/>
                     <div className={styles.productInfo__text}>
                         <span className={styles.product__title}>{product?.name}</span>
-                        <span className={styles.product__desc}>{product?.description}</span>
+                        <span className={styles.product__desc}>{sliceText((product?.description as string), 200)}</span>
                     </div>
                 </div>
                 <div className = {styles.ratingBlock}>
                     <Rating
+                        size='large'
                         name="customized-5"
                         value={review.ratingValue} // Значение рейтинга
                         max={5}

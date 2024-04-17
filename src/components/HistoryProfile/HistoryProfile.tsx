@@ -6,6 +6,7 @@ import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePag
 import Loader from "../../assets/images/loader-icon.svg";
 import {IOrder, IProduct, OrderStatusTypes} from "../../types/types.ts";
 import ReviewModal from "../ReviewModal/ReviewModal.tsx";
+import {Link} from "react-router-dom";
 
 const getStatusClassName = (status: OrderStatusTypes) => {
     switch (status) {
@@ -88,12 +89,7 @@ const HistoryProfile = () => {
                                 <TableBody>
                                     {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order) => (
                                         <TableRow key={order.id}>
-                                            <TableCell><div className = {styles.TableCell}>{order.product.name}</div></TableCell>
-                                            {/*<TableCell>*/}
-                                            {/*    <div>*/}
-                                            {/*        <img onClick={() => navigate(`/products/${order.productId}`)} width  = {200}  src={order.product.images[0]} alt=""/>*/}
-                                            {/*    </div>*/}
-                                            {/*</TableCell>*/}
+                                            <TableCell><Link to = {`/products/${order.product.type}/${order.product.id}`} className = {[styles.TableCell, styles.link].join(' ')}>{order.product.name}</Link></TableCell>
                                             <TableCell><div className = {styles.TableCell}>{order.count}</div></TableCell>
                                             <TableCell><div className = {styles.TableCell}>{(order.count * order.product.price).toFixed(1)}р.</div></TableCell>
                                             <TableCell>
@@ -104,18 +100,8 @@ const HistoryProfile = () => {
                                                 </div>
                                             </TableCell>
                                             <TableCell><div className = {styles.TableCell}>{new Date(order.createdAt).toLocaleString()}</div></TableCell>
-                                            {
-                                                order.status === 'Доставлено' ?
-                                                <TableCell>
-                                                    <Button onClick = {() => {
-                                                        setModalProduct(order.product)
-                                                        setIsActiveModal(true)
-                                                    }}>
-                                                        Оставить отзыв
-                                                    </Button>
-                                                </TableCell> :
-                                                    <TableCell></TableCell>
-                                            }
+                                            <TableCell>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

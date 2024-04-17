@@ -10,10 +10,11 @@ class productService {
 
     async getOne(id: string | number){
         try {
-            const {data} = await instance.get<IProduct>(`/products/${id}`)
-            return data
+            const response = await instance.get<IProduct>(`/products/${id}`)
+            return response.data
         } catch (e) {
             console.log(e)
+            return e
         }
     }
 }

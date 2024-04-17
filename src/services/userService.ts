@@ -32,7 +32,7 @@ class UserService {
             })
             return resData;
         } catch (e) {
-            console.log(e)
+            return e;
         }
     }
 
@@ -49,7 +49,6 @@ class UserService {
     async getProfile() {
         try {
             const response = await instance.get('/user/profile');
-            console.log(response)
             return response.data;
         } catch (e) {
             // console.log(e)

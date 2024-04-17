@@ -4,10 +4,17 @@
   padding: 0 20px;
 }
 
+.product__functional__amountBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
 .checkMark {
   display: flex;
   gap: 8px;
   margin-bottom: 15px;
+  align-items: center;
 }
 
 .inStock {
@@ -20,7 +27,7 @@
   font-size: 18px;
   font-weight: 600;
   color: rgb(147, 65, 65);
-  margin-bottom: 15px;
+  //margin-bottom: 15px;
 }
 
 .priceBlock {
@@ -161,9 +168,20 @@
   left: -70px;
 }
 
+.favouritesBlock {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .favouritesBlock__text {
+    font-size: 17px;
+  }
+}
+
 @media(max-width: 1180px) {
   .product__accordionBlock_2 {
-    padding: 20 10px;
+    padding: 20px 10px;
   }
   .product__accordionBlock {
     padding: 20px 10px;

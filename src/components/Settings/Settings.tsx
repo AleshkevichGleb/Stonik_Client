@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
-import {ChangeEvent, useMemo, useRef, useState} from "react";
+import {ChangeEvent,useMemo, useRef, useState} from "react";
 import {IRegistrationUser} from "../../types/types.ts";
 import userService from "../../services/userService.ts";
 import {setTokenToLocaleStorage} from "../../helpers/localStorageHelper.ts";
@@ -12,11 +12,8 @@ const Settings = () => {
 
     const {user} = useAppSelector(state => state.user);
     const [editUser, setEditUser] = useState<IRegistrationUser>({...user});
-
     const dispatch = useAppDispatch();
-    // useEffect(() => {
-    //     if(!isAuth) navigate('/auth')
-    // }, [dispatch]);
+
 
     const isCompareUserData = useMemo(() =>
             JSON.stringify({name: user.name, email: user.email, surname: user.surname, city: user.city })
@@ -30,6 +27,18 @@ const Settings = () => {
 
     const sendEditUser = async() => {
         try {
+            if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(editUser.email)) {
+                return toast.error('Введите вашу настоящую почту');
+            }
+            if(!/^[a-zA-Zа-яА-Я]{2,20}$/.test(editUser.name)) {
+                return toast.error('Введите ваше настоящее имя');
+            }
+            if(!/^[a-zA-Zа-яА-Я]{2,30}$/.test(editUser.surname)) {
+                return toast.error('Введите вашу настоящюю фамилию');
+            }
+            if(!/^[a-zA-Zа-яА-Я]{2,30}$/.test(editUser.city)) {
+                return toast.error('Введите ваш настоящий город');
+            }
             const data = await userService.update({
                 email: editUser.email,
                 city: editUser.city,
@@ -64,6 +73,7 @@ const Settings = () => {
                 <div className={styles.userInfo}>
                     <div className={styles.userChange}>
                         <MyInput
+                            max = {20}
                             addStyles={styles.addStyles}
                             id='name'
                             placeholder={'Имя'}
@@ -74,6 +84,7 @@ const Settings = () => {
                             labelStyles={styles.labelStyles}
                         />
                         <MyInput
+                            max = {30}
                             addStyles={styles.addStyles}
                             id='surname'
                             placeholder={'Фамилия'}
@@ -84,6 +95,7 @@ const Settings = () => {
                             labelStyles={styles.labelStyles}
                         />
                         <MyInput
+                            max = {50}
                             addStyles={styles.addStyles}
                             id='email'
                             placeholder={'Почта'}
@@ -94,6 +106,7 @@ const Settings = () => {
                             labelStyles={styles.labelStyles}
                         />
                         <MyInput
+                            max  = {30}
                             addStyles={styles.addStyles}
                             id='city'
                             placeholder={'Город'}

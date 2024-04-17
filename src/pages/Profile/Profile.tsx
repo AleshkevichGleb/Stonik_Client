@@ -1,24 +1,28 @@
 import styles from "./Profile.module.scss";
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
-import {FC} from "react";
-import {useAppDispatch} from "../../hooks/useReducer.ts";
+import {FC, useEffect} from "react";
+import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
 import historyImage from "../../assets/images/history.svg";
 import settingsImage from "../../assets/images/settings.svg";
 import LogoutImage from "../../assets/images/logout.svg";
-import ReviewImage from "../../assets/images/review.svg";
+// import ReviewImage from "../../assets/images/review.svg";
 import ProfileImage from "../../assets/images/ProfileImage.tsx";
 import TrashImage from "../../assets/images/trash.svg";
-import {getTokenFromLocaleStorage, removeTokenFromLocaleStorage} from "../../helpers/localStorageHelper.ts";
+import FavouriteImage from "../../assets/images/favourite.svg";
+import {removeTokenFromLocaleStorage} from "../../helpers/localStorageHelper.ts";
 import {resetUser} from "../../store/slices/user.slice.ts";
 import {clearBasket} from "../../store/slices/basket.slice.ts";
 import BasketImage from "../../assets/images/BasketImage.tsx";
 
 const Profile: FC = () => {
+    const {isAuth} = useAppSelector(state => state.user);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const url = useLocation().pathname.split('/')[2];
 
-    console.log(getTokenFromLocaleStorage())
+    useEffect(() => {
+        if(!isAuth) navigate('/auth')
+    }, [dispatch]);
     return (
         <div className={styles.container}>
             <div className={styles.chooseBlock}>
@@ -31,10 +35,14 @@ const Profile: FC = () => {
                         <img src={historyImage} alt=""/>
                         <span className={styles.text}>История заказов</span>
                     </Link>
-                    <Link to='reviews' className={url === 'reviews' ? styles.chooseItem_active : styles.chooseItem}>
-                        <img src={ReviewImage} alt=""/>
-                        <span className={styles.text}>Отзывы</span>
+                    <Link to='favourites' className={url === 'favourites' ? styles.chooseItem_active : styles.chooseItem}>
+                        <img src={FavouriteImage} alt=""/>
+                        <span className={styles.text}>Избранное</span>
                     </Link>
+                    {/*<Link to='reviews' className={url === 'reviews' ? styles.chooseItem_active : styles.chooseItem}>*/}
+                    {/*    <img src={ReviewImage} alt=""/>*/}
+                    {/*    <span className={styles.text}>Отзывы</span>*/}
+                    {/*</Link>*/}
                     <Link to='/basket' className={styles.chooseItem}>
                         <BasketImage width={'24px'} height={'24px'}/>
                         <span className={styles.text}>Корзина</span>

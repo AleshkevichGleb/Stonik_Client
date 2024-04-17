@@ -1,3 +1,27 @@
+.errorContainer {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 0 80px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+
+  .errorText {
+    text-align: center;
+  }
+}
+
+.loadContainer {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 0 80px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+
 .product__container {
   max-width: 1300px;
   margin: 0 auto;
@@ -29,6 +53,68 @@
   flex-direction: column;
   gap: 15px;
   margin: 70px 0 30px 0;
+
+  .clearReviewContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .reviewContainer {
+    display: flex;
+    flex-direction: column;
+
+    .review {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      padding: 30px 0;
+      gap: 20px;
+
+      &:not(:first-child) {
+        border-top: 2px solid #d9ded9;
+      }
+
+
+      .reviewInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .review__user {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+
+          .review__image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+          }
+
+          .review__userInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+        }
+
+        .review__message {
+          word-break: break-word;
+          line-height: 25px;
+        }
+      }
+
+      .reviewDate {
+        font-family: "Book Antiqua", sans-serif;
+        opacity: 0.7;
+        min-width: 150px;
+        padding-top: 20px;
+      }
+    }
+  }
 }
 
 
@@ -165,5 +251,14 @@
 
   .slider {
     max-width: 310px;
+  }
+}
+
+
+.review__button {
+  padding: 15px;
+
+  &:hover {
+    box-shadow: none;
   }
 }

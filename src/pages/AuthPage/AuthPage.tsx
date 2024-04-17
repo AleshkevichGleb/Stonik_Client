@@ -9,7 +9,7 @@ const AuthPage: FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(isAuth) navigate('/profile')
+        if(isAuth) navigate('/profile/account')
     }, []);
 
     return (

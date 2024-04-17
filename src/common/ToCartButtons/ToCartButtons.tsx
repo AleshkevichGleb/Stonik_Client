@@ -15,7 +15,7 @@ interface ICahngeCountData  {
     existingProduct: any,
 }
 interface ToCartButtonsProps {
-    product: IProduct | undefined,
+    product: IProduct | null,
     addStyles: any,
     flag?: boolean
 }
@@ -23,14 +23,14 @@ interface ToCartButtonsProps {
 const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
     const { products} = useAppSelector(state => state.basket);
 
-    const [basketProduct, setBasketProduct] = useState<IBasketProduct | undefined>(undefined)
+    const [basketProduct, setBasketProduct] = useState<IBasketProduct | null>(null)
     const dispatch = useAppDispatch();
     useEffect(() => {
         if(product) {
             const productData = products.find(prod => +prod.product.id === +product?.id)
             if(productData) setBasketProduct(productData);
         }
-    }, []);
+    }, [product]);
     const increasePrice = async(e: MouseEvent<HTMLButtonElement>) => {
         const {id} = e.currentTarget;
         const data = await BasketService.changeCount(id, 1);
@@ -62,7 +62,7 @@ const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
 
     return (
         (basketProduct && basketProduct?.count > 0)
-        ?   <div className={styles.buttonsContainer}>
+        ?   <div className={`${styles.buttonsContainer} ${addStyles.container}`}>
                 <span className={addStyles.count}>{basketProduct.count}</span>
                 <Button 
                     id = {product?.id.toString()}

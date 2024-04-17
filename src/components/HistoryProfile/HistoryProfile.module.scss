@@ -15,9 +15,14 @@
   border-collapse: collapse;
 
   .tableRow {
-    background-color: #e1f8e1;
+    background-color: #f8f8f8;
   }
 
+}
+
+.link {
+  color: #1a1a1a;
+  text-decoration: underline;
 }
 .TableCell {
   display: flex;
@@ -39,3 +44,7 @@
   }
 }
 
+
+.reviewButton {
+  color: black;
+}

@@ -86,8 +86,15 @@
 
 .products__block {
     display: flex;
-    flex-wrap: wrap;
+    //flex-wrap: wrap;
+    //justify-content: center;
     gap: 50px;
+
+    .products__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px;
+    }
 }
 
 .empty {

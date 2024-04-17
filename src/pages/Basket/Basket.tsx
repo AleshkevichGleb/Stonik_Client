@@ -8,6 +8,8 @@ import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
 import {removeFromBasket} from "../../store/slices/basket.slice.ts";
 import basketService from "../../services/basketService.ts";
 import crossImage from "../../assets/images/cross.svg";
+import BackLink from "../../common/BackLink/BackLink.tsx";
+import sliceText from "../../helpers/sliceText.ts";
 
 
 const Basket = () => {
@@ -33,6 +35,7 @@ const Basket = () => {
     
     return (
         <div className={styles.basket__container}>
+            <BackLink title={'Назад'}/>
             {
                 products.length
                 ? <div className={styles.products}>
@@ -47,7 +50,7 @@ const Basket = () => {
                                 />
                                 <div className={styles.product__textInfo}>
                                     <span className={styles.product__title}>{product.product.name}</span>
-                                    <span className={styles.product__description}>{product.product.description}</span>
+                                    <span className={styles.product__description}>{sliceText(product.product.description, 250)}</span>
                                 </div>
                             </div>
                             <div className={styles.product__functional}>

@@ -1,4 +1,5 @@
 import { FC } from "react";
+import {TSort} from "../hooks/useSearchProducts.ts";
 
 export interface INavLinks {
     path: string;
@@ -127,4 +128,29 @@ export interface IUserReview {
     surname: string
     email: string
     image: string
+}
+
+export interface IFilter {
+    sort: TSort,
+    searchValue: string,
+    isSale: boolean
+}
+
+export interface INews {
+    id: number | string,
+    title: string,
+    description: string,
+    image: string,
+    createdAt: string,
+    updatedAt: string,
+}
+
+export interface IFavourite {
+    id: number,
+    productId: number,
+    userId: number,
+    createdAt: string,
+    updatedAt: string,
+    product: IProduct,
+
 }

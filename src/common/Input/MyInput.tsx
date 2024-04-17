@@ -10,7 +10,8 @@ interface MyInputProps {
     inputStyles?: string, 
     labelStyles?: string, 
     type: string,
-    name?: string, 
+    name?: string,
+    max?: number,
 }
 
 const MyInput: FC<MyInputProps> = ({
@@ -22,7 +23,8 @@ const MyInput: FC<MyInputProps> = ({
     inputStyles, 
     labelStyles, 
     type, 
-    name
+    name,
+    max,
 }) => {
 
     return (
@@ -35,6 +37,7 @@ const MyInput: FC<MyInputProps> = ({
                 name={name}
                 onChange={onChange}
                 value={value}
+                maxLength={max}
             />
             <label className={`${styles.label} ${labelStyles}`} htmlFor={id}>{placeholder}</label>
         </div>
