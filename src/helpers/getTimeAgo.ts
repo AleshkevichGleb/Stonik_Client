@@ -1,33 +1,28 @@
-export default function getTimeAgo(timestamp: string): string {
+const formatTimeDifference = (dateString: string): string => {
+    const date = new Date(dateString);
     const currentDate = new Date();
-    const date = new Date(timestamp);
-    const diff = currentDate.getTime() - date.getTime();
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const timeDifference = currentDate.getTime() - date.getTime();
+    const secondsDifference = Math.floor(timeDifference / 1000);
+    const minutesDifference = Math.floor(secondsDifference / 60);
+    const hoursDifference = Math.floor(minutesDifference / 60);
 
-    if (seconds < 60) {
-        return `${pluralize(seconds, 'секунд')} назад`;
-    } else if (minutes < 60) {
-        return `${pluralize(minutes, 'минут')} назад`;
-    } else if (hours < 24) {
-        return `${pluralize(hours, 'час')} назад`;
+    if (hoursDifference < 24) {
+        if (hoursDifference >= 1) {
+            return `${hoursDifference} час${hoursDifference === 1  ? "" : (hoursDifference > 1 && hoursDifference < 5) ? "а" : "ов"} назад`;
+        } else if (minutesDifference >= 1) {
+            return `${minutesDifference} минут${String(minutesDifference).endsWith('1') || (minutesDifference > 1 && minutesDifference < 5) ? "ы" : ""} назад`;
+        } else {
+            return "0 минут назад";
+        }
     } else {
-        return date.toLocaleString();
+        const options: Intl.DateTimeFormatOptions = {
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        };
+        return date.toLocaleString("ru-RU", options);
     }
-}
+};
 
-function pluralize(value: number, word: string): string {
-    const lastTwoDigits = value % 100;
-    const lastDigit = value % 10;
-
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-        return `${value} ${word}`;
-    } else if (lastDigit === 1) {
-        return `${value} ${word}а`;
-    } else if (lastDigit >= 2 && lastDigit <= 4) {
-        return `${value} ${word}ы`;
-    } else {
-        return `${value} ${word}`;
-    }
-}
+export default formatTimeDifference;

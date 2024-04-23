@@ -1,0 +1,29 @@
+.container {
+  padding: 50px 0;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+
+  .admin__navigate {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .admin__navigateItem {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 2px solid #b5b5b5;
+    }
+
+    .active {
+      border-bottom: 2px solid #1e871e;
+    }
+  }
+}
+

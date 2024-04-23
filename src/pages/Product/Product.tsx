@@ -9,13 +9,13 @@ import Title from "../../common/Title/Title.tsx";
 import BackLink from "../../common/BackLink/BackLink.tsx";
 import reviewService from "../../services/reviewService.ts";
 import Rating from '@mui/material/Rating';
-import getTimeAgo from "../../helpers/getTimeAgo.ts";
 import Button from "../../common/Button/Button.tsx";
 import ReviewModal from "../../components/ReviewModal/ReviewModal.tsx";
 import clearUser from "../../assets/images/clearUser.png";
 import {AxiosError} from "axios";
 import loadImage from "../../assets/images/loader-icon.svg";
 import {instance} from "../../api/axios.ts";
+import formatTimeDifference from "../../helpers/getTimeAgo.ts";
 
 const Product: FC = () => {
     const [product, setProduct] = useState<IProduct | null>(null)
@@ -61,11 +61,12 @@ const Product: FC = () => {
     }
     useEffect(() => {
         getProduct();
-    }, [isActiveModal]);
+    }, []);
 
     const sendReview = async () => {
         setIsActiveModal(true);
     }
+
 
     if(error) {
         return (
@@ -83,6 +84,8 @@ const Product: FC = () => {
             </div>
         )
     }
+
+
 
     return (
         <div className={styles.product__container}>
@@ -152,7 +155,8 @@ const Product: FC = () => {
                                         </span>
                                     </div>
                                     <div className={styles.reviewDate}>
-                                        <span>{getTimeAgo(review.createdAt)}</span>
+                                        <span>{formatTimeDifference(review.createdAt)}</span>
+                                        {/*<span>{formatTimeDifference('2024-04-23T16:16:15.483Z')}</span>*/}
                                     </div>
                                 </div>
                             )}

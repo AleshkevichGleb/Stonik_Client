@@ -11,7 +11,7 @@ import ProfileImage from "../../assets/images/ProfileImage.tsx";
 
 const Header = () => {
     const [isActiveMenu, setIsActiveMenu] = useState(false)
-    const {isAuth} = useAppSelector(state => state.user);
+    const {isAuth, user} = useAppSelector(state => state.user);
 
     return (
         <header className={styles.header}>
@@ -36,6 +36,12 @@ const Header = () => {
                                 {link.title}
                             </Link>    
                         )}
+                        {
+                            user.role === 'admin' &&
+                            <Link className = {styles.link}  to={'admin'}>
+                                Admin
+                            </Link>
+                        }
                     </nav>
                 </div>
                 <Link to = {isAuth ? '/profile/account' : '/auth'} className={styles.profile__block}>

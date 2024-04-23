@@ -7,12 +7,10 @@ import {Link} from "react-router-dom";
 import sliceText from "../../helpers/sliceText.ts";
 
     const News: FC = () => {
-
         const [news, setNews] = useState<INews[]>([]);
 
         const ref = useRef<HTMLInputElement | null>(null);
         const ref2 = useRef<HTMLInputElement | null>(null);
-        const ref3 = useRef<HTMLInputElement | null>(null);
         const addProduct = async() => {
 
             const formData = new FormData();
@@ -41,35 +39,11 @@ import sliceText from "../../helpers/sliceText.ts";
             }
         }
 
-        const addNews = async() => {
-            const formData = new FormData();
-
-            formData.append('title', 'Мы открылись!');
-            formData.append('description', `
-                <p>Сегодня мы открылись как ООО СТОНИК) и празднуем это вместе с вами</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad commodi debitis, deserunt doloribus earum eum expedita facere, libero magni nobis nostrum, optio quam ratione rem soluta ullam unde voluptatum! Aperiam at atque aut cum dolores fugiat ipsa, molestias mollitia quaerat quo, repellendus voluptatum? Consectetur deleniti eos, labore laudantium nam quae sequi. Debitis eveniet, ipsum! Ab aut illo libero molestiae numquam quae quibusdam repellendus sunt? Aperiam architecto aspernatur beatae deleniti deserunt dolore dolorem ducimus, ea excepturi exercitationem id impedit in labore, libero minima nam nihil non officiis omnis provident quidem quis quod ratione tempore voluptatibus! Adipisci delectus dolorum quia ullam vitae? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad commodi debitis, deserunt doloribus earum eum expedita facere, libero magni nobis nostrum, optio quam ratione rem soluta ullam unde voluptatum! Aperiam at atque aut cum dolores fugiat ipsa, molestias mollitia quaerat quo, repellendus voluptatum? Consectetur deleniti eos, labore laudantium nam quae sequi. Debitis eveniet, ipsum! Ab aut illo libero molestiae numquam quae quibusdam repellendus sunt? Aperiam architecto aspernatur beatae deleniti deserunt dolore dolorem ducimus, ea excepturi exercitationem id impedit in labore, libero minima nam nihil non officiis omnis provident quidem quis quod ratione tempore voluptatibus! Adipisci delectus dolorum quia ullam vitae?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad commodi debitis, deserunt doloribus earum eum expedita facere, libero magni nobis nostrum, optio quam ratione rem soluta ullam unde voluptatum! Aperiam at atque aut cum dolores fugiat ipsa, molestias mollitia quaerat quo, repellendus voluptatum? Consectetur deleniti eos, labore laudantium nam quae sequi. Debitis eveniet, ipsum! Ab aut illo libero molestiae numquam quae quibusdam repellendus sunt? Aperiam architecto aspernatur beatae deleniti deserunt dolore dolorem ducimus, ea excepturi exercitationem id impedit in labore, libero minima nam nihil non officiis omnis provident quidem quis quod ratione tempore voluptatibus! Adipisci delectus dolorum quia ullam vitae?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad commodi debitis, deserunt doloribus earum eum expedita facere, libero magni nobis nostrum, optio quam ratione rem soluta ullam unde voluptatum! Aperiam at atque aut cum dolores fugiat ipsa, molestias mollitia quaerat quo, repellendus voluptatum? Consectetur deleniti eos, labore laudantium nam quae sequi. Debitis eveniet, ipsum! Ab aut illo libero molestiae numquam quae quibusdam repellendus sunt? Aperiam architecto aspernatur beatae deleniti deserunt dolore dolorem ducimus, ea excepturi exercitationem id impedit in labore, libero minima nam nihil non officiis omnis provident quidem quis quod ratione tempore voluptatibus! Adipisci delectus dolorum quia ullam vitae?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad commodi debitis, deserunt doloribus earum eum expedita facere, libero magni nobis nostrum, optio quam ratione rem soluta ullam unde voluptatum! Aperiam at atque aut cum dolores fugiat ipsa, molestias mollitia quaerat quo, repellendus voluptatum? Consectetur deleniti eos, labore laudantium nam quae sequi. Debitis eveniet, ipsum! Ab aut illo libero molestiae numquam quae quibusdam repellendus sunt? Aperiam architecto aspernatur beatae deleniti deserunt dolore dolorem ducimus, ea excepturi exercitationem id impedit in labore, libero minima nam nihil non officiis omnis provident quidem quis quod ratione tempore voluptatibus! Adipisci delectus dolorum quia ullam vitae?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad commodi debitis, deserunt doloribus earum eum expedita facere, libero magni nobis nostrum, optio quam ratione rem soluta ullam unde voluptatum! Aperiam at atque aut cum dolores fugiat ipsa, molestias mollitia quaerat quo, repellendus voluptatum? Consectetur deleniti eos, labore laudantium nam quae sequi. Debitis eveniet, ipsum! Ab aut illo libero molestiae numquam quae quibusdam repellendus sunt? Aperiam architecto aspernatur beatae deleniti deserunt dolore dolorem ducimus, ea excepturi exercitationem id impedit in labore, libero minima nam nihil non officiis omnis provident quidem quis quod ratione tempore voluptatibus! Adipisci delectus dolorum quia ullam vitae?</p>
-            `);
-
-            if (ref3.current && ref3.current.files && ref3.current.files.length > 0) {
-                formData.append('image', ref3.current.files[0]);
-            }
-
-            try {
-                const response = await instance.post('http://localhost:5000/api/news', formData);
-                console.log('Product added:', response.data);
-            } catch (error) {
-                console.error('Error adding product:', error);
-            }
-        }
-
         const getNews = async() => {
             const {data} = await instance.get('/news');
             setNews(data);
         }
-        
+
         useEffect(() => {
             getNews()
         }, []);
@@ -82,12 +56,6 @@ import sliceText from "../../helpers/sliceText.ts";
                         <button onClick={addProduct}>Send</button>
 
                     </div>
-                    {/*<div style={{display: 'flex', flexDirection: 'column', width: '300px'}}>*/}
-                    {/*    <input ref={ref3} type="file" name="" id=""/>*/}
-                    {/*    <button onClick={addNews}>Send</button>*/}
-
-
-                    {/*</div>*/}
                 </div>
 
                 {

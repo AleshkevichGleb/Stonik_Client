@@ -33,7 +33,7 @@ export interface IRegistrationUser extends ILoginUser {
     name: string,
     surname: string,
     city: '',
-    role: 'User' | 'Admin' | '',
+    role: 'User' | 'user' |'admin' | '',
     image: string,
     createdAt: string,
     updatedAt: string,
