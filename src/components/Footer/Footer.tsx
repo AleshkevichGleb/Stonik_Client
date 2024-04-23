@@ -9,15 +9,22 @@ const Footer: FC = () => {
 
     const [personInfo, setPersonInfo] = useState({
         name: '',
-        phone: '',
+        email: '',
     })
 
     const handlePersonInfo = (event: ChangeEvent<HTMLInputElement>) => {
         const {id, value} = event.target;
-        if(id === 'phone') setPersonInfo({...personInfo, [id]: value.replace(/\s|[a-zA-Zа-яА-Я]/g,"")})
-        else {
-            setPersonInfo({...personInfo, [id]: value})
+        let newValue = value;
+        if (id === 'email') {
+            // Проверяем, является ли вводимый символ допустимым для адреса электронной почты
+            const lastTypedChar = value.charAt(value.length - 1);
+            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~@]$/;
+            if (!emailRegex.test(lastTypedChar)) {
+                // Если символ не допустимый для адреса электронной почты, не обновляем значение
+                newValue = value.slice(0, -1);
+            }
         }
+        setPersonInfo({...personInfo, [id]: newValue});
     }
 
     const sendData =  async(event: FormEvent<HTMLFormElement>) => {
@@ -61,11 +68,11 @@ const Footer: FC = () => {
                         />
                         <MyInput 
                             addStyles={styles.addStylesForInput}
-                            id = "phone" 
-                            type = "text" 
-                            placeholder = "Ваше телефон" 
+                            id = "email"
+                            type = "email"
+                            placeholder = "Ваша почта"
                             onChange={handlePersonInfo} 
-                            value={personInfo.phone}
+                            value={personInfo.email}
                         />
 
                         <Button 

@@ -45,49 +45,18 @@ main {
     background-color: #a0aba2;
 }
 
-.input-file {
-    position: relative;
-    display: inline-block;
-}
-.input-file span {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    outline: none;
-    text-decoration: none;
-    font-size: 14px;
-    vertical-align: middle;
-    color: rgb(255 255 255);
-    text-align: center;
-    border-radius: 4px;
-    background-color: #28553F;
-    line-height: 22px;
-    height: 40px;
-    padding: 10px 20px;
-    box-sizing: border-box;
+input[type=file]::file-selector-button {
+    margin-right: 20px;
     border: none;
-    margin: 0;
-    transition: background-color 0.2s;
-}
-.input-file input[type=file] {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-    display: block;
-    width: 0;
-    height: 0;
+    background: #1e871e;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
 }
 
+input[type=file]::file-selector-button:hover {
 
-/* Hover/active */
-.input-file:hover span {
-    background-color: #417f61;
-}
-.input-file:active span {
-    background-color: #59b068;
-}
-
-/* Disabled */
-.input-file input[type=file]:disabled + span {
-    background-color: #eee;
+    background: #1e871e;
 }

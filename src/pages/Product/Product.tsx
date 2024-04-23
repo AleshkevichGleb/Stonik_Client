@@ -16,8 +16,11 @@ import {AxiosError} from "axios";
 import loadImage from "../../assets/images/loader-icon.svg";
 import {instance} from "../../api/axios.ts";
 import formatTimeDifference from "../../helpers/getTimeAgo.ts";
+import {useAppSelector} from "../../hooks/useReducer.ts";
+import {toast} from "react-toastify";
 
 const Product: FC = () => {
+    const {isAuth} = useAppSelector(state => state.user);
     const [product, setProduct] = useState<IProduct | null>(null)
     const {id} = useParams();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,6 +67,10 @@ const Product: FC = () => {
     }, []);
 
     const sendReview = async () => {
+        if(!isAuth) {
+            toast('Необходимо войти в аккаунта');
+            return
+        }
         setIsActiveModal(true);
     }
 
@@ -116,7 +123,7 @@ const Product: FC = () => {
                         }
                     </Slider>
                 </div>
-                <ProductFunctional product = {product} productId={id}/>
+                <ProductFunctional isAuth={isAuth}product = {product} productId={id}/>
             </div>
             <div className={styles.product__description}>
                 <p className={styles.product__description__title}>Описание</p>

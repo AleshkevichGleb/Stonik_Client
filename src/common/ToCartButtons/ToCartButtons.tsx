@@ -22,9 +22,10 @@ interface ToCartButtonsProps {
 
 const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
     const { products} = useAppSelector(state => state.basket);
-
+    const {isAuth} = useAppSelector(state => state.user);
     const [basketProduct, setBasketProduct] = useState<IBasketProduct | null>(null)
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         if(product) {
             const productData = products.find(prod => +prod.product.id === +product?.id)
@@ -32,6 +33,10 @@ const ToCartButtons: FC<ToCartButtonsProps> = ({product, addStyles, flag}) => {
         }
     }, [product]);
     const increasePrice = async(e: MouseEvent<HTMLButtonElement>) => {
+        if(!isAuth) {
+            toast('Необходимо войти в аккаунта');
+            return
+        }
         const {id} = e.currentTarget;
         const data = await BasketService.changeCount(id, 1);
 

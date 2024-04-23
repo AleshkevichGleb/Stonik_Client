@@ -106,8 +106,8 @@ const Products: FC = () => {
                                 ? <h2>Loading</h2>
                                 : searchProducts.length
                                        ?  searchProducts.map(product =>
-                                       <ProductItem key = {product.id} product={product}/>
-                                        )
+                                            <ProductItem key = {product.id} product={product}/>
+                                       )
                                        : <h2>Нихуя не найдено</h2>
                             }
                         </div>

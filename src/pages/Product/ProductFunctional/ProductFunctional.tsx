@@ -8,13 +8,15 @@ import Rating from '@mui/material/Rating';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import {instance} from "../../../api/axios.ts";
+import {toast} from "react-toastify";
 
 interface ProductFunctionalProps {
     product: IProduct | null,
     productId: string | undefined,
+    isAuth: boolean,
 }
 
-const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId}) => {
+const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId, isAuth}) => {
     const [isOnFavourite, setIsOnFavourite] = useState<boolean>(false);
     const [isActive, setIsActive] = useState<boolean>(true);
 
@@ -32,6 +34,10 @@ const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId}) => 
 
     const addFavourite = async () => {
         try {
+            if(!isAuth) {
+                toast('Необходимо войти в аккаунта');
+                return
+            }
              await instance.post('/favourite', {
                 productId
             })

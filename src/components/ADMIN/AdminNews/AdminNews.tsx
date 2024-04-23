@@ -41,6 +41,7 @@ const AdminNews = () => {
             if (ref.current) {
                 ref.current.value = '';
             }
+            getNews();
         } catch (error) {
             if(error instanceof AxiosError) {
                 toast.error(error.response?.data.message)
@@ -52,6 +53,7 @@ const AdminNews = () => {
         try {
             const {data} = await instance.delete(`/news/${id}`)
             toast.success(data.message)
+            getNews();
         } catch (e) {
             if(e instanceof AxiosError) {
                 toast.error(e.response?.data.message)
@@ -62,14 +64,16 @@ const AdminNews = () => {
 
     useEffect(() => {
         getNews()
-    }, [addNews, deleteNews]);
+    }, []);
+
+    console.log(ref)
     
     return(
         <div className={styles.container}>
             <div className={styles.addNewsContainer}>
                 <h2>Добавить новость</h2>
                 <div className={styles.addNewsBlock}>
-                    <input ref={ref} type="file" name="" id=""/>
+                    <input ref={ref} type="file" accept="image/*"/>
                     <MyInput
                         inputStyles={styles.inputStyles}
                         labelStyles={styles.labelStyles}

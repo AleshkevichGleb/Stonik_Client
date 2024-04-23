@@ -127,7 +127,7 @@ const Settings = () => {
                 </div>
                 <div className={styles.userImageBlock}>
                     <img className={styles.image} src={user.image ? user.image : clearUserImage} alt=""/>
-                    <label className="input-file">
+                    <label className={styles.inputFile}>
                         <input ref={ref} type="file" name="file" onChange={updatePhoto}/>
                         <span>{user.image ? 'Изменить фото' : 'Добавить фото'}</span>
                     </label>

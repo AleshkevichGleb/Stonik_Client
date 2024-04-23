@@ -7,12 +7,14 @@ import ToCartButtons from "../../common/ToCartButtons/ToCartButtons.tsx";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import {instance} from "../../api/axios.ts";
+import {useAppSelector} from "../../hooks/useReducer.ts";
+import {toast} from "react-toastify";
 interface ProductItemProps {
     product: IProduct,
 }
 
 const ProductItem: FC<ProductItemProps> = ({product}) => {
-
+    const {isAuth} = useAppSelector(state => state.user);
     const [isOnFavourite, setIsOnFavourite] = useState<boolean>(false);
 
     const checkFavourite = async() => {
@@ -28,6 +30,10 @@ const ProductItem: FC<ProductItemProps> = ({product}) => {
     }
 
     const addFavourite = async () => {
+        if(!isAuth) {
+            toast('Необходимо войти в аккаунта');
+            return
+        }
         try {
             await instance.post('/favourite', {
                 productId: product.id

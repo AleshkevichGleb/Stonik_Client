@@ -38,7 +38,7 @@ const Header = () => {
                         )}
                         {
                             user.role === 'admin' &&
-                            <Link className = {styles.link}  to={'admin'}>
+                            <Link className = {styles.link}  to={'/admin/news'}>
                                 Admin
                             </Link>
                         }

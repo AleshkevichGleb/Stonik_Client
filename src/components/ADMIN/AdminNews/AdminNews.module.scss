@@ -12,6 +12,7 @@
   align-items: center;
   border: 1px solid grey;
   border-radius: 10px;
+  gap: 20px;
   padding: 10px;
 
   .addNewsBlock {
@@ -74,7 +75,6 @@
       width: 100%;
       display: flex;
       justify-content: space-between;
-      //align-items: start;
 
       .newsDelete {
         background-color: rgba(116, 0, 0, 0.7);
@@ -121,3 +121,4 @@
     }
   }
 }
+
