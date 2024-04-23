@@ -2,7 +2,8 @@ import {useMemo} from "react";
 import {IProduct} from "../types/types.ts";
 
 export type TSort = 'name' | 'price' | 'type' | 'default'
-export const useSortProducts = (products: IProduct[], sort: TSort) => {
+export const useSortProducts = (products: IProduct[], sort: TSort, isSale: boolean, startPrice: string, lastPrice: string) => {
+
 
     const sortedProducts = useMemo(() => {
         let newProducts: IProduct[] = [];
@@ -26,16 +27,23 @@ export const useSortProducts = (products: IProduct[], sort: TSort) => {
             default: return products;
         }
 
+        if(startPrice && lastPrice) {
+            newProducts = [...newProducts].filter(product => product.price > +startPrice  && product.price < +lastPrice)
+        } else if(startPrice) {
+            newProducts = [...newProducts].filter(product => product.price > +startPrice)
+        } else if (lastPrice) {
+            newProducts = [...newProducts].filter(product => product.price < +lastPrice)
+        }
+
+        if(isSale) newProducts = [...newProducts].filter(product => product.isSale)
+
         return newProducts;
-    }, [sort, products]);
+    }, [sort, products, startPrice, lastPrice, isSale]);
 
     return sortedProducts
 }
-export const useSearchProducts = (products: IProduct[], searchValue: string, sort: TSort, isSale: boolean) => {
-    const sortedProducts = useSortProducts(products, sort);
-    // if(isSale) {
-    //     newProducts = [...newProducts].filter(product => product.isSale)
-    // }
+export const useSearchProducts = (products: IProduct[], searchValue: string, sort: TSort, isSale: boolean, startPrice: string, lastPrice: string) => {
+    const sortedProducts = useSortProducts(products, sort, isSale, startPrice, lastPrice);
 
     const searchProducts: IProduct[] = useMemo(() => {
         if(searchValue.length) {

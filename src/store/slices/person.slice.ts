@@ -22,6 +22,10 @@ const initialState: IInitialState = {
         payment: {
             type: 'card',
             surrender_of_money: '',
+            cvc: '',
+            expiry: '',
+            name: '',
+            number: '',
         },
         agreement: false,
     }
@@ -35,8 +39,24 @@ const personSlice = createSlice({
         setPerson: (state, action: PayloadAction<{id: TPersonDataField, value: string, checked: boolean, name: string }>) => {
             const {id, value, checked, name} = action.payload;
             const setValue = id === 'agreement' ? checked : value;
-
-            if(name === 'payment') {
+            if(id === 'payment') {
+                let newValue = value;
+                switch (name) {
+                    case "number": {
+                        newValue = newValue.replace(/\s/g, '');
+                        newValue = newValue.replace(/(.{4})/g, '$1 ');
+                        newValue = newValue.trim();
+                        break
+                    }
+                    case "expiry": {
+                        newValue = newValue.replace(/\s|\//g, '');
+                        newValue = newValue.replace(/(.{2})(.{2})/g, '$1/$2 ');
+                        newValue = newValue.trim();
+                        break
+                    }
+                }
+                state.person[id] = {...state.person[id], [name]: newValue}
+            } else if(name === 'payment') {
                 // if(id !== 'surrender_of_money' && state[name].hasOwnProperty("surrender_of_money")) delete state[name].surrender_of_money;
                 state.person[name] = {...state.person[name], [id]: setValue}
             } else {

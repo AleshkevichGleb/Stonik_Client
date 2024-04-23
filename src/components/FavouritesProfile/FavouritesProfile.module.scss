@@ -69,3 +69,17 @@
 .bigButton {
   width: 100%;
 }
+
+.catalogButtonContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .catalogButton {
+    padding:10px  20px;
+  }
+}

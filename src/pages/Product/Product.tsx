@@ -1,7 +1,6 @@
 import {FC, useEffect, useState, MouseEvent} from 'react';
 import {useParams} from "react-router-dom";
 import {IProduct, IReview} from "../../types/types.ts";
-import productService from "../../services/productService.ts";
 import CheckMark from "../../common/CheckMark/CheckMark.tsx";
 import styles from "./Product.module.scss";
 import ProductFunctional from "./ProductFunctional/ProductFunctional.tsx";

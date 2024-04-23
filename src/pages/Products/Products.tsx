@@ -13,13 +13,23 @@ import scrollToTop from "../../helpers/scrollToTop.ts";
 const Products: FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    // const [searchValue, setSearchValue] = useState<string>('');
+    const [allProducts, setAllProducts] = useState<IProduct[]>([])
     const [filter, setFilter] = useState<IFilter>({
         sort: 'default',
         searchValue: '',
         isSale: false,
+        type: [],
+        startPrice: '',
+        lastPrice: ''
     })
-    const searchProducts = useSearchProducts(products, filter.searchValue, filter.sort, filter.isSale);
+    const searchProducts = useSearchProducts(
+        products,
+        filter.searchValue,
+        filter.sort,
+        filter.isSale,
+        filter.startPrice,
+        filter.lastPrice
+    );
     const [pagesArray, setPagesArray] = useState<number[]>([])
     const [viewsSettings, setViewsSettings] = useState<{limit: number, page: number}>({
         limit: 9,
@@ -29,8 +39,9 @@ const Products: FC = () => {
 
     const fetchProducts = async() => {
         setIsLoading(true);
-        const products = await ProductService.getProducts(viewsSettings.limit,viewsSettings.page,'');
-        setProducts(products.rows)
+        const products = await ProductService.getProducts(viewsSettings.limit,viewsSettings.page, filter.type);
+        setProducts(products.rows);
+        setAllProducts(products.allProducts);
 
         const arrLength = Math.ceil(products.count / viewsSettings.limit);
         const pagesArray = Array.from({ length: arrLength }, (_, index) => index + 1)
@@ -41,7 +52,7 @@ const Products: FC = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [viewsSettings]);
+    }, [viewsSettings, filter.type]);
 
     return (
         <div className={styles.products}>
@@ -84,6 +95,7 @@ const Products: FC = () => {
                     <div className={styles.products__block}>
                         <div className={styles.filterBlock}>
                             <Filter
+                                products={allProducts}
                                 filter={filter}
                                 setFilter={setFilter}
                             />

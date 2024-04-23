@@ -64,7 +64,7 @@ interface IProductInfo {
     text: string,
 }
 
-export type ProductType = 'sill' | 'shell' | 'worktop' | 'vase'
+export type ProductType = 'Подоконник' | 'Раковина' | 'Столешница' | 'Ваза'
 
 
 export interface IBasketData {
@@ -83,6 +83,10 @@ export interface IPersonData {
     payment: {
         type: string,
         surrender_of_money: string,
+        name: string,
+        number:string,
+        expiry: string,
+        cvc: string,
     },
     agreement: boolean,
 }
@@ -97,7 +101,7 @@ export interface IErrorValidatePersonDate {
     flat: string,
 }
 
-export type TPersonDataField = 'name' | 'phone' | 'phone' | 'email' | 'house'| 'city' | 'street' | 'house' | 'flat' | 'agreement'
+export type TPersonDataField = 'name' | 'phone' | 'phone' | 'email' | 'house'| 'city' | 'street' | 'house' | 'flat' | 'agreement' | 'payment'
 
 export type OrderStatusTypes = 'В обработке' | 'В пути' | 'Доставлено'
 
@@ -134,6 +138,9 @@ export interface IFilter {
     sort: TSort,
     searchValue: string,
     isSale: boolean
+    type: ProductType[]
+    startPrice: string
+    lastPrice: string
 }
 
 export interface INews {

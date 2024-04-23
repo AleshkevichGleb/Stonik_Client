@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import './index.css';
 import { store } from './store/store.ts';
 import router from "./router.tsx";
+import 'react-credit-cards-2/dist/lib/styles.scss';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>

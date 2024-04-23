@@ -2,11 +2,12 @@ import styles from "./HistoryProfile.module.scss"
 import orderService from "../../services/orderService.ts";
 import {ChangeEvent, useEffect, useState} from "react";
 import {AxiosError} from "axios";
-import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
 import Loader from "../../assets/images/loader-icon.svg";
-import {IOrder, IProduct, OrderStatusTypes} from "../../types/types.ts";
-import ReviewModal from "../ReviewModal/ReviewModal.tsx";
-import {Link} from "react-router-dom";
+import {IOrder, OrderStatusTypes} from "../../types/types.ts";
+// import ReviewModal from "../ReviewModal/ReviewModal.tsx";
+import {Link, useNavigate} from "react-router-dom";
+import Button from "../../common/Button/Button.tsx";
 
 const getStatusClassName = (status: OrderStatusTypes) => {
     switch (status) {
@@ -26,8 +27,9 @@ const HistoryProfile = () => {
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
-    const [modalProduct, setModalProduct] = useState<IProduct | null>(null);
+    // const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
+    // const [modalProduct, setModalProduct] = useState<IProduct | null>(null);
+    const navigate = useNavigate();
     const getHistory = async(): Promise<void> => {
         try {
             setIsLoading(true);
@@ -56,6 +58,7 @@ const HistoryProfile = () => {
         setPage(0);
     };
 
+    console.log(history)
     if(isLoading) {
         return (
             <div className={styles.loaderContaienr}>
@@ -65,13 +68,13 @@ const HistoryProfile = () => {
     }
     return (
         <div className={styles.container}>
-            {
+      {/*      {
                 isActiveModal && <ReviewModal
                     setIsActiveModal={setIsActiveModal}
                     isActiveModal={isActiveModal}
                     product={modalProduct}
                 />
-            }
+            }*/}
             {history.length > 0 ? (
                         <TableContainer>
                             <Table className = {styles.table}>
@@ -114,11 +117,15 @@ const HistoryProfile = () => {
                             page={page}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
+                            labelRowsPerPage = 'Отображать по'
                         />
                         </TableContainer>
             ) : (
                 <div className={styles.loaderContaienr}>
                     <h2>Ваша истоирия пуста</h2>
+                    <Button addStyles={styles.catalogButton} onClick={() => navigate('/products')}>
+                        Перейти к каталогу
+                    </Button>
                 </div>
             )}
         </div>

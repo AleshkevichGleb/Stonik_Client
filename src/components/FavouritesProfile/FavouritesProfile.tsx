@@ -4,10 +4,11 @@ import {useEffect, useState} from "react";
 import {IFavourite} from "../../types/types.ts";
 import starImage from "../../assets/images/star.svg";
 import ToCartButtons from "../../common/ToCartButtons/ToCartButtons.tsx";
-import {Link} from "react-router-dom";
-// import ProductItem from "../ProductItem/ProductItem.tsx";
+import {Link, useNavigate} from "react-router-dom";
+import Button from "../../common/Button/Button.tsx";
 const FavouritesProfile = () => {
     const [favourites, setFavourites] = useState<IFavourite[]>([])
+    const navigate = useNavigate();
     const getFavourites = async (): Promise<void> => {
         try {
             const {data} = await instance.get('favourite/user');
@@ -52,7 +53,12 @@ const FavouritesProfile = () => {
                         )
                     }
                 </div>
-                : <h2>AAAAAAAAAAAAAAA</h2>
+                : <div className={styles.catalogButtonContainer}>
+                    <h2>Вы не добавили ни одного товара</h2>
+                    <Button onClick={() => navigate('/products')} addStyles={styles.catalogButton}>
+                        Перейти к каталогу
+                    </Button>
+                </div>
             }
         </div>
     )
