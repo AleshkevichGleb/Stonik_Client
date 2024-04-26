@@ -4,7 +4,7 @@ import styles from "./Products.module.scss";
 import {IFilter, IProduct} from "../../types/types.ts";
 import ProductService from "../../services/productService.ts";
 import ProductItem from "../../components/ProductItem/ProductItem.tsx";
-import {TSort, useSearchProducts} from "../../hooks/useSearchProducts.ts";
+import {TSort, useSortProducts} from "../../hooks/useSearchProducts.ts";
 import MySelect from '../../components/MySelect/MySelect.tsx';
 import Filter from "../../components/Filter/Filter.tsx";
 import Button from "../../common/Button/Button.tsx";
@@ -13,7 +13,6 @@ import scrollToTop from "../../helpers/scrollToTop.ts";
 const Products: FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [allProducts, setAllProducts] = useState<IProduct[]>([])
     const [filter, setFilter] = useState<IFilter>({
         sort: 'default',
         searchValue: '',
@@ -22,28 +21,31 @@ const Products: FC = () => {
         startPrice: '',
         lastPrice: ''
     })
-    const searchProducts = useSearchProducts(
+    const searchProducts = useSortProducts(
         products,
-        filter.searchValue,
         filter.sort,
-        filter.isSale,
-        filter.startPrice,
-        filter.lastPrice
     );
+
     const [pagesArray, setPagesArray] = useState<number[]>([])
     const [viewsSettings, setViewsSettings] = useState<{limit: number, page: number}>({
         limit: 9,
         page: 1,
     })
-
-
     const fetchProducts = async() => {
         setIsLoading(true);
-        const products = await ProductService.getProducts(viewsSettings.limit,viewsSettings.page, filter.type);
+        const products = await ProductService.getProducts(
+            viewsSettings.limit,
+            viewsSettings.page,
+            filter.type,
+            filter.searchValue,
+            filter.isSale,
+            filter.startPrice,
+            filter.lastPrice,
+        );
         setProducts(products.rows);
-        setAllProducts(products.allProducts);
 
         const arrLength = Math.ceil(products.count / viewsSettings.limit);
+        console.log(arrLength)
         const pagesArray = Array.from({ length: arrLength }, (_, index) => index + 1)
         setPagesArray(pagesArray)
 
@@ -52,7 +54,7 @@ const Products: FC = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [viewsSettings, filter.type]);
+    }, [viewsSettings, filter]);
 
     return (
         <div className={styles.products}>
@@ -95,20 +97,21 @@ const Products: FC = () => {
                     <div className={styles.products__block}>
                         <div className={styles.filterBlock}>
                             <Filter
-                                products={allProducts}
                                 filter={filter}
                                 setFilter={setFilter}
                             />
                         </div>
                         <div className={styles.products__list}>
                             {
-                               isLoading
-                                ? <h2>Loading</h2>
-                                : searchProducts.length
-                                       ?  searchProducts.map(product =>
-                                            <ProductItem key = {product.id} product={product}/>
-                                       )
-                                       : <h2>Нихуя не найдено</h2>
+                                // isLoading
+                                //     ? <div className={styles.loadContainer}>
+                                //         <img className={styles.image} src={loadImage} alt="loader"/>
+                                //     </div> :
+                                    searchProducts.length
+                                        ? searchProducts.map(product =>
+                                            <ProductItem key={  product.id} product={product}/>
+                                        )
+                                        : <h2>Ничего не найдено</h2>
                             }
                         </div>
                         {

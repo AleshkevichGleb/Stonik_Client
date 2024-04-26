@@ -44,7 +44,6 @@ const FormComponent: FC = () => {
     };
 
 
-
     useEffect(() => {
         if (!(Object.values(user)[0].length && !personData.email)) {
             for (let key in user) {

@@ -1,16 +1,14 @@
 import styles from "./Filter.module.scss";
 import {FC} from "react";
-import {IFilter, IProduct, ProductType} from "../../types/types.ts";
-import {getProductTypes} from "../../data/productTypes.ts";
+import {IFilter, ProductType} from "../../types/types.ts";
 
 interface FilterProps {
-    products: IProduct[]
     filter: IFilter,
     setFilter: (filter: IFilter) => void,
 }
 
-const Filter: FC<FilterProps> = ({filter, setFilter, products}) => {
-    const productTypes = getProductTypes(products);
+const Filter: FC<FilterProps> = ({filter, setFilter}) => {
+    const productTypes = ['Ваза', 'Раковина', 'Подоконник', 'Столешница'];
     const getValidType = (filterType: ProductType[], type: string)=> {
         let typesArray:ProductType[];
         let validType: ProductType = 'Ваза';

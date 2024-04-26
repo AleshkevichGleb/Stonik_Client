@@ -9,3 +9,11 @@ export const getProductTypes = (products: IProduct[]) => {
     const filterProductTypes: string[] = Array.from(new Set(types));
     return filterProductTypes;
 }
+
+export const  getCorrectProductTypes = (products: IProduct[]) => {
+    const types = products.map(product => {
+        return product.type
+    })
+
+    return Array.from(new Set(types));
+}

@@ -27,7 +27,6 @@ function App() {
             const basketProducts = await BasketService.getForUser();
             if(basketProducts.length) dispatch(setBasket(basketProducts));
         } catch (e) {
-            console.log(e)
             removeTokenFromLocaleStorage('token');
         } finally {
             setIsLoading(false);

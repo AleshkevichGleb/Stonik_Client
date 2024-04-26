@@ -19,6 +19,7 @@ const ADMIN = () => {
                 <Link className={url === 'news' ? [styles.admin__navigateItem, styles.active].join(' ') : styles.admin__navigateItem} to = {'news'}>Новости</Link>
                 <Link className={url === 'products' ? [styles.admin__navigateItem, styles.active].join(' ') : styles.admin__navigateItem}  to = {'products'}>Товары</Link>
                 <Link className={url === 'reviews' ? [styles.admin__navigateItem, styles.active].join(' ') : styles.admin__navigateItem}  to = {'reviews'}>Отзывы</Link>
+                <Link className={url === 'orders' ? [styles.admin__navigateItem, styles.active].join(' ') : styles.admin__navigateItem}  to = {'orders'}>Заказы</Link>
             </div>
             <Outlet/>
         </div>

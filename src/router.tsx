@@ -20,6 +20,7 @@ import ADMIN from "./pages/ADMIN/ADMIN.tsx";
 import AdminNews from "./components/ADMIN/AdminNews/AdminNews.tsx";
 import AdminReviews from "./components/ADMIN/AdminReviews/AdminReviews.tsx";
 import AdminProducts from "./components/ADMIN/AdminProducts/AdminProducts.tsx";
+import AdminOrders from "./components/ADMIN/AdminOrders/AdminOrders.tsx";
 
 const router = createBrowserRouter([
     {
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
                     {path: "news", element: <AdminNews/>},
                     {path: "products", element: <AdminProducts/>},
                     {path: "reviews", element: <AdminReviews/>},
+                    {path: "orders", element: <AdminOrders/>},
                 ]
             },
             {

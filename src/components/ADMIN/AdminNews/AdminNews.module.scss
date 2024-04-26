@@ -83,6 +83,10 @@
         padding: 40px;
         cursor: pointer;
         box-shadow: none;
+
+        &:hover {
+          background-color: rgba(116, 0, 0, 1) ;
+        }
       }
       .newsDate {
         background-color: rgba(0,0,0,0.7);
@@ -120,5 +124,12 @@
       }
     }
   }
+}
+
+.errorBlock {
+  padding: 50px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 

@@ -2,12 +2,20 @@ import {IProduct, ProductType} from "../types/types.ts";
 import {instance} from "../api/axios.ts";
 
 class productService {
-    async getProducts(limit?: number, page?:number, types?: ProductType[]) {
+    async getProducts(
+        limit?: number,
+        page?:number,
+        types?: ProductType[],
+        search?: string,
+        isSale?:boolean,
+        startPrice?: string,
+        lastPrice?:string
+    ) {
         const validTypes = types?.join(',')
-        console.log(validTypes)
-        const {data} =  await instance.get<{count: number, rows: IProduct[], allProducts: IProduct[]}>
-            (`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}`)
-        console.log(data)
+        const {data} =  await instance.get<{count: number, rows: IProduct[]}>
+            (`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search || ''}&startPrice=${startPrice || ''}&lastPrice=${lastPrice || ''}${isSale ? '&isSale=true' : ''}`)
+
+        console.log(`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search || ''}${isSale ? '&isSale=true' : ''}`)
         return data
     }
 

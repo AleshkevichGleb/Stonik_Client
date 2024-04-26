@@ -46,7 +46,7 @@ const ProductItem: FC<ProductItemProps> = ({product}) => {
 
 
     useEffect(() => {
-        checkFavourite();
+        if(isAuth)checkFavourite();
     }, []);
 
     return (

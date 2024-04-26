@@ -5,6 +5,8 @@
 .products__container {
     max-width: 1300px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .productsTitle {
@@ -86,9 +88,8 @@
 
 .products__block {
     display: flex;
-    //flex-wrap: wrap;
-    //justify-content: center;
     gap: 50px;
+    width: 100%;
 
     .products__list {
         display: flex;
@@ -123,6 +124,22 @@
     width: 30px;
     height: 30px;
     background-color: #2f2e2e;
+}
+
+.loadContainer {
+    padding: 100px;
+    width: 1000px;
+    border: 1px solid black;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+
+    .image {
+        width: 300px;
+        height: 300px;
+    }
 }
 
 

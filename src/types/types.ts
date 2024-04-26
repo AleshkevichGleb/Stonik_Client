@@ -54,6 +54,18 @@ export interface IProduct {
     createdAt: string
     updatedAt: string
 }
+
+export interface IProductSend  {
+    name: string
+    description: string
+    price: number
+    rating: null | number
+    isSale: boolean
+    salePrice: number
+    info: IProductInfo[],
+    type: ProductType
+    amount: number,
+}
 export interface IProductData extends Omit<IProduct, 'info'>{
     info: string
 }
@@ -125,6 +137,10 @@ export interface IReview {
     createdAt: string
     updatedAt: string
     user: IUserReview
+}
+
+export interface IReviewsData extends IReview{
+    product: IProduct
 }
 
 export interface IUserReview {

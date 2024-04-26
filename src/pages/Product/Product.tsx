@@ -20,7 +20,7 @@ import {useAppSelector} from "../../hooks/useReducer.ts";
 import {toast} from "react-toastify";
 
 const Product: FC = () => {
-    const {isAuth} = useAppSelector(state => state.user);
+    const {isAuth, user} = useAppSelector(state => state.user);
     const [product, setProduct] = useState<IProduct | null>(null)
     const {id} = useParams();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,7 +64,7 @@ const Product: FC = () => {
     }
     useEffect(() => {
         getProduct();
-    }, []);
+    }, [isActiveModal]);
 
     const sendReview = async () => {
         if(!isAuth) {
@@ -150,6 +150,18 @@ const Product: FC = () => {
                             {reviews.map(review =>
                                 <div key = {review.id} className = {styles.review}>
                                     <div className={styles.reviewInfo}>
+                                        {
+                                            user.role === 'admin'&&
+                                            <Button
+                                                addStyles={styles.removeButton}
+                                                onClick={async () => {
+                                                    await reviewService.deleteReview(review.id, review.productId);
+                                                    await getProduct();
+                                                }}
+                                            >
+                                                Удалить
+                                            </Button>
+                                        }
                                         <div className={styles.review__user}>
                                             <img className = {styles.review__image} src={review.user.image ? review.user.image : clearUser} alt=""/>
                                             <div className={styles.review__userInfo}>

@@ -41,7 +41,7 @@ const AdminNews = () => {
             if (ref.current) {
                 ref.current.value = '';
             }
-            getNews();
+            await getNews();
         } catch (error) {
             if(error instanceof AxiosError) {
                 toast.error(error.response?.data.message)
@@ -66,7 +66,6 @@ const AdminNews = () => {
         getNews()
     }, []);
 
-    console.log(ref)
     
     return(
         <div className={styles.container}>
