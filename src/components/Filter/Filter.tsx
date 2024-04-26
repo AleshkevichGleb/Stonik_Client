@@ -11,16 +11,16 @@ const Filter: FC<FilterProps> = ({filter, setFilter}) => {
     const productTypes = ['Ваза', 'Раковина', 'Подоконник', 'Столешница'];
     const getValidType = (filterType: ProductType[], type: string)=> {
         let typesArray:ProductType[];
-        let validType: ProductType = 'Ваза';
-        if(type === 'Подоконники') validType =  type.slice(0, -1) as ProductType
-        else validType = type.slice(0, -1) + 'а'
+        // let validType: ProductType = 'Ваза';
+        // if(type === 'Подоконники') validType =  type.slice(0, -1) as ProductType
+        // else validType = type.slice(0, -1) + 'а'
 
         if(filterType.length) {
             typesArray = filterType;
-            if(filterType.includes(validType as ProductType)) typesArray = typesArray.filter(typeFilter =>  typeFilter !== validType)
-            else typesArray = [...typesArray, validType as ProductType]
+            if(filterType.includes(type as ProductType)) typesArray = typesArray.filter(typeFilter =>  typeFilter !== type)
+            else typesArray = [...typesArray, type as ProductType]
         } else {
-            typesArray = [validType as ProductType]
+            typesArray = [type as ProductType]
         }
 
         return typesArray;
