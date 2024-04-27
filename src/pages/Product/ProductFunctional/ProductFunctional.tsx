@@ -1,5 +1,5 @@
 import {FC, useEffect, useState} from "react";
-import {IProduct} from "../../../types/types.ts";
+import {IProduct, IRegistrationUser} from "../../../types/types.ts";
 import styles from "./ProductFunctional.module.scss";
 import checkMarkImage from "../../../assets/images/checkMark.svg"
 import ToCartButtons from "../../../common/ToCartButtons/ToCartButtons.tsx";
@@ -9,17 +9,27 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import {instance} from "../../../api/axios.ts";
 import {toast} from "react-toastify";
+import Button from "../../../common/Button/Button.tsx";
+import productService from "../../../services/productService.ts";
+import axios, {AxiosError} from "axios";
+import {useNavigate} from "react-router-dom";
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import Paper from "@mui/material/Paper";
 
 interface ProductFunctionalProps {
     product: IProduct | null,
     productId: string | undefined,
     isAuth: boolean,
+    user: IRegistrationUser,
 }
 
-const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId, isAuth}) => {
+const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId, isAuth, user}) => {
     const [isOnFavourite, setIsOnFavourite] = useState<boolean>(false);
     const [isActive, setIsActive] = useState<boolean>(true);
-
+    const navigate = useNavigate();
+    const [productAmount, setProductAmount] = useState<string>(String(product?.amount));
     const checkFavourite = async() => {
         try {
             const {data} = await instance.post('/favourite/check', {
@@ -47,6 +57,17 @@ const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId, isAu
         }
     }
 
+    const updateAmount = async() => {
+        try {
+            await instance.patch(`/products/${product?.id}`, {
+                amount: productAmount,
+            })
+            toast.success('Успешно обновлено')
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
 
     useEffect(() => {
         checkFavourite();
@@ -55,22 +76,75 @@ const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId, isAu
         <div className={styles.product__functional}>
                 {product?.amount as number > 0
                     ? <div className={styles.checkMark}>
-                        <img src={checkMarkImage} alt="check mark"/>
-                        <span className={styles.inStock}>В наличии</span>
                         {
-                            isOnFavourite
-                                ? <FavoriteIcon onClick={addFavourite} fontSize={'small'} color={'warning'}/>
-                                :  <FavoriteBorderIcon onClick={addFavourite} fontSize={'small'}/>
+                            user.role === 'admin'
+                            ?
+                                <Paper
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 300 }}
+                                >
+                                    <InputBase
+                                        sx={{ ml: 1, flex: 1 }}
+                                        placeholder="Количество на складе"
+                                        inputProps={{ 'aria-label': 'search amount',maxLength: 5 }}
+                                        value = {productAmount}
+                                        onChange = {(e) => {
+                                            if (/\D/.test(e.target.value)) {
+                                                return;
+                                            }
+                                            setProductAmount(e.target.value)
+                                        }}
+                                    />
+                                    <IconButton onClick = {updateAmount} type="button" sx={{ p: '10px' }} aria-label="search">
+                                        <SearchIcon />
+                                    </IconButton>
+                                </Paper>
+                            : <>
+
+                                <img src={checkMarkImage} alt="check mark"/>
+                                <span className={styles.inStock}>В наличии</span>
+                                {
+                                    isOnFavourite
+                                        ? <FavoriteIcon onClick={addFavourite} fontSize={'small'} color={'warning'}/>
+                                        :  <FavoriteBorderIcon onClick={addFavourite} fontSize={'small'}/>
+                                }
+                                </>
                         }
+
                     </div>
                     :
                     <div className={styles.product__functional__amountBlock}>
-                        <span className={styles.notInStock}>Нету в наличии</span>
                         {
-                            isOnFavourite
-                                ? <FavoriteIcon onClick={addFavourite} fontSize={'small'} color={'warning'}/>
-                                :  <FavoriteBorderIcon onClick={addFavourite} fontSize={'small'}/>
+                            user.role === 'admin'
+                            ?
+                                <Paper
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 300 }}
+                                >
+                                    <InputBase
+                                        sx={{ ml: 1, flex: 1 }}
+                                        placeholder="Количество на складе"
+                                        inputProps={{ 'aria-label': 'search amount',maxLength: 5 }}
+                                        value = {productAmount}
+                                        onChange = {(e) => {
+                                            if (/\D/.test(e.target.value)) {
+                                                return;
+                                            }
+                                            setProductAmount(e.target.value)
+                                        }}
+                                    />
+                                    <IconButton onClick = {updateAmount} type="button" sx={{ p: '10px' }} aria-label="search">
+                                        <SearchIcon />
+                                    </IconButton>
+                                </Paper>
+                            : <>
+                                <span className={styles.notInStock}>Нету в наличии</span>
+                                {
+                                    isOnFavourite
+                                        ? <FavoriteIcon onClick={addFavourite} fontSize={'small'} color={'warning'}/>
+                                        :  <FavoriteBorderIcon onClick={addFavourite} fontSize={'small'}/>
+                                }
+                            </>
                         }
+                      
                     </div>
                 }
             <div>
@@ -91,10 +165,24 @@ const ProductFunctional: FC<ProductFunctionalProps> = ({product, productId, isAu
                 </div>
             }
             <span className={styles.product__NDS}>Цена указана с учетом НДС</span>
-            <ToCartButtons
-                addStyles={{button: styles.smallButton, count: styles.cartCount}}
-                product={product}
-            />
+            {
+                user.role === 'admin'
+                ?  <Button addStyles={styles.deleteButton} onClick={async() => {
+                        const data = await productService.delete(product?.id as string)
+                        if(data instanceof AxiosError) {
+                            return  toast.error(data.response?.data.message || data.response?.data.error);
+                        }
+
+                        toast.success(data.message);
+                        navigate('/products');
+                    }}>
+                        Удалить
+                    </Button>
+                :  <ToCartButtons
+                        addStyles={{button: styles.smallButton, count: styles.cartCount}}
+                        product={product}
+                    />
+            }
             <div className={styles.product__accordion}>
                 <div className={styles.product__accordionTitleBLock} onClick={() => setIsActive(!isActive)}>
                     <span className={styles.product__accordion__title}>Характеристики</span>

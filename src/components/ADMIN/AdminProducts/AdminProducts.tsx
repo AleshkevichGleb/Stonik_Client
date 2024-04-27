@@ -8,6 +8,7 @@ import styles from "./AdminProducts.module.scss";
 import Button from "../../../common/Button/Button.tsx";
 import {toast} from "react-toastify";
 import {instance} from "../../../api/axios.ts";
+import {AxiosError} from "axios";
 
 const AdminProducts = () => {
     const ref = useRef<HTMLInputElement | null>(null);
@@ -33,21 +34,6 @@ const AdminProducts = () => {
         ],
         amount: 1000,
     })
-
-    // const getProducts = async () => {
-    //     try {
-    //         const data = await productService.getProducts();
-    //         const types = getCorrectProductTypes(data.rows);
-    //         setTypes(types)
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }
-
-
-    // useEffect(() => {
-    //     getProducts()
-    // }, []);
 
     const removeEmptyObjects = (arr: any[]) => {
         return arr.filter(item => item.title.trim() !== '' || item.text.trim() !== '');
@@ -81,7 +67,9 @@ const AdminProducts = () => {
             await instance.post('/products', formData);
             toast.success('Товар успешно добавлен')
         } catch (error) {
-            console.error('Error adding product:', error);
+            if(error instanceof AxiosError) {
+                toast.error(error.response?.data.error)
+            }
         }
     }
 
@@ -117,7 +105,6 @@ const AdminProducts = () => {
 
 
     }
-    console.log(product)
 
     return(
         <div className={styles.container}>
@@ -159,7 +146,7 @@ const AdminProducts = () => {
                     </div>
                 </div>
 
-                <Button addStyles={styles.button} onClick={addProduct}>Send</Button>
+                <Button addStyles={styles.button} onClick={addProduct}>Создать</Button>
             </div>
         </div>
     )

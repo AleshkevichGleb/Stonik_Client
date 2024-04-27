@@ -11,7 +11,7 @@
     gap: 30px;
 
     .newsItem {
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       background-repeat: no-repeat;
       background-size: cover;
@@ -21,6 +21,10 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
+
+      @media (max-width: 1290px) {
+        border-radius: 0;
+      }
 
       .newsDate {
         background-color: rgba(0,0,0,0.7);

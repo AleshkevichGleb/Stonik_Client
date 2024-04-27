@@ -9,10 +9,16 @@ import MySelect from '../../components/MySelect/MySelect.tsx';
 import Filter from "../../components/Filter/Filter.tsx";
 import Button from "../../common/Button/Button.tsx";
 import scrollToTop from "../../helpers/scrollToTop.ts";
-
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import loadImage from "../../assets/images/loader-icon.svg"
+import SearchIcon from '@mui/icons-material/Search';
 const Products: FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isChooseFilter, setIsChooseFilter] = useState<boolean>(false);
+
     const [filter, setFilter] = useState<IFilter>({
         sort: 'default',
         searchValue: '',
@@ -21,6 +27,7 @@ const Products: FC = () => {
         startPrice: '',
         lastPrice: ''
     })
+
     const searchProducts = useSortProducts(
         products,
         filter.sort,
@@ -45,7 +52,7 @@ const Products: FC = () => {
         setProducts(products.rows);
 
         const arrLength = Math.ceil(products.count / viewsSettings.limit);
-        console.log(arrLength)
+
         const pagesArray = Array.from({ length: arrLength }, (_, index) => index + 1)
         setPagesArray(pagesArray)
 
@@ -54,7 +61,7 @@ const Products: FC = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [viewsSettings, filter]);
+    }, [viewsSettings, filter.type, filter.isSale, isChooseFilter]);
 
     return (
         <div className={styles.products}>
@@ -66,15 +73,31 @@ const Products: FC = () => {
                             title_p2='натурального камня'
                         />
                         <div className={styles.sortBlock}>
-                             <input
-                                className={styles.searchInput}
-                                placeholder="Поиск"
-                                value = {filter.searchValue}
-                                onChange = {(e) => setFilter({...filter, searchValue: e.target.value})}
-                             />
+                            <Paper
+                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 300 }}
+                            >
+                                <InputBase
+                                    sx={{ ml: 1, flex: 1 }}
+                                    placeholder="Поиск"
+                                    inputProps={{ 'aria-label': 'search google maps' }}
+                                    value = {filter.searchValue}
+                                    onBlur={async() => {
+                                        if (!filter.searchValue) {
+                                            await fetchProducts();
+                                        }
+                                    }}
+                                    onChange = {(e) => setFilter({...filter, searchValue: e.target.value})}
+                                />
+                                <IconButton onClick = {() => setIsChooseFilter(!isChooseFilter)} type="button" sx={{ p: '10px' }} aria-label="search">
+                                    <SearchIcon />
+                                </IconButton>
+                            </Paper>
                             <MySelect
                                 value={filter.sort}
-                                onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilter({...filter, sort: e.target.value as TSort})}
+                                onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilter({
+                                    ...filter,
+                                    sort: e.target.value as TSort
+                                })}
                                 options={[
                                     {value: 'default', name: 'Сортировка по'},
                                     {value: 'type', name: 'Виду изделия'},
@@ -97,49 +120,30 @@ const Products: FC = () => {
                     <div className={styles.products__block}>
                         <div className={styles.filterBlock}>
                             <Filter
+                                setIsChooseFilter={setIsChooseFilter}
+                                isChooseFilter={isChooseFilter}
                                 filter={filter}
                                 setFilter={setFilter}
                             />
                         </div>
                         <div className={styles.products__list}>
                             {
-                                // isLoading
-                                //     ? <div className={styles.loadContainer}>
-                                //         <img className={styles.image} src={loadImage} alt="loader"/>
-                                //     </div> :
+                                isLoading
+                                    ? <div className={styles.loadContainer}>
+                                        <img className={styles.image} src={loadImage} alt="loader"/>
+                                    </div> :
                                     searchProducts.length
                                         ? searchProducts.map(product =>
-                                            <ProductItem key={  product.id} product={product}/>
+                                            <ProductItem
+                                                key={  product.id}
+                                                product={product}
+                                                setIsChooseFilter={setIsChooseFilter}
+                                                isChooseFilter={isChooseFilter}
+                                            />
                                         )
                                         : <h2>Ничего не найдено</h2>
                             }
                         </div>
-                        {
-                            // !filter.query.length &&
-                            // !Object.keys(filter.price).length &&
-                            // !Object.keys(filter.brand).length &&
-                            // !Object.keys(filter.color).length &&
-                            // !Object.keys(filter.mm).length
-                            //     ?<SortProducts
-                            //         searchProducts = {FilterAndSearchedProducts}
-                            //         pagesArray = {pagesArray}
-                            //         subArray = {subArray}
-                            //         currentPage = {currentPage}
-                            //         dispatch = {dispatch}
-                            //     />
-                            //
-                            //     :<>
-                            //         {
-                            //             !subArray.length
-                            //             ?   <h3 className={styles.empty}>Ничего не найдено</h3>
-                            //             :   <FilterProducts
-                            //                     products={FilterAndSearchedProducts}
-                            //                     subArray = {subArray}
-                            //                     currentPage = {currentPage}
-                            //                 />
-                            //         }
-                            //     </>
-                        }
                     </div>
                     <div className={styles.pages}>
                     {

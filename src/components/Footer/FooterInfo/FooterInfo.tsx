@@ -10,7 +10,7 @@ const FooterInfo: FC = () => {
             <div className={styles.footer__container}>
                 <Logo addStyles={styles.logo} text = 'КАМЕНЬ С ДУШОЙ'/>
                 <FooterMenu/>
-                {/* <FooterWeather/> */}
+                 {/*<FooterWeather/>*/}
             </div>
         </div>
     )

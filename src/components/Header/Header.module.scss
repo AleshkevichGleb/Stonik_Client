@@ -90,6 +90,21 @@
     flex-direction: column;
 }
 
+.profile__menu {
+    display: none;
+
+    @media (max-width: 1024px){
+        display: flex;
+    }
+}
+
+.profile__menu__hidden {
+    display: flex;
+    @media (max-width: 1024px){
+        display: none;
+    }
+}
+
 .profile__text {
     color: #fff;
     font-size: 18px;

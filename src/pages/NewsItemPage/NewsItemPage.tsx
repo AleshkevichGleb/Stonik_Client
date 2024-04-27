@@ -28,7 +28,7 @@ const NewsItemPage = () => {
     console.log(newsItem)
     return(
         <div className={styles.container}>
-            <div style={{maxWidth: '1280px', margin: '0 auto'}}>
+            <div className={styles.backLink}>
                 <BackLink title={'Назад'}/>
             </div>
             {

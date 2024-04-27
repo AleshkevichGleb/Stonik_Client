@@ -3,12 +3,13 @@
 }
 
 .footer__container {
-    padding: 20px 0;
+    padding: 20px 10px;
     max-width: 1300px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 100px;
 }
 
 .logo {
@@ -17,7 +18,7 @@
 
 @media(max-width: 740px) {
     .footer__container {
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 40px;
     }
 }

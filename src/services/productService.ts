@@ -1,5 +1,6 @@
 import {IProduct, ProductType} from "../types/types.ts";
 import {instance} from "../api/axios.ts";
+import {AxiosResponse} from "axios";
 
 class productService {
     async getProducts(
@@ -15,7 +16,7 @@ class productService {
         const {data} =  await instance.get<{count: number, rows: IProduct[]}>
             (`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search || ''}&startPrice=${startPrice || ''}&lastPrice=${lastPrice || ''}${isSale ? '&isSale=true' : ''}`)
 
-        console.log(`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search || ''}${isSale ? '&isSale=true' : ''}`)
+        // console.log(`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search || ''}${isSale ? '&isSale=true' : ''}`)
         return data
     }
 
@@ -28,6 +29,17 @@ class productService {
             return e
         }
     }
+
+    async delete(id: string | number) {
+        try {
+            const response:AxiosResponse = await instance.delete(`/products/${id}`);
+            return response.data;
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
+
 }
 
 export default new productService();

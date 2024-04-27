@@ -9,12 +9,16 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import {instance} from "../../api/axios.ts";
 import {useAppSelector} from "../../hooks/useReducer.ts";
 import {toast} from "react-toastify";
+import productService from "../../services/productService.ts";
+import {AxiosError} from "axios";
 interface ProductItemProps {
     product: IProduct,
+    setIsChooseFilter: (setIsChooseFilter: boolean) => void,
+    isChooseFilter: boolean
 }
 
-const ProductItem: FC<ProductItemProps> = ({product}) => {
-    const {isAuth} = useAppSelector(state => state.user);
+const ProductItem: FC<ProductItemProps> = ({product, setIsChooseFilter, isChooseFilter}) => {
+    const {isAuth, user} = useAppSelector(state => state.user);
     const [isOnFavourite, setIsOnFavourite] = useState<boolean>(false);
 
     const checkFavourite = async() => {
@@ -82,10 +86,24 @@ const ProductItem: FC<ProductItemProps> = ({product}) => {
             <Link to={`/products/${product.type}/${product.id}`}>
                 <Button addStyles={styles.button}>Подробнее</Button>
             </Link>
-            <ToCartButtons
-                addStyles={{bigButton: styles.button, button: styles.smallButton, count: styles.cartCount}}
-                product={product}
-            />
+            {
+                user.role === 'admin'
+                ? <Button addStyles={styles.deleteButton}  onClick={async() => {
+                        const data = await productService.delete(product.id)
+                        if(data instanceof AxiosError) {
+                            return  toast.error(data.response?.data.message || data.response?.data.error);
+                        }
+
+                        toast.success(data.message);
+                        setIsChooseFilter(!isChooseFilter);
+                    }}>
+                        Удалить
+                    </Button>
+                :   <ToCartButtons
+                        addStyles={{bigButton: styles.button, button: styles.smallButton, count: styles.cartCount}}
+                        product={product}
+                    />
+            }
         </div>
     )
 }

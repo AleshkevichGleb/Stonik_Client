@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { footerImages, navLinks } from "../../../../constants/links";
 import styles from "./FooterMenu.module.scss";
 
-const FooterMenu = () => {
+const   FooterMenu = () => {
     return (
         <div className={styles.container}>
             <div className={styles.menu}>

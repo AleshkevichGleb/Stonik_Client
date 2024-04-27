@@ -1,26 +1,47 @@
 import styles from "./Filter.module.scss";
-import {FC} from "react";
+import {FC, useEffect, useState} from "react";
 import {IFilter, ProductType} from "../../types/types.ts";
+import Button from "../../common/Button/Button.tsx";
+import {instance} from "../../api/axios.ts";
 
 interface FilterProps {
     filter: IFilter,
     setFilter: (filter: IFilter) => void,
+    isChooseFilter: boolean,
+    setIsChooseFilter: (isChooseFilter: boolean) => void,
 }
 
-const Filter: FC<FilterProps> = ({filter, setFilter}) => {
-    const productTypes = ['Ваза', 'Раковина', 'Подоконник', 'Столешница'];
+const Filter: FC<FilterProps> = ({filter, setFilter, setIsChooseFilter, isChooseFilter}) => {
+    const [types, setTypes] = useState<string[]>([])
+    const getTypes = async() =>  {
+        try {
+            const {data} = await instance.get('/products/types')
+
+            const types = data.map((type: any) => {
+                if(type === 'Подоконник') return type + 'и';
+                return (type).slice(0, -1) + 'ы';
+            })
+            setTypes(types);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        getTypes();
+    }, []);
     const getValidType = (filterType: ProductType[], type: string)=> {
         let typesArray:ProductType[];
-        // let validType: ProductType = 'Ваза';
-        // if(type === 'Подоконники') validType =  type.slice(0, -1) as ProductType
-        // else validType = type.slice(0, -1) + 'а'
+        let validType;
+        if(type === 'Подоконники') validType =  type.slice(0, -1) as ProductType
+        else validType = type.slice(0, -1) + 'а'
 
         if(filterType.length) {
             typesArray = filterType;
-            if(filterType.includes(type as ProductType)) typesArray = typesArray.filter(typeFilter =>  typeFilter !== type)
-            else typesArray = [...typesArray, type as ProductType]
+            if(filterType.includes(validType as ProductType)) typesArray = typesArray.filter(typeFilter =>  typeFilter !== validType)
+            else typesArray = [...typesArray, validType as ProductType]
         } else {
-            typesArray = [type as ProductType]
+            typesArray = [validType as ProductType]
         }
 
         return typesArray;
@@ -29,12 +50,12 @@ const Filter: FC<FilterProps> = ({filter, setFilter}) => {
         <div className={styles.filter}>
             <div className={styles.typeBlock}>
                 <span className={styles.filter__title}>Тип изделия</span>
-                {productTypes.map((type) =>
+                {types.map((type) =>
                     <div key={type}>
                         <input
                             id = {type}
                             type='checkbox'
-                            value={filter.type}
+                            value={type}
                             onChange={() => {
                                 setFilter({...filter, type: getValidType(filter.type, type)})
                             }}
@@ -86,6 +107,9 @@ const Filter: FC<FilterProps> = ({filter, setFilter}) => {
                         }
                     }}
                 />
+                <Button onClick={() => setIsChooseFilter(!isChooseFilter)} addStyles={styles.button}>
+                    Применить
+                </Button>
             </div>
         </div>
     )

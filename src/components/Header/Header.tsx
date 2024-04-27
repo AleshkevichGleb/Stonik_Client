@@ -42,9 +42,16 @@ const Header = () => {
                                 Admin
                             </Link>
                         }
+                        <Link  onClick={() => (setIsActiveMenu(false))} to = {isAuth ? '/profile/account' : '/auth'} className={[styles.profile__block, styles.profile__menu].join(' ')}>
+                            <ProfileImage color={'white'}/>
+                            {!isAuth
+                                ? <span className={styles.profile__text}>Войти</span>
+                                : <span className={styles.profile__text}>Аккаунт</span>
+                            }
+                        </Link>
                     </nav>
                 </div>
-                <Link to = {isAuth ? '/profile/account' : '/auth'} className={styles.profile__block}>
+                <Link to = {isAuth ? '/profile/account' : '/auth'} className={[styles.profile__block, styles.profile__menu__hidden].join(' ')}>
                     <ProfileImage color={'white'}/>
                     {!isAuth
                         ? <span className={styles.profile__text}>Войти</span>

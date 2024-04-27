@@ -123,7 +123,7 @@ const Product: FC = () => {
                         }
                     </Slider>
                 </div>
-                <ProductFunctional isAuth={isAuth}product = {product} productId={id}/>
+                <ProductFunctional isAuth={isAuth}product = {product} productId={id} user={user}/>
             </div>
             <div className={styles.product__description}>
                 <p className={styles.product__description__title}>Описание</p>

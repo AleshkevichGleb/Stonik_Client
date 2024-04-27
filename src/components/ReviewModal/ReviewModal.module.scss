@@ -13,13 +13,20 @@
   .block {
     border-radius: 5px;
     width: 500px;
-    height: 500px;
+    height: 550px;
     position: relative;
     background-color: #fff;
     padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 20px;
+
+    @media (max-width: 550px) {
+      width: 95%;
+      height: fit-content;
+      padding: 20px 10px 10px 10px;
+    }
 
     .closeModal {
       position: absolute;
@@ -28,6 +35,16 @@
       background-color: transparent;
       border: none;
       outline: none;
+      font-size: 24px;
+
+      @media (max-width: 550px) {
+        top: 2px;
+        right: 2px;
+        background-color: rgba(0,0,0,0.7);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+      }
     }
 
     .productInfo {

@@ -352,9 +352,6 @@ const FormComponent: FC = () => {
                         </div>
                     </FormBlock>
                 </form>
-                <pre>
-                    {JSON.stringify(personData)}
-                </pre>
             </div>
         </>
     )
