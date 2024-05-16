@@ -76,8 +76,7 @@ const FormComponent: FC = () => {
     const sendData = async(e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
-            console.log(personData)
-            await basketService.sendOrder();
+            await basketService.sendOrder(personData);
             dispatch(clearBasket());
         } catch (e) {
             if(e instanceof AxiosError) {

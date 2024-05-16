@@ -1,0 +1,122 @@
+.removeButton {
+  position: absolute;
+  background-color: rgba(116, 0, 0, 0.7);
+  color: #fff;
+  width: 150px;
+  padding: 10px 0;
+  cursor: pointer;
+  box-shadow: none !important;
+  top: 50px;
+  right: calc(200px);
+
+
+  &:hover {
+    background-color: rgba(116, 0, 0, 0.9) ;
+  }
+}
+
+.replyButton {
+  position: absolute;
+  background-color: rgba(35, 134, 31, 0.7);
+  color: #fff;
+  width: 150px;
+  padding: 10px 0;
+  cursor: pointer;
+  box-shadow: none !important;
+  top: 50px;
+  left: calc(200px);
+
+
+  &:hover {
+    background-color: rgba(35, 134, 31, 0.9);
+  }
+}
+
+
+  .review {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 30px 0;
+    gap: 20px;
+    position: relative;
+
+    &:not(:first-child) {
+      border-top: 2px solid #d9ded9;
+    }
+
+
+    .reviewInfo {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+
+      .review__user {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .review__image {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+        }
+
+        .review__userInfo {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+
+      .review__message {
+        word-break: break-word;
+        line-height: 25px;
+      }
+      .review__replyBlock {
+        display: flex;
+        flex-direction: column;
+        background: rgba(0,0,0,0.1);
+        padding: 10px;
+        border-radius: 5px;
+        min-width: 100%;
+
+        .review__replyBlockTitle {
+          font-weight: 700;
+        }
+      }
+
+      .review__editBLock {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+
+        .review__editBLockTextArea {
+          font-size: 16px;
+          padding: 10px;
+          min-width: 100%;
+          line-height: 1.5;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          color: #464545;
+          box-shadow: 1px 1px 1px #999;
+          resize: none;
+          min-height: 130px;
+          margin-top: 10px;
+        }
+
+        .review__editBLockButton {
+          padding: 10px;
+        }
+      }
+    }
+
+    .reviewDate {
+      font-family: "Book Antiqua", sans-serif;
+      opacity: 0.7;
+      min-width: 150px;
+      padding-top: 20px;
+    }
+  }

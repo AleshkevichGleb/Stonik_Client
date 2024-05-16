@@ -1,0 +1,16 @@
+.order {
+  display: flex;
+  align-items: center;
+
+  .order__imageBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    & span {
+      text-align: center;
+    }
+  }
+}

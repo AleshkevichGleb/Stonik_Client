@@ -8,16 +8,14 @@ import Slider from "../../components/Slider/Slider.tsx";
 import Title from "../../common/Title/Title.tsx";
 import BackLink from "../../common/BackLink/BackLink.tsx";
 import reviewService from "../../services/reviewService.ts";
-import Rating from '@mui/material/Rating';
 import Button from "../../common/Button/Button.tsx";
 import ReviewModal from "../../components/ReviewModal/ReviewModal.tsx";
-import clearUser from "../../assets/images/clearUser.png";
 import {AxiosError} from "axios";
 import loadImage from "../../assets/images/loader-icon.svg";
 import {instance} from "../../api/axios.ts";
-import formatTimeDifference from "../../helpers/getTimeAgo.ts";
 import {useAppSelector} from "../../hooks/useReducer.ts";
 import {toast} from "react-toastify";
+import ProductReviewItem from "../../components/ProductReviewItem/ProductReviewItem.tsx";
 
 const Product: FC = () => {
     const {isAuth, user} = useAppSelector(state => state.user);
@@ -148,36 +146,7 @@ const Product: FC = () => {
                         </Button>
                         <div className = {styles.reviewContainer}>
                             {reviews.map(review =>
-                                <div key = {review.id} className = {styles.review}>
-                                    <div className={styles.reviewInfo}>
-                                        {
-                                            user.role === 'admin'&&
-                                            <Button
-                                                addStyles={styles.removeButton}
-                                                onClick={async () => {
-                                                    await reviewService.deleteReview(review.id, review.productId);
-                                                    await getProduct();
-                                                }}
-                                            >
-                                                Удалить
-                                            </Button>
-                                        }
-                                        <div className={styles.review__user}>
-                                            <img className = {styles.review__image} src={review.user.image ? review.user.image : clearUser} alt=""/>
-                                            <div className={styles.review__userInfo}>
-                                                <span>{review.user.name} {review.user.surname}</span>
-                                                <Rating name="read-only" size="small"  value={Number(review.rating)} precision={0.5} readOnly />
-                                            </div>
-                                        </div>
-                                        <span className={styles.review__message}>
-                                            {review.message}
-                                        </span>
-                                    </div>
-                                    <div className={styles.reviewDate}>
-                                        <span>{formatTimeDifference(review.createdAt)}</span>
-                                        {/*<span>{formatTimeDifference('2024-04-23T16:16:15.483Z')}</span>*/}
-                                    </div>
-                                </div>
+                                <ProductReviewItem key = {review.id} user={user} review={review} getProduct={getProduct}/>
                             )}
                         </div>
                     </>

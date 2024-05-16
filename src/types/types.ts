@@ -115,6 +115,7 @@ export interface IErrorValidatePersonDate {
 
 export type TPersonDataField = 'name' | 'phone' | 'phone' | 'email' | 'house'| 'city' | 'street' | 'house' | 'flat' | 'agreement' | 'payment'
 
+
 export type OrderStatusTypes = 'В обработке' | 'В пути' | 'Доставлено'
 
 export interface IOrder {
@@ -122,6 +123,7 @@ export interface IOrder {
     userId: number
     productId: number
     count: number
+    info: any
     status: OrderStatusTypes
     createdAt: string
     updatedAt: string
@@ -131,6 +133,7 @@ export interface IOrder {
 export interface IReview {
     id: number
     message: string
+    reply: string,
     rating: number
     userId: number
     productId: number

@@ -11,7 +11,7 @@ import {instance} from "../../../api/axios.ts";
 import {toast} from "react-toastify";
 import Button from "../../../common/Button/Button.tsx";
 import productService from "../../../services/productService.ts";
-import axios, {AxiosError} from "axios";
+import {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';

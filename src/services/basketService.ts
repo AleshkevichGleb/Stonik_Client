@@ -28,8 +28,10 @@ class BasketService {
         }
     }
 
-    async sendOrder() {
-        const response  = await instance.delete('/basket')
+    async sendOrder(info: any) {
+        const response  = await instance.post('/basket/order', {
+            info: info,
+        })
         return response;
     }
 

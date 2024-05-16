@@ -46,6 +46,19 @@ class ReviewService {
             console.log(e)
         }
     }
+
+    async updateReview(reviewId: string | number, reply: string,) {
+        try {
+            const data = await instance.patch(`/reviews/${reviewId}`, {
+                reply,
+            })
+            console.log(data)
+            toast.success('Отзыв успешно изменен')
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
 }
 
 export default new ReviewService();
