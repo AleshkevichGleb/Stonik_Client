@@ -11,12 +11,13 @@ import {toast} from "react-toastify";
 interface ProductReviewItemProps {
     user: IRegistrationUser,
     review: IReview,
-    getProduct: () => void,
+    getReviews: (productId: string | number) => void,
 }
 
-const ProductReviewItem: FC<ProductReviewItemProps> = ({user, review, getProduct}) => {
+const ProductReviewItem: FC<ProductReviewItemProps> = ({user, review, getReviews}) => {
     const [isEditReview, setIsEditReview] = useState(false);
     const [reply, setReply] = useState('');
+
     return (
         <div key={review.id} className={styles.review}>
             <div className={styles.reviewInfo}>
@@ -26,7 +27,7 @@ const ProductReviewItem: FC<ProductReviewItemProps> = ({user, review, getProduct
                         addStyles={styles.removeButton}
                         onClick={async () => {
                             await reviewService.deleteReview(review.id, review.productId);
-                            await getProduct();
+                            getReviews(review.productId);
                         }}
                     >
                         Удалить
@@ -69,7 +70,7 @@ const ProductReviewItem: FC<ProductReviewItemProps> = ({user, review, getProduct
                         <Button addStyles={styles.review__editBLockButton} onClick={async() => {
                             if(reply.length < 10) return toast.error('Слишком маленький ответ')
                             await reviewService.updateReview(review.id, reply);
-                            await getProduct();
+                            getReviews(review.productId);
                             setIsEditReview(false)
                         }}>
                             Отправить

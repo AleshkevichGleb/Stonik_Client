@@ -5,17 +5,17 @@ import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
 import historyImage from "../../assets/images/history.svg";
 import settingsImage from "../../assets/images/settings.svg";
 import LogoutImage from "../../assets/images/logout.svg";
-// import ReviewImage from "../../assets/images/review.svg";
 import ProfileImage from "../../assets/images/ProfileImage.tsx";
 import TrashImage from "../../assets/images/trash.svg";
 import FavouriteImage from "../../assets/images/favourite.svg";
-import {removeTokenFromLocaleStorage} from "../../helpers/localStorageHelper.ts";
+import { removeTokenFromLocaleStorage} from "../../helpers/localStorageHelper.ts";
 import {resetUser} from "../../store/slices/user.slice.ts";
 import {clearBasket} from "../../store/slices/basket.slice.ts";
 import BasketImage from "../../assets/images/BasketImage.tsx";
+import {instance} from "../../api/axios.ts";
 
 const Profile: FC = () => {
-    const {isAuth} = useAppSelector(state => state.user);
+    const {isAuth, user} = useAppSelector(state => state.user);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const url = useLocation().pathname.split('/')[2];
@@ -23,6 +23,22 @@ const Profile: FC = () => {
     useEffect(() => {
         if(!isAuth) navigate('/auth')
     }, [dispatch]);
+
+    const deleteProfile = async() => {
+        try {
+            const req = await instance.delete(`user/${user.id}`)
+            if(req.status === 200) {
+                navigate('/auth');
+                removeTokenFromLocaleStorage('token');
+                dispatch(resetUser());
+                dispatch(clearBasket());
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.chooseBlock}>
@@ -63,7 +79,11 @@ const Profile: FC = () => {
                         <img src={LogoutImage} alt=""/>
                         <span className={styles.redText}>Выйти из аккаунта</span>
                     </div>
-                    <div className={styles.chooseItem}>
+                    <div
+                        className={styles.chooseItem}
+                        onClick = {deleteProfile}
+
+                    >
                         <img src={TrashImage} alt=""/>
                         <span className={styles.redText}>Удалить профиль</span>
                     </div>

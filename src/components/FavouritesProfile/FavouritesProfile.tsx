@@ -12,7 +12,6 @@ const FavouritesProfile = () => {
     const getFavourites = async (): Promise<void> => {
         try {
             const {data} = await instance.get('favourite/user');
-            console.log(data)
             setFavourites(data);
         } catch (error) {
             console.log(error)
@@ -29,7 +28,7 @@ const FavouritesProfile = () => {
                 ? <div className={styles.favouriteBlock}>
                     {
                         favourites.map(favourite =>
-                            <div className={styles.favourite}>
+                            <div key={favourite.id} className={styles.favourite}>
                                 <Link to = {`/products/${favourite.product.type}/${favourite.product.id}`} className={styles.imageBlock}>
                                     <img className={styles.image} src={favourite.product.images[0]} alt=""/>
                                 </Link>

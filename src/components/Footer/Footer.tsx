@@ -4,6 +4,8 @@ import MyInput from '../../common/Input/MyInput';
 import Title from '../../common/Title/Title';
 import styles from "./Footer.module.scss";
 import FooterInfo from './FooterInfo/FooterInfo';
+import {instance} from "../../api/axios.ts";
+import {toast} from "react-toastify";
 
 const Footer: FC = () => {
 
@@ -16,11 +18,9 @@ const Footer: FC = () => {
         const {id, value} = event.target;
         let newValue = value;
         if (id === 'email') {
-            // Проверяем, является ли вводимый символ допустимым для адреса электронной почты
             const lastTypedChar = value.charAt(value.length - 1);
             const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~@]$/;
             if (!emailRegex.test(lastTypedChar)) {
-                // Если символ не допустимый для адреса электронной почты, не обновляем значение
                 newValue = value.slice(0, -1);
             }
         }
@@ -30,15 +30,14 @@ const Footer: FC = () => {
     const sendData =  async(event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/history', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(personInfo)
-            });
-            const data = await response.json();
-            console.log(data);
+            instance.post('/questions', personInfo)
+                .then(() => {
+                    toast.success('Сообщение успешно отрпавленно!')
+                })
+                .catch(error => {
+                    toast.error('Ошибка, попробуйте позже')
+                    console.error('There was an error sending the email!', error);
+                });
         } catch (error) {
             console.error('Error sending data:', error);
         }
@@ -68,6 +67,7 @@ const Footer: FC = () => {
                         />
                         <MyInput 
                             addStyles={styles.addStylesForInput}
+                            inputStyles={styles.inputStyles}
                             id = "email"
                             type = "email"
                             placeholder = "Ваша почта"
@@ -77,6 +77,7 @@ const Footer: FC = () => {
 
                         <Button 
                             addStyles={styles.addStylesForButton}
+                            onClick = {sendData}
                         >
                             Отправить
                         </Button>

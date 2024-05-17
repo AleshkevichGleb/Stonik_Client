@@ -8,6 +8,7 @@ const ADMIN = () => {
     useEffect(() => {
         const token = getTokenFromLocaleStorage();
         const data:{role: string} = jwtDecode(token);
+        console.log(data)
         if(data.role !== 'admin') navigate('/')
     }, []);
 

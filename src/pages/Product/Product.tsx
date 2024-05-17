@@ -36,6 +36,17 @@ const Product: FC = () => {
         const {src, alt} = e.currentTarget;
         setMainImage({src: src, alt: alt});
     }
+
+    const getReviews = async(productId: string | number) => {
+        try{
+            const reviews = await reviewService.getReviews(productId);
+            console.log(reviews)
+            setReviews(reviews?.data)
+        }catch (e) {
+            console.log(e)
+        }
+    }
+
     const getProduct = async() => {
         try {
             setIsLoading(true);
@@ -45,16 +56,12 @@ const Product: FC = () => {
                 src: data.images[0],
                 alt: data.name
             })
-
-            const reviews = await reviewService.getReviews(data.id);
-            setReviews(reviews?.data)
-
+            await getReviews(data.id)
         } catch (e) {
             console.log(e)
             if(e instanceof AxiosError) {
                 setError(e.response?.data.message)
             }
-
         } finally {
             setIsLoading(false);
         }
@@ -121,7 +128,7 @@ const Product: FC = () => {
                         }
                     </Slider>
                 </div>
-                <ProductFunctional isAuth={isAuth}product = {product} productId={id} user={user}/>
+                <ProductFunctional isAuth={isAuth} product = {product} productId={id} user={user}/>
             </div>
             <div className={styles.product__description}>
                 <p className={styles.product__description__title}>Описание</p>
@@ -146,7 +153,7 @@ const Product: FC = () => {
                         </Button>
                         <div className = {styles.reviewContainer}>
                             {reviews.map(review =>
-                                <ProductReviewItem key = {review.id} user={user} review={review} getProduct={getProduct}/>
+                                <ProductReviewItem key = {review.id} user={user} review={review} getReviews={getReviews}/>
                             )}
                         </div>
                     </>

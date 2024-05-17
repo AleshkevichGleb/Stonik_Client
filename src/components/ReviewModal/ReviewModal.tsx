@@ -47,7 +47,8 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
     const sendReview = async() => {
         const data = await reviewService.sendReview(review.ratingValue, review.message, (product?.id as number));
         if(data instanceof AxiosError) {
-            return toast.error('Ошибка, попробуйте позже');
+            console.log(data)
+            return toast.error(data.response?.data.message);
         }
 
         setIsActiveModal(false);

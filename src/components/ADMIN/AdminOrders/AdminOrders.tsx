@@ -11,6 +11,7 @@ const AdminOrders = () => {
     const getOrders = async() => {
         const response = await orderService.getAllOrders();
         setOrders(response?.data)
+        console.log(response?.data[0].info)
     }
 
     useEffect(() => {
@@ -19,7 +20,6 @@ const AdminOrders = () => {
         setIsLoading(false)
     }, []);
 
-    console.log(orders)
 
     return(
         <div className={styles.container}>
@@ -35,7 +35,12 @@ const AdminOrders = () => {
                             <div className={styles.ordersBlock}>
                                 {
                                     orders.map(order =>
-                                        <AdminOrderItem key={order.id} order={order}/>
+                                        <AdminOrderItem
+                                            key={order.id}
+                                            orders={orders}
+                                            setOrders={setOrders}
+                                            order={order}
+                                        />
                                     )
                                 }
                             </div>

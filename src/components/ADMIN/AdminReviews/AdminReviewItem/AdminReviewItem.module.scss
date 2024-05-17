@@ -1,50 +1,69 @@
-.removeButton {
-  position: absolute;
-  background-color: rgba(116, 0, 0, 0.7);
-  color: #fff;
-  width: 150px;
-  padding: 10px 0;
-  cursor: pointer;
-  box-shadow: none !important;
-  top: 50px;
-  right: calc(200px);
+.reviewItem {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 30px 0;
+  gap: 20px;
+  border-top: 2px solid #d9ded9;
 
-
-  &:hover {
-    background-color: rgba(116, 0, 0, 0.9) ;
+  .deleteButton {
+    position: absolute;
+    background-color: rgba(116, 0, 0, 0.7);
+    color: #fff;
+    width: 150px;
+    padding: 10px 0;
+    cursor: pointer;
+    box-shadow: none;
+    top: 40px;
+    right: calc(200px);
+    &:hover {
+      background-color: rgba(116, 0, 0, 0.9) ;
+    }
   }
-}
 
-.replyButton {
-  position: absolute;
-  background-color: rgba(35, 134, 31, 0.7);
-  color: #fff;
-  width: 150px;
-  padding: 10px 0;
-  cursor: pointer;
-  box-shadow: none !important;
-  top: 50px;
-  left: calc(200px);
+  .replyButton {
+    position: absolute;
+    background-color: rgba(35, 134, 31, 0.7);
+    color: #fff;
+    width: 150px;
+    padding: 10px 0;
+    cursor: pointer;
+    box-shadow: none !important;
+    top: 40px;
+    left: calc(450px);
 
-
-  &:hover {
-    background-color: rgba(35, 134, 31, 0.9);
+    &:hover {
+      background-color: rgba(35, 134, 31, 0.9);
+    }
   }
-}
 
 
-  .review {
+  .review__data {
     display: flex;
     width: 100%;
-    justify-content: space-between;
-    padding: 30px 0;
-    gap: 20px;
-    position: relative;
+    gap: 10px;
+    align-items: start;
 
-    &:not(:first-child) {
-      border-top: 2px solid #d9ded9;
+    .review__product {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      width: 200px;
+
+      .review__productImage {
+        width: 200px;
+        height: 200px;
+      }
+
+      .review__productTitle {
+        text-align: center;
+        font-weight: 600;
+        opacity: 0.8;
+      }
     }
-
 
     .reviewInfo {
       display: flex;
@@ -73,16 +92,15 @@
       .review__message {
         word-break: break-word;
         line-height: 25px;
-        background: rgba(239, 239, 239, 0.1);
-        padding: 10px;
-        border-radius: 5px;
       }
+
       .review__replyBlock {
         display: flex;
         flex-direction: column;
         background: rgba(0,0,0,0.1);
         padding: 10px;
         border-radius: 5px;
+        gap: 10px;
 
         .review__replyBlockTitle {
           font-weight: 700;
@@ -113,11 +131,12 @@
         }
       }
     }
-
-    .reviewDate {
-      font-family: "Book Antiqua", sans-serif;
-      opacity: 0.7;
-      min-width: 150px;
-      padding-top: 20px;
-    }
   }
+
+  .reviewDate {
+    font-family: "Book Antiqua", sans-serif;
+    opacity: 0.7;
+    min-width: 150px;
+    padding-top: 20px;
+  }
+}

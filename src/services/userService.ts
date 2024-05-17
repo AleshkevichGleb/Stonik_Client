@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setTokenToLocaleStorage } from "../helpers/localStorageHelper";
+import {setTokenToLocaleStorage} from "../helpers/localStorageHelper";
 import { ILoginUser, IRegistrationUser } from "../types/types";
 import {instance} from "../api/axios.ts";
 
