@@ -29,10 +29,17 @@ const Footer: FC = () => {
 
     const sendData =  async(event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if(!/^[a-zA-Za-яА-Я]{2,16}$/.test(personInfo.name)){
+            return toast.error('Введите свое настоящее имя')
+        }
+        if(!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(personInfo.email)) {
+            return  toast.error('Введите свой настоящий email')
+        }
         try {
             instance.post('/questions', personInfo)
                 .then(() => {
                     toast.success('Сообщение успешно отрпавленно!')
+                    setPersonInfo({email:'', name: ''})
                 })
                 .catch(error => {
                     toast.error('Ошибка, попробуйте позже')
