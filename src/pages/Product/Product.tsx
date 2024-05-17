@@ -40,7 +40,6 @@ const Product: FC = () => {
     const getReviews = async(productId: string | number) => {
         try{
             const reviews = await reviewService.getReviews(productId);
-            console.log(reviews)
             setReviews(reviews?.data)
         }catch (e) {
             console.log(e)
@@ -69,7 +68,7 @@ const Product: FC = () => {
     }
     useEffect(() => {
         getProduct();
-    }, [isActiveModal]);
+    }, []);
 
     const sendReview = async () => {
         if(!isAuth) {
@@ -102,7 +101,13 @@ const Product: FC = () => {
     return (
         <div className={styles.product__container}>
             {
-                isActiveModal && <ReviewModal isActiveModal={isActiveModal} setIsActiveModal={setIsActiveModal} product={product}/>
+                isActiveModal &&
+                <ReviewModal
+                    isActiveModal={isActiveModal}
+                    setIsActiveModal={setIsActiveModal}
+                    product={product}
+                    getReviews = {getReviews}
+                />
             }
             <BackLink title='Назад'/>
             <div className={styles.hr}></div>
@@ -153,7 +158,7 @@ const Product: FC = () => {
                         </Button>
                         <div className = {styles.reviewContainer}>
                             {reviews.map(review =>
-                                <ProductReviewItem key = {review.id} user={user} review={review} getReviews={getReviews}/>
+                                <ProductReviewItem key = {review.id} user={user} review={review}  getReviews={getReviews}/>
                             )}
                         </div>
                     </>

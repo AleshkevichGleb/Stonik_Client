@@ -14,9 +14,10 @@ interface ReviewModalProps {
     isActiveModal: boolean
     setIsActiveModal: (isActiveModal: boolean) => void
     product: IProduct | null
+    getReviews?: ( productId: string | number,) => void,
 }
 
-const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, product}) => {
+const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, product, getReviews}) => {
     const [review, setReview] = useState<{ratingValue: number, message: string}>({
         ratingValue: 5,
         message: ''
@@ -50,6 +51,8 @@ const ReviewModal: FC<ReviewModalProps> = ({isActiveModal, setIsActiveModal, pro
             console.log(data)
             return toast.error(data.response?.data.message);
         }
+
+        if(getReviews) getReviews(product?.id as string);
 
         setIsActiveModal(false);
     }

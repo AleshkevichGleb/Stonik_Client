@@ -1,18 +1,27 @@
 import styles from "./ADMIN.module.scss";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {getTokenFromLocaleStorage} from "../../helpers/localStorageHelper.ts";
 import {jwtDecode} from "jwt-decode";
+import Loader from "../../common/Loader/Loader.tsx";
 const ADMIN = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate();
     useEffect(() => {
+        setIsLoading(true);
+
         const token = getTokenFromLocaleStorage();
+        if(!token) return  navigate(-1);
+
         const data:{role: string} = jwtDecode(token);
-        console.log(data)
-        if(data.role !== 'admin') navigate('/')
+        if(data.role !== 'admin') navigate(-1)
+
+        setIsLoading(false)
     }, []);
 
     const url = useLocation().pathname.split('/')[2];
+
+    if(isLoading) return  <Loader/>
 
     return(
         <div className={styles.container}>
