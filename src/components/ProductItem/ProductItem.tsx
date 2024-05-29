@@ -13,11 +13,12 @@ import productService from "../../services/productService.ts";
 import {AxiosError} from "axios";
 interface ProductItemProps {
     product: IProduct,
-    setIsChooseFilter: (setIsChooseFilter: boolean) => void,
-    isChooseFilter: boolean
+    setIsChooseFilter?: (isChooseFilter: boolean) => void,
+    isChooseFilter?: boolean
+    getFavourites?: () => void,
 }
 
-const ProductItem: FC<ProductItemProps> = ({product, setIsChooseFilter, isChooseFilter}) => {
+const ProductItem: FC<ProductItemProps> = ({product, setIsChooseFilter, isChooseFilter, getFavourites}) => {
     const {isAuth, user} = useAppSelector(state => state.user);
     const [isOnFavourite, setIsOnFavourite] = useState<boolean>(false);
 
@@ -43,6 +44,7 @@ const ProductItem: FC<ProductItemProps> = ({product, setIsChooseFilter, isChoose
                 productId: product.id
             })
             setIsOnFavourite(!isOnFavourite)
+            if(getFavourites) getFavourites()
         } catch (error) {
             console.log(error)
         }
@@ -91,11 +93,11 @@ const ProductItem: FC<ProductItemProps> = ({product, setIsChooseFilter, isChoose
                 ? <Button addStyles={styles.deleteButton}  onClick={async() => {
                         const data = await productService.delete(product.id)
                         if(data instanceof AxiosError) {
-                            return  toast.error(data.response?.data.message || data.response?.data.error);
+                            return toast.error(data.response?.data.message || data.response?.data.error);
                         }
 
                         toast.success(data.message);
-                        setIsChooseFilter(!isChooseFilter);
+                        if(setIsChooseFilter) setIsChooseFilter(!isChooseFilter);
                     }}>
                         Удалить
                     </Button>

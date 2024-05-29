@@ -10,6 +10,7 @@ const   FooterMenu = () => {
                 {navLinks.map(link => 
                     <Link key = {link.path} className={styles.menu__link} to = {`${link.path}`}>{link.title}</Link>
                 )}
+                <Link className={styles.menu__link} to = '/about'>Справка</Link>
             </div>
             <div className={styles.menu}> 
                 <span className={styles.menu__title}>Get in touch</span>

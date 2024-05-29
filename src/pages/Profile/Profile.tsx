@@ -43,7 +43,7 @@ const Profile: FC = () => {
         <div className={styles.container}>
             <div className={styles.chooseBlock}>
                 <div className={styles.chooseList}>
-                    <Link to='account' className={url === 'account' ? styles.chooseItem_active : styles.chooseItem}>
+                    <Link to='account' className={url === 'account' ? `${styles.chooseItem_active} ${styles.bigItem}` : `${styles.chooseItem} ${styles.bigItem}`}>
                         <ProfileImage color={'#000'}/>
                         <span className={styles.text}>Личный кабинет</span>
                     </Link>
@@ -55,10 +55,6 @@ const Profile: FC = () => {
                         <img src={FavouriteImage} alt=""/>
                         <span className={styles.text}>Избранное</span>
                     </Link>
-                    {/*<Link to='reviews' className={url === 'reviews' ? styles.chooseItem_active : styles.chooseItem}>*/}
-                    {/*    <img src={ReviewImage} alt=""/>*/}
-                    {/*    <span className={styles.text}>Отзывы</span>*/}
-                    {/*</Link>*/}
                     <Link to='/basket' className={styles.chooseItem}>
                         <BasketImage width={'24px'} height={'24px'}/>
                         <span className={styles.text}>Корзина</span>

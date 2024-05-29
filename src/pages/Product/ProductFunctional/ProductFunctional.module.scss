@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   padding: 0 20px;
+  width: 100%;
 }
 
 .product__functional__amountBlock {
@@ -27,7 +28,6 @@
   font-size: 18px;
   font-weight: 600;
   color: rgb(147, 65, 65);
-  //margin-bottom: 15px;
 }
 
 .priceBlock {
@@ -164,7 +164,7 @@
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
-  top: -117px;
+  top: -157px;
   left: -70px;
 }
 

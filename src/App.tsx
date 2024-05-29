@@ -11,6 +11,8 @@ import Loader from "./common/Loader/Loader.tsx";
 import {getTokenFromLocaleStorage, removeTokenFromLocaleStorage} from "./helpers/localStorageHelper.ts";
 import {AxiosError} from "axios";
 import ScrollToTop from "./common/ScrollToTop.tsx";
+import {instance} from "./api/axios.ts";
+import {setFilter} from "./store/slices/productFilter.slice.ts";
 function App() {
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +20,10 @@ function App() {
     const getUserData =  async() => {
         try {
             setIsLoading(true)
+
+            const {data} = await instance.get('/products/types')
+            dispatch(setFilter({lastPrice: data.maxPrice, maxPrice: +data.maxPrice}))
+
             if(!getTokenFromLocaleStorage().length)  throw new Error('Ошибка полученя профиля')
 
             const user = await UserService.getProfile()

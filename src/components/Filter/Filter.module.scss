@@ -24,6 +24,7 @@
   font-size: 18px;
   font-weight: 700;
   width: 100%;
+  line-height: 40px;
 }
 
 .filter__label {
@@ -70,9 +71,10 @@
   }
   .filterBlock {
     flex-direction: column;
-    height: 100px;
+    height: 150px;
     margin: 10px 0;
-    width: 100px;
+    width: 150px;
+    gap: 20px;
   }
 
   .input {
@@ -80,9 +82,24 @@
   }
 }
 
+@media(max-width: 660px) {
+  .filter {
+    flex-direction: column;
+
+    .filterBlock {
+      flex-direction: row;
+      height: 250px;
+      margin: 10px 0;
+      width: 100%;
+      gap: 20px;
+    }
+  }
+
+}
+
 @media(max-width: 767.98px) {
   .filter {
-    gap: 30px;
+    gap: 0px;
     flex-wrap: wrap;
   }
 }

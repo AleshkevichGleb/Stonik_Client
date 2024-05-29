@@ -32,11 +32,7 @@ const NewsItemPage = () => {
                 <BackLink title={'Назад'}/>
             </div>
             {
-                error
-                ? <div className={styles.errorBlock}>
-                    <h2>{error}</h2>
-                    </div>
-                : <>
+                !error ? <>
                     <div className={styles.image} style={{backgroundImage: `url(${newsItem?.image})`}}>
                         <div className={styles.dateBlock}>
                             <span
@@ -44,11 +40,13 @@ const NewsItemPage = () => {
                             </span>
                         </div>
                     </div>
-                        <div dangerouslySetInnerHTML={{__html: (newsItem?.description) as string}}
+                    <div dangerouslySetInnerHTML={{__html: (newsItem?.description) as string}}
                          className={styles.infoBlock}>
 
                     </div>
-                </>
+                </> : <div className={styles.errorBlock}>
+                    <h2>{error}</h2>
+                </div>
             }
         </div>
     )

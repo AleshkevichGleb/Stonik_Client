@@ -46,11 +46,11 @@ const Basket = () => {
                                     className={styles.produt__image} 
                                     src = {product.product.images[0]}
                                     alt = {product.product.name}
-                                    onClick={() => navigate(`/products/${product.product.id}`)}
+                                    onClick={() => navigate(`/products/${product.product.type}/${product.product.id}`)}
                                 />
                                 <div className={styles.product__textInfo}>
                                     <span className={styles.product__title}>{product.product.name}</span>
-                                    <span className={styles.product__description}>{sliceText(product.product.description, 250)}</span>
+                                    <span className={styles.product__description}>{sliceText(product.product.description, 210)}</span>
                                 </div>
                             </div>
                             <div className={styles.product__functional}>

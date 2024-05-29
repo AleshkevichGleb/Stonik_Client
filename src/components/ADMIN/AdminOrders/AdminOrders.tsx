@@ -9,49 +9,48 @@ const AdminOrders = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const getOrders = async() => {
+        setIsLoading(true);
         const response = await orderService.getAllOrders();
         setOrders(response?.data)
-        console.log(response?.data[0].info)
+        setIsLoading(false)
     }
 
     useEffect(() => {
-        setIsLoading(true);
         getOrders();
-        setIsLoading(false)
     }, []);
 
+    if(isLoading) {
+        return (
+            <div className={styles.loaderContainer}>
+                <img width={200} height={200} src={loaderImage} alt=""/>
+            </div>
+        )
+    }
 
-    return(
-        <div className={styles.container}>
-            {
-                isLoading
-                ? <div className={styles.loaderContainer}>
-                        <img width={200} height={200} src={loaderImage} alt=""/>
-                    </div>
-                : <div>
-                        {
-                            orders.length > 0
-                            ?
-                            <div className={styles.ordersBlock}>
-                                {
-                                    orders.map(order =>
-                                        <AdminOrderItem
-                                            key={order.id}
-                                            orders={orders}
-                                            setOrders={setOrders}
-                                            order={order}
-                                        />
-                                    )
-                                }
-                            </div>
-                            :
-                            <div className={styles.loaderContainer}>
-                                <h2>Нет активных заказов</h2>
-                            </div>
-                        }
-                    </div>
-            }
-        </div>
+    return (
+        <>
+        {
+        orders.length > 0
+            ?
+            <div className={styles.ordersBlock}>
+                {
+                    orders.map(order =>
+                        <AdminOrderItem
+                            key={order.id}
+                            orders={orders}
+                            setOrders={setOrders}
+                            order={order}
+                        />
+                    )
+                }
+            </div>
+            :
+            <div className={styles.loaderContainer}>
+                <h2>Нет активных заказов</h2>
+            </div>
+        }
+
+        </>
     )
 }
 

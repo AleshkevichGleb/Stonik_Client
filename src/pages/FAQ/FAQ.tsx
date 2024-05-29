@@ -11,8 +11,8 @@ const FAQPage: FC = () => {
     const [accordionRight, setAccordionRight] = useState<IFAQ[]>([]);
 
     const breakArrayOnTwo = (array: IFAQ[]) => {
-        const arr1 = array.filter((el, i) => i + 1 < accordionData.length/2+1)
-        const arr2 = array.filter((el, i) => i + 1 > accordionData.length/2)
+        const arr1 = array.filter((_, i) => i + 1 < accordionData.length/2+1)
+        const arr2 = array.filter((_, i) => i + 1 > accordionData.length/2)
 
         return [arr1, arr2];
     }
@@ -30,7 +30,7 @@ const FAQPage: FC = () => {
                     accordionArr={accordionLeft} 
                     setAccordionArr={setAccordionLeft}
                 />
-                <img className = {styles.image} src = {FAQMainImage}/>
+                <img className = {styles.image} src = {FAQMainImage} alt= "bathroom"/>
                 <Accordion 
                     accordionArr={accordionRight} 
                     setAccordionArr={setAccordionRight}

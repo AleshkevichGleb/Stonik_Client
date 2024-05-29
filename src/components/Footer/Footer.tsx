@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import {ChangeEvent, FC, FormEvent, useRef, useState} from 'react';
 import Button from '../../common/Button/Button';
 import MyInput from '../../common/Input/MyInput';
 import Title from '../../common/Title/Title';
@@ -6,20 +6,22 @@ import styles from "./Footer.module.scss";
 import FooterInfo from './FooterInfo/FooterInfo';
 import {instance} from "../../api/axios.ts";
 import {toast} from "react-toastify";
-
+import loaderIcon from "../../assets/images/loader-icon.svg";
 const Footer: FC = () => {
+    const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false);
 
     const [personInfo, setPersonInfo] = useState({
         name: '',
         email: '',
     })
 
+    const ref = useRef<HTMLInputElement | null>(null);
     const handlePersonInfo = (event: ChangeEvent<HTMLInputElement>) => {
         const {id, value} = event.target;
         let newValue = value;
         if (id === 'email') {
             const lastTypedChar = value.charAt(value.length - 1);
-            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~@]$/;
+            const emailRegex = /^[а-яА-Яa-zA-Z0-9.!#$%&'*+/=?^_"`{|}~@]$/;
             if (!emailRegex.test(lastTypedChar)) {
                 newValue = value.slice(0, -1);
             }
@@ -29,6 +31,10 @@ const Footer: FC = () => {
 
     const sendData =  async(event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if(!ref.current?.checked) return toast.error('Вы не дали согласие на обработку персональнных данных')
+        if(isLoadingSendMessage) return;
+
         if(!/^[a-zA-Za-яА-Я]{2,16}$/.test(personInfo.name)){
             return toast.error('Введите свое настоящее имя')
         }
@@ -36,17 +42,15 @@ const Footer: FC = () => {
             return  toast.error('Введите свой настоящий email')
         }
         try {
-            instance.post('/questions', personInfo)
-                .then(() => {
-                    toast.success('Сообщение успешно отрпавленно!')
-                    setPersonInfo({email:'', name: ''})
-                })
-                .catch(error => {
-                    toast.error('Ошибка, попробуйте позже')
-                    console.error('There was an error sending the email!', error);
-                });
+            setIsLoadingSendMessage(true);
+            await instance.post('/questions', personInfo);
+            toast.success('Сообщение успешно отправлено!');
+            setPersonInfo({ email: '', name: '' });
         } catch (error) {
-            console.error('Error sending data:', error);
+            toast.error('Ошибка, попробуйте позже');
+            console.error('There was an error sending the email!', error);
+        } finally {
+            setIsLoadingSendMessage(false);
         }
     }
 
@@ -86,11 +90,16 @@ const Footer: FC = () => {
                             addStyles={styles.addStylesForButton}
                             onClick = {sendData}
                         >
-                            Отправить
+                            {
+                                isLoadingSendMessage
+                                ? <img width={40} height={40} src={loaderIcon} alt=""/>
+                                : 'Отправить'
+                            }
                         </Button>
                     </div>
                     <div className={styles.footer__formCheckData}>
                         <input
+                            ref={ref}
                             id = "data"
                             className={styles.checkbox}
                             type = "checkbox"

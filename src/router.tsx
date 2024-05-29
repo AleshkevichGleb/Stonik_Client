@@ -21,6 +21,7 @@ import AdminNews from "./components/ADMIN/AdminNews/AdminNews.tsx";
 import AdminReviews from "./components/ADMIN/AdminReviews/AdminReviews.tsx";
 import AdminProducts from "./components/ADMIN/AdminProducts/AdminProducts.tsx";
 import AdminOrders from "./components/ADMIN/AdminOrders/AdminOrders.tsx";
+import About from "./pages/About/About.tsx";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
             { path: "/news", element: <News /> },
             { path: "/news/:id", element: <NewsPage /> },
             { path: "/auth", element: <AuthPage /> },
+            { path: "/about", element: <About /> },
             {
                 path: "/profile",
                 element: <Profile />,

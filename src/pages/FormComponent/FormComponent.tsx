@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import {TPersonDataField} from "../../types/types.ts";
+import {IErrorValidatePersonDate, TPersonDataField} from "../../types/types.ts";
 import CheckDataPopUp from "./CheckDataPopUp/CheckDataPopUp.tsx";
 import errorSendDataImg from "../../assets/images/errorSendData.png";
 import sendDataImg from "../../assets/images/sendData.svg";
@@ -40,15 +40,19 @@ const FormComponent: FC = () => {
         setSelectedDate(date);
     };
     const isValidPersonDataField = (key: string): key is TPersonDataField => {
-        return ['name','email', 'city'].includes(key);
+        const validFields: TPersonDataField[] = ['name', 'phone', 'email', 'house', 'city', 'street', 'flat', 'agreement', 'payment'];
+        return validFields.includes(key as TPersonDataField);
     };
 
 
     useEffect(() => {
-        if (!(Object.values(user)[0].length && !personData.email)) {
+        if (!(Object.values(user)[0]?.length && !personData.email)) {
             for (let key in user) {
-                if (isValidPersonDataField(key) && (user[key as string] as any).length) {
-                    dispatch(setPersonValue({ field: key as TPersonDataField, value: user[key]}));
+                if (isValidPersonDataField(key)) {
+                    const value = user[key as TPersonDataField];
+                    if (value) {
+                        dispatch(setPersonValue({ field: key as TPersonDataField, value }));
+                    }
                 }
             }
         }
@@ -65,9 +69,24 @@ const FormComponent: FC = () => {
     const handlePersonData = (e: ChangeEvent<HTMLInputElement>) => {
         const {id, value, checked, name} = e.currentTarget;
 
+        if (id === 'house' && /[^0-9/]/.test(value)) {
+            return;
+        }
+
+        if (id === 'phone' && /[^ 0-9+()-]/.test(value)) {
+            return;
+        }
+
+        if (id === 'flat' && /\D/.test(value)) {
+            return;
+        }
+
         if(name === 'payment') e.preventDefault();
 
-        validate(id, value)
+        if (name !== 'payment' && name !== 'agreement' && error[id as keyof IErrorValidatePersonDate]?.length) {
+            validate(id, value);
+        }
+
         dispatch(setPerson({
             id: (id as TPersonDataField), value, checked, name
         }))
@@ -76,6 +95,8 @@ const FormComponent: FC = () => {
     const sendData = async(e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
+            if(isDisabled) return;
+
             await basketService.sendOrder(personData);
             dispatch(clearBasket());
         } catch (e) {
@@ -115,6 +136,7 @@ const FormComponent: FC = () => {
                     <FormBlock title="1. Контактная информация">
                         <div className={styles.form__inputBlock}>
                             <MyInput
+                                onBlur={(e) => validate(e.target.id, e.target.value)}
                                 addStyles={styles.input__block}
                                 labelStyles={styles.label}
                                 inputStyles={styles.input}
@@ -123,12 +145,14 @@ const FormComponent: FC = () => {
                                 type = "text"
                                 id = "name"
                                 placeholder='Ваше имя*'
+                                max={16}
                             />
                             {error && <span className={styles.error}>{error.name}</span>}
                         </div>
                         <div className={styles.form__inputBlock}>
                             <MyInput
                                 addStyles={styles.input__block}
+                                onBlur={(e) => validate(e.target.id, e.target.value)}
                                 labelStyles={styles.label}
                                 inputStyles={styles.input}
                                 value = {personData.phone}
@@ -136,6 +160,7 @@ const FormComponent: FC = () => {
                                 type = "tel"
                                 id = "phone"
                                 placeholder='Ваш телефон*'
+                                max = {30}
                             />
                             {error && <span className={styles.error}>{error.phone}</span>}
                         </div>
@@ -143,12 +168,14 @@ const FormComponent: FC = () => {
                         <div className={styles.form__inputBlockBig}>
                             <MyInput
                                 labelStyles={styles.label}
+                                onBlur={(e) => validate(e.target.id, e.target.value)}
                                 inputStyles={styles.input}
                                 value = {personData.email}
                                 onChange={handlePersonData}
                                 type = "email"
                                 id = "email"
                                 placeholder='Ваш электронный адрес'
+                                max = {60}
                             />
                             {error && <span className={styles.error}>{error.email}</span>}
                         </div>
@@ -161,9 +188,11 @@ const FormComponent: FC = () => {
                                 inputStyles={styles.input}
                                 value = {personData.city}
                                 onChange={handlePersonData}
+                                onBlur={(e) => validate(e.target.id, e.target.value)}
                                 type = "text"
                                 id = "city"
                                 placeholder='Ваш город*'
+                                max = {30}
                             />
                             {error && <span className={styles.error}>{error.city}</span>}
                         </div>
@@ -174,9 +203,11 @@ const FormComponent: FC = () => {
                                 inputStyles={styles.input}
                                 value = {personData.street}
                                 onChange={handlePersonData}
+                                onBlur={(e) => validate(e.target.id, e.target.value)}
                                 type = "text"
                                 id = "street"
                                 placeholder='Улица*'
+                                max = {30}
                             />
                             {error && <span className={styles.error}>{error.street}</span>}
                         </div>
@@ -186,10 +217,12 @@ const FormComponent: FC = () => {
                                 labelStyles={styles.label}
                                 inputStyles={styles.input}
                                 value = {personData.house}
+                                onBlur={(e) => validate(e.target.id, e.target.value)}
                                 onChange={handlePersonData}
                                 type = "text"
                                 id = "house"
                                 placeholder='Дом*'
+                                max = {5}
                             />
                             {error && <span className={styles.error}>{error.house}</span>}
                         </div>
@@ -200,6 +233,7 @@ const FormComponent: FC = () => {
                                 inputStyles={styles.input}
                                 value = {personData.flat}
                                 onChange={handlePersonData}
+                                onBlur={(e) => validate(e.target.id, e.target.value)}
                                 type = "text"
                                 id = "flat"
                                 placeholder='Квартира'

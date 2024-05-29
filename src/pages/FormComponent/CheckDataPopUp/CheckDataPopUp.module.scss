@@ -23,6 +23,10 @@
   align-items: center;
   gap:20px;
   padding: 35px;
+  
+  @media (max-width: 485px) {
+    width: 85%;
+  }
 }
 
 .close {

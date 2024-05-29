@@ -3,25 +3,40 @@ import {FC, useEffect, useState} from "react";
 import {IFilter, ProductType} from "../../types/types.ts";
 import Button from "../../common/Button/Button.tsx";
 import {instance} from "../../api/axios.ts";
+import {useAppDispatch} from "../../hooks/useReducer.ts";
+import {setFilter} from "../../store/slices/productFilter.slice.ts";
+import Slider from '@mui/material/Slider';
 
 interface FilterProps {
     filter: IFilter,
-    setFilter: (filter: IFilter) => void,
     isChooseFilter: boolean,
     setIsChooseFilter: (isChooseFilter: boolean) => void,
 }
 
-const Filter: FC<FilterProps> = ({filter, setFilter, setIsChooseFilter, isChooseFilter}) => {
-    const [types, setTypes] = useState<string[]>([])
+const Filter: FC<FilterProps> = ({filter, setIsChooseFilter, isChooseFilter}) => {
+    const dispatch = useAppDispatch()
+    const [value, setValue] = useState([+filter.startPrice, +filter.lastPrice]);
+
+    // const [maxPrice, setMaxPrice] = useState<number>(+filter.lastPrice);
+    const handleChange = (_: any, newValue: number | number[]) => {
+        if (Array.isArray(newValue)) {
+            setValue(newValue);
+            dispatch(setFilter({
+                ...filter,
+                page: 1,
+                startPrice: newValue[0].toString(),
+                lastPrice: newValue[1].toString()
+            }));
+        }
+    };
+    const [types, setTypes] = useState<ProductType[]>([])
     const getTypes = async() =>  {
         try {
             const {data} = await instance.get('/products/types')
 
-            const types = data.map((type: any) => {
-                if(type === 'Подоконник') return type + 'и';
-                return (type).slice(0, -1) + 'ы';
-            })
-            setTypes(types);
+            setValue([+filter.startPrice, +data.maxPrice]);
+
+            setTypes(data.uniqueTypes);
         } catch (e) {
             console.log(e)
         }
@@ -30,18 +45,15 @@ const Filter: FC<FilterProps> = ({filter, setFilter, setIsChooseFilter, isChoose
     useEffect(() => {
         getTypes();
     }, []);
-    const getValidType = (filterType: ProductType[], type: string)=> {
+    const getValidType = (filterType: ProductType[], type: ProductType)=> {
         let typesArray:ProductType[];
-        let validType;
-        if(type === 'Подоконники') validType =  type.slice(0, -1) as ProductType
-        else validType = type.slice(0, -1) + 'а'
 
         if(filterType.length) {
             typesArray = filterType;
-            if(filterType.includes(validType as ProductType)) typesArray = typesArray.filter(typeFilter =>  typeFilter !== validType)
-            else typesArray = [...typesArray, validType as ProductType]
+            if(filterType.includes(type)) typesArray = typesArray.filter(typeFilter =>  typeFilter !== type)
+            else typesArray = [...typesArray, type]
         } else {
-            typesArray = [validType as ProductType]
+            typesArray = [type]
         }
 
         return typesArray;
@@ -56,8 +68,9 @@ const Filter: FC<FilterProps> = ({filter, setFilter, setIsChooseFilter, isChoose
                             id = {type}
                             type='checkbox'
                             value={type}
+                            checked={filter.type.includes(type as ProductType)}
                             onChange={() => {
-                                setFilter({...filter, type: getValidType(filter.type, type)})
+                                dispatch(setFilter({...filter, page: 1, type: getValidType(filter.type, type)}));
                             }}
                         />
                         <label className={styles.filter__label} htmlFor={type}>{type}</label>
@@ -70,7 +83,7 @@ const Filter: FC<FilterProps> = ({filter, setFilter, setIsChooseFilter, isChoose
                             type='checkbox'
                             id = 'sale'
                             checked={filter.isSale}
-                            onChange={(e) => setFilter({...filter, isSale: e.target.checked})}
+                            onChange={(e) => dispatch(setFilter({...filter,page: 1, isSale: e.target.checked}))}
                         />
                         <label className={styles.filter__label} htmlFor='sale'>Скидка</label>
                     </div>
@@ -84,11 +97,13 @@ const Filter: FC<FilterProps> = ({filter, setFilter, setIsChooseFilter, isChoose
                     value={filter.startPrice || ''}
                     onChange={(e) => {
                         const value = e.target.value;
-                        if (/^\d*$/.test(value)) { // Проверка на наличие только цифр
-                            setFilter({
+                        if (/^\d*$/.test(value)) {
+                            dispatch(setFilter({
                                 ...filter,
-                                startPrice: value
-                            });
+                                page: 1,
+                                startPrice: value,
+                            }));
+                            setValue([+value, +filter.startPrice])
                         }
                     }}
                 />
@@ -99,11 +114,28 @@ const Filter: FC<FilterProps> = ({filter, setFilter, setIsChooseFilter, isChoose
                     value={filter.lastPrice || ''}
                     onChange={(e) => {
                         const value = e.target.value;
-                        if (/^\d*$/.test(value)) { // Проверка на наличие только цифр
-                            setFilter({
+                        if (/^\d*$/.test(value)) {
+                            dispatch(setFilter({
                                 ...filter,
+                                page: 1,
                                 lastPrice: value
-                            });
+                            }));
+                            setValue([+filter.startPrice, +value])
+                        }
+                    }}
+                />
+                <Slider
+                    value={value}
+                    onChange={handleChange}
+                    valueLabelDisplay="auto"
+                    min={0}
+                    max={filter.maxPrice}
+                    step = {10}
+                    aria-labelledby="range-slider"
+                    sx={{
+                        color: '#28553F', // Зеленый цвет ползунка
+                        '& .MuiSlider-track': {
+                            backgroundColor: '#28553F' // Зеленый цвет трека
                         }
                     }}
                 />

@@ -37,6 +37,12 @@ export interface IRegistrationUser extends ILoginUser {
     image: string,
     createdAt: string,
     updatedAt: string,
+    phone?: string;
+    house?: string;
+    street?: string;
+    flat?: string;
+    agreement?: string;
+    payment?: string;
 }
 
 export interface IProduct {
@@ -160,6 +166,9 @@ export interface IFilter {
     type: ProductType[]
     startPrice: string
     lastPrice: string
+    page: number,
+    limit: number,
+    maxPrice: number,
 }
 
 export interface INews {

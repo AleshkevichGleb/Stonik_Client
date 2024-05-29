@@ -6,9 +6,9 @@ import {instance} from "../api/axios.ts";
 class UserService {
     async registration (registrationUser: IRegistrationUser) {
         const { data } = await axios.post(process.env.HOST_URL + '/user/registration', {
-            ...registrationUser
+            ...registrationUser,
+            role: registrationUser.email === 'admin@gmail.com' ? 'admin' : 'User'
         })
-        // console.log(data);
         
         setTokenToLocaleStorage('token', data.token);
         return data;

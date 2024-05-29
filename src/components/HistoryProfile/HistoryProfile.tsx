@@ -58,11 +58,10 @@ const HistoryProfile = () => {
         setPage(0);
     };
 
-    console.log(history)
     if(isLoading) {
         return (
             <div className={styles.loaderContaienr}>
-                <img width = {250} src={Loader} alt=""/>
+                <img width = {200} src={Loader} alt=""/>
             </div>
         )
     }

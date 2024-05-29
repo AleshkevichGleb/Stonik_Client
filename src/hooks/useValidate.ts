@@ -34,7 +34,7 @@ export const useValidate = () => {
             }
 
             case 'email': {
-                if(!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(value)) {
+                if(!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,60}$/i.test(value)) {
                     setError({...error, email: 'Введите корректный email-адрес'})
                 } else {
                     setError({...error, email: ''})
@@ -43,7 +43,7 @@ export const useValidate = () => {
             }
 
             case 'city': {
-                if(!/^[A-Zа-я]{2,20}$/i.test(value)) {
+                if(!/^[A-Zа-я-]{2,20}$/i.test(value)) {
                     setError({...error, city: 'Название города должно содержать только буквы'})
                 } else {
                     setError({...error, city: ''})

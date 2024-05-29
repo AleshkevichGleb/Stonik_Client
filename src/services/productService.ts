@@ -9,14 +9,15 @@ class productService {
         types?: ProductType[],
         search?: string,
         isSale?:boolean,
-        startPrice?: string,
-        lastPrice?:string
+        startPrice: string = '',
+        lastPrice:string = '',
+        sortBy:string = 'default',
     ) {
         const validTypes = types?.join(',')
-        const {data} =  await instance.get<{count: number, rows: IProduct[]}>
-            (`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search || ''}&startPrice=${startPrice || ''}&lastPrice=${lastPrice || ''}${isSale ? '&isSale=true' : ''}`)
 
-        // console.log(`/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search || ''}${isSale ? '&isSale=true' : ''}`)
+        const url = `/products?limit=${limit || 9999}&page=${page || 1}&types=${validTypes || ''}&search=${search}&startPrice=${startPrice}&lastPrice=${lastPrice || ''}${isSale ? '&isSale=true' : ''}&sortBy=${sortBy}`
+        const {data} =  await instance.get<{count: number, rows: IProduct[]}>(url);
+
         return data
     }
 

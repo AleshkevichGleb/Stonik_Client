@@ -1,10 +1,10 @@
 import {ChangeEvent, FC, useEffect, useState} from 'react';
 import Title from '../../common/Title/Title';
 import styles from "./Products.module.scss";
-import {IFilter, IProduct} from "../../types/types.ts";
+import {IProduct} from "../../types/types.ts";
 import ProductService from "../../services/productService.ts";
 import ProductItem from "../../components/ProductItem/ProductItem.tsx";
-import {TSort, useSortProducts} from "../../hooks/useSearchProducts.ts";
+import {TSort} from "../../hooks/useSearchProducts.ts";
 import MySelect from '../../components/MySelect/MySelect.tsx';
 import Filter from "../../components/Filter/Filter.tsx";
 import Button from "../../common/Button/Button.tsx";
@@ -14,54 +14,42 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import loadImage from "../../assets/images/loader-icon.svg"
 import SearchIcon from '@mui/icons-material/Search';
+import {useAppDispatch, useAppSelector} from "../../hooks/useReducer.ts";
+import {setFilter} from "../../store/slices/productFilter.slice.ts";
 const Products: FC = () => {
+    const dispatch = useAppDispatch();
+    const filter = useAppSelector(state => state.filter);
     const [products, setProducts] = useState<IProduct[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isChooseFilter, setIsChooseFilter] = useState<boolean>(false);
 
-    const [filter, setFilter] = useState<IFilter>({
-        sort: 'default',
-        searchValue: '',
-        isSale: false,
-        type: [],
-        startPrice: '',
-        lastPrice: ''
-    })
-
-    const searchProducts = useSortProducts(
-        products,
-        filter.sort,
-    );
-
     const [pagesArray, setPagesArray] = useState<number[]>([])
-    const [viewsSettings, setViewsSettings] = useState<{limit: number, page: number}>({
-        limit: 9,
-        page: 1,
-    })
     const fetchProducts = async() => {
         setIsLoading(true);
         const products = await ProductService.getProducts(
-            viewsSettings.limit,
-            viewsSettings.page,
+            filter.limit,
+            filter.page,
             filter.type,
             filter.searchValue,
             filter.isSale,
             filter.startPrice,
             filter.lastPrice,
+            filter.sort,
         );
         setProducts(products.rows);
 
-        const arrLength = Math.ceil(products.count / viewsSettings.limit);
+        const arrLength = Math.ceil(products.count / filter.limit);
 
-        const pagesArray = Array.from({ length: arrLength }, (_, index) => index + 1)
-        setPagesArray(pagesArray)
+        const pagesArray = Array.from({ length: arrLength }, (_, index) => index + 1);
+        setPagesArray(pagesArray);
 
         setIsLoading(false);
     }
 
+
     useEffect(() => {
         fetchProducts();
-    }, [viewsSettings, filter.type, filter.isSale, isChooseFilter]);
+    }, [filter.type, filter.isSale, isChooseFilter, filter.page, filter.limit, filter.sort]);
 
     return (
         <div className={styles.products}>
@@ -86,7 +74,11 @@ const Products: FC = () => {
                                             await fetchProducts();
                                         }
                                     }}
-                                    onChange = {(e) => setFilter({...filter, searchValue: e.target.value})}
+                                    onKeyUp = {(e) => {
+                                        if(e.key === 'Enter')
+                                            setIsChooseFilter(!isChooseFilter)
+                                    }}
+                                    onChange = {(e) => dispatch(setFilter({...filter, searchValue: e.target.value}))}
                                 />
                                 <IconButton onClick = {() => setIsChooseFilter(!isChooseFilter)} type="button" sx={{ p: '10px' }} aria-label="search">
                                     <SearchIcon />
@@ -94,10 +86,10 @@ const Products: FC = () => {
                             </Paper>
                             <MySelect
                                 value={filter.sort}
-                                onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilter({
+                                onChange={(e: ChangeEvent<HTMLSelectElement>) => dispatch(setFilter({
                                     ...filter,
                                     sort: e.target.value as TSort
-                                })}
+                                }))}
                                 options={[
                                     {value: 'default', name: 'Сортировка по'},
                                     {value: 'type', name: 'Виду изделия'},
@@ -107,9 +99,9 @@ const Products: FC = () => {
                             />
                             <MySelect
                                 value={filter.sort}
-                                onChange={(e: ChangeEvent<HTMLSelectElement>) => setViewsSettings({page: 1, limit: +e.target.value})}
+                                onChange={(e: ChangeEvent<HTMLSelectElement>) => dispatch(setFilter({...filter, page: 1, limit: +e.target.value}))}
                                 options={[
-                                    {value: '9', name: `Показывать по ${viewsSettings.limit}`},
+                                    {value: '9', name: `Показывать по ${filter.limit}`},
                                     {value: '9', name: '9'},
                                     {value: '12', name: '12'},
                                     {value: '15', name: '15'}
@@ -123,7 +115,6 @@ const Products: FC = () => {
                                 setIsChooseFilter={setIsChooseFilter}
                                 isChooseFilter={isChooseFilter}
                                 filter={filter}
-                                setFilter={setFilter}
                             />
                         </div>
                         <div className={styles.products__list}>
@@ -132,8 +123,8 @@ const Products: FC = () => {
                                     ? <div className={styles.loadContainer}>
                                         <img className={styles.image} src={loadImage} alt="loader"/>
                                     </div> :
-                                    searchProducts.length
-                                        ? searchProducts.map(product =>
+                                    products.length
+                                        ? products.map(product =>
                                             <ProductItem
                                                 key={  product.id}
                                                 product={product}
@@ -141,7 +132,10 @@ const Products: FC = () => {
                                                 isChooseFilter={isChooseFilter}
                                             />
                                         )
-                                        : <h2>Ничего не найдено</h2>
+                                        :
+                                        <div className={styles.loadContainer}>
+                                            <h2>Ничего не найдено</h2>
+                                        </div>
                             }
                         </div>
                     </div>
@@ -150,10 +144,10 @@ const Products: FC = () => {
                         pagesArray.map(page =>
                             <Button
                                 onClick={() => {
-                                    setViewsSettings({...viewsSettings, page: page});
+                                    dispatch(setFilter({...filter, page: page}));
                                     scrollToTop();
                                 }}
-                                addStyles = {+viewsSettings.page === +page ? styles.active_page : styles.page}
+                                addStyles = {+filter.page === +page ? styles.active_page : styles.page}
                                 key = {page}
                                 id = {String(page)}
                             >

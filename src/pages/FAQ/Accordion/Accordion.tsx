@@ -66,7 +66,10 @@ const Accordion: FC<AccordionProps>= ({accordionArr, setAccordionArr, flag}) => 
                     </div>
                     <span className={post.isActive 
                         ? `${styles.accordionText} ${styles.accordionText__active}`
-                        : `${styles.accordionText}`}>{post.text}</span>
+                        : `${styles.accordionText}`}
+                    >
+                        {post.text}
+                    </span>
                 </div>
             )}
         </div>

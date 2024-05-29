@@ -22,7 +22,7 @@ const Auth: FC = () => {
         password: '',
         surname: '',
         city: '',
-        role: 'User',
+        role: '',
         image: '',
         createdAt: '',
         updatedAt: ''
@@ -51,8 +51,10 @@ const Auth: FC = () => {
 
                 if(userData)
                     dispatch(setUserRedux(userData))
+
                 dispatch(setAuth(true));
                 toast.success('Пользователь успешно зарегестрирован!')
+
                 navigate('/profile/account')
             } catch(e: any) {
                 toast.error(e.response.data.message);
@@ -174,7 +176,7 @@ const Auth: FC = () => {
                             updatedAt: '',
                         })}}
                       style={{cursor: 'pointer'}}>
-                    {isRegistration ? ' Войти' : ' Зарегестрироваться'}
+                    {isRegistration ? ' Войти' : ' Зарегистрироваться'}
                 </span>
             </div>
         </div>

@@ -7,6 +7,12 @@
   gap: 20px;
   border-top: 2px solid #d9ded9;
 
+  
+  @media (max-width: 970px) {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .deleteButton {
     position: absolute;
     background-color: rgba(116, 0, 0, 0.7);
@@ -19,6 +25,10 @@
     right: calc(200px);
     &:hover {
       background-color: rgba(116, 0, 0, 0.9) ;
+    }
+    
+    @media (max-width: 970px) {
+      left: 5px;
     }
   }
 
@@ -35,6 +45,11 @@
 
     &:hover {
       background-color: rgba(35, 134, 31, 0.9);
+    }
+
+    @media (max-width: 970px) {
+      left: 5px;
+      top: 90px;
     }
   }
 

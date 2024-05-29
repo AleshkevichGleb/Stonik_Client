@@ -20,11 +20,19 @@ import loaderImage from "../../assets/images/loader-icon.svg";
             getNews()
         }, []);
 
+        if(isLoading) {
+            return (
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img width={300} height={300} src={loaderImage} alt=""/>
+                </div>
+            )
+        }
+
         return (
             <div className={styles.container}>
                 {
                     (news.length > 0)
-                    ?
+                        ?
                         <div className={styles.newsBlock}>
                             {news.map(newsItem =>
                                 <Link to = {`/news/${newsItem.id}`} className={styles.newsItem} style={{backgroundImage: `url(${newsItem.image})`}} key={newsItem.id}>
@@ -40,17 +48,10 @@ import loaderImage from "../../assets/images/loader-icon.svg";
                             }
                         </div>
                     :
-                        (
-                        isLoading
-                            ?
-                            <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <img width={300} height={300} src={loaderImage} alt=""/>
-                            </div>
-                            :
-                            <div>
-                                <img src={loaderImage} alt=""/>
-                            </div>
-                        )
+                        <div style={{display: 'flex', justifyContent: 'center', padding: '100px 0'}}>
+                           <h1>Нет новостей</h1>
+                        </div>
+
                 }
             </div>
         )

@@ -1,10 +1,7 @@
 import {ChangeEvent, useRef, useState} from "react";
-// import axios from "axios";
 import {IProductSend, ProductType} from "../../../types/types.ts";
 import MyInput from "../../../common/Input/MyInput.tsx";
 import styles from "./AdminProducts.module.scss";
-// import productService from "../../../services/productService.ts";
-// import {getCorrectProductTypes} from "../../../data/productTypes.ts";
 import Button from "../../../common/Button/Button.tsx";
 import {toast} from "react-toastify";
 import {instance} from "../../../api/axios.ts";
@@ -15,25 +12,29 @@ const AdminProducts = () => {
     const ref2 = useRef<HTMLInputElement | null>(null);
     const ref3 = useRef<HTMLInputElement | null>(null);
     const ref4 = useRef<HTMLInputElement | null>(null);
+    const ref5 = useRef<HTMLInputElement | null>(null);
 
     const types:ProductType[] = ['Ваза', 'Раковина', 'Подоконник', 'Столешница'];
-    const [product, setProduct] = useState<IProductSend>({
+
+    const initialProductState: IProductSend = {
         name: '',
         description: '',
-        type: 'Подоконник',
+        type: 'Раковина',
         isSale: false,
         price: 0,
         rating: 0,
         salePrice: 0,
         info: [
-            {title: 'Тип камня', text: '600x2000, 700x2000, 800x2000, 900x2000, 1000x2000, 1200x2200, 1400x2400, 1600x2400, 1800x2600 мм'},
-            {title: 'Изделие', text: '38 мм'},
-            {title: 'Месторождение', text: 'Возможно изготовление нестандартных размеров (с удорожанием)'},
-            {title: '', text: ''},
-            {title: '', text: ''},
+            { title: 'Тип', text: 'Раковина' },
+            { title: 'Ширина', text: 'см' },
+            { title: 'Глубина', text: 'см' },
+            { title: 'Высота', text: 'см' },
+            { title: 'Установка', text: 'Накладная, На пьедестал' },
         ],
         amount: 1000,
-    })
+    };
+
+    const [product, setProduct] = useState<IProductSend>(initialProductState);
 
     const removeEmptyObjects = (arr: any[]) => {
         return arr.filter(item => item.title.trim() !== '' || item.text.trim() !== '');
@@ -59,13 +60,25 @@ const AdminProducts = () => {
         }
         if (ref3.current && ref3.current.files && ref3.current.files.length > 0) {
             formData.append('images', ref3.current.files[0]);
-        }   if (ref4.current && ref4.current.files && ref4.current.files.length > 0) {
+        }
+        if (ref4.current && ref4.current.files && ref4.current.files.length > 0) {
             formData.append('images', ref4.current.files[0]);
+        }
+        if (ref5.current && ref5.current.files && ref5.current.files.length > 0) {
+            formData.append('images', ref5.current.files[0]);
         }
 
         try {
             await instance.post('/products', formData);
             toast.success('Товар успешно добавлен')
+
+            setProduct(initialProductState);
+
+            if (ref.current) ref.current.value = '';
+            if (ref2.current) ref2.current.value = '';
+            if (ref3.current) ref3.current.value = '';
+            if (ref4.current) ref4.current.value = '';
+            if (ref5.current) ref5.current.value = '';
         } catch (error) {
             if(error instanceof AxiosError) {
                 toast.error(error.response?.data.error)
@@ -76,7 +89,9 @@ const AdminProducts = () => {
     const changeProduct = async(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name,type , value} = e.target;
 
-        if (name === "price" && /\D/.test(value) || name === "salePrice" && /\D/.test(value) || name === "amount" && /\D/.test(value)) {
+        const validInput = (input: string) => /^(\d+\.?\d*|\.\d+)$/.test(input);
+
+        if ((name === "price" || name === "salePrice" || name === "amount") && !validInput(value)) {
             return;
         }
 
@@ -102,8 +117,6 @@ const AdminProducts = () => {
         }
 
         setProduct({ ...product, info: newInfo });
-
-
     }
 
     return(
@@ -114,6 +127,7 @@ const AdminProducts = () => {
                     <input ref={ref2} type="file" name="" id=""/>
                     <input ref={ref3} type="file" name="" id=""/>
                     <input ref={ref4} type="file" name="" id=""/>
+                    <input ref={ref5} type="file" name="" id=""/>
                 </div>
                 <div className={styles.productText}>
                     <MyInput labelStyles={styles.labelStyles} inputStyles={styles.inputStyles} name = 'name' id={'Название'} placeholder={'Название'} onChange={changeProduct} value={product.name} type={'text'}/>
@@ -139,8 +153,8 @@ const AdminProducts = () => {
                         <h3>Характеристики</h3>
                         {product.info.map((information, index) =>
                             <div className={styles.infoItem} key={index}>
-                                <MyInput labelStyles={styles.labelStyles} inputStyles={styles.inputStyles} name = {`title-${index}`} id={'Название'} placeholder={'Название'} onChange={changeInfo} value={information.title} type={'text'}/>
-                                <MyInput addStyles={styles.input} labelStyles={styles.labelStyles} inputStyles={styles.inputStyles} name = {`text-${index}`} id={'Описание'} placeholder={'Описание'} onChange={changeInfo} value={information.text} type={'text'}/>
+                                <MyInput isNotHtmlFor={true} labelStyles={styles.labelStyles} inputStyles={styles.inputStyles} name = {`title-${index}`} id={'Название'} placeholder={'Название'} onChange={changeInfo} value={information.title} type={'text'}/>
+                                <MyInput isNotHtmlFor={true} addStyles={styles.input} labelStyles={styles.labelStyles} inputStyles={styles.inputStyles} name = {`text-${index}`} id={'Описание'} placeholder={'Описание'} onChange={changeInfo} value={information.text} type={'text'}/>
                             </div>
                         )}
                     </div>
