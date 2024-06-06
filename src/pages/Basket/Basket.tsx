@@ -10,6 +10,7 @@ import basketService from "../../services/basketService.ts";
 import crossImage from "../../assets/images/cross.svg";
 import BackLink from "../../common/BackLink/BackLink.tsx";
 import sliceText from "../../helpers/sliceText.ts";
+import replaceLocalHost from "../../helpers/replaceLocalHost.ts";
 
 
 const Basket = () => {
@@ -44,7 +45,7 @@ const Basket = () => {
                             <div className={styles.product__textBlock}>
                                 <img 
                                     className={styles.produt__image} 
-                                    src = {product.product.images[0]}
+                                    src = {replaceLocalHost(product.product.images[0])}
                                     alt = {product.product.name}
                                     onClick={() => navigate(`/products/${product.product.type}/${product.product.id}`)}
                                 />

@@ -16,6 +16,7 @@ import {instance} from "../../api/axios.ts";
 import {useAppSelector} from "../../hooks/useReducer.ts";
 import {toast} from "react-toastify";
 import ProductReviewItem from "../../components/ProductReviewItem/ProductReviewItem.tsx";
+import replaceLocalHost from "../../helpers/replaceLocalHost.ts";
 
 const Product: FC = () => {
     const {isAuth, user} = useAppSelector(state => state.user);
@@ -116,7 +117,7 @@ const Product: FC = () => {
             <div className={styles.product}>
                 <div className={styles.product__photos}>
                     <div>
-                        <img className={styles.bigImage} src={mainImage.src} alt={mainImage.alt} />
+                        <img className={styles.bigImage} src={replaceLocalHost(mainImage.src)} alt={mainImage.alt} />
                     </div>
                     <Slider addStyles={{dots: styles.addStyleDots, dot: styles.addStyleDot, toShow: toShowSlides, addSlider: styles.slider}}>
                         {
@@ -126,7 +127,7 @@ const Product: FC = () => {
                                         onClick={handleImage}
                                         className={styles.slider__image}
                                         key = {image}
-                                        src={image}
+                                        src={replaceLocalHost(image)}
                                         alt={product?.name}
                                     />
                             )

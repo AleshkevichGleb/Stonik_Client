@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import {AxiosError} from "axios";
 import BasketService from "../../services/basketService.ts";
 import {setBasket} from "../../store/slices/basket.slice.ts";
+import loaderIcon from "../../assets/images/loader-icon.svg";
 
 const Auth: FC = () => {
     const navigate = useNavigate();
@@ -155,8 +156,13 @@ const Auth: FC = () => {
                             />
                         </>
                 }
-                <button onClick={authorization} disabled={isDisabled}
-                        className={styles.button}>{isRegistration ? 'Зарегестрироваться' : 'Войти'}</button>
+                <button
+                    onClick={authorization}
+                    disabled={isDisabled}
+                    className={styles.button}
+                >
+                    {isDisabled? <img width={25} src={loaderIcon} alt="loader"/> : isRegistration ? 'Зарегестрироваться' : 'Войти'}
+                </button>
             </form>
             <div>
                 <span onClick={() => setIsRegistration(!isRegistration)}

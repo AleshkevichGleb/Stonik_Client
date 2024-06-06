@@ -8,6 +8,7 @@ import Rating from "@mui/material/Rating";
 import {toast} from "react-toastify";
 import formatTimeDifference from "../../../../helpers/getTimeAgo.ts";
 import {IReviewsData} from "../../../../types/types.ts";
+import replaceLocalHost from "../../../../helpers/replaceLocalHost.ts";
 interface AdminReviewItemProps {
     review: IReviewsData,
     getReviews: () => void,
@@ -40,14 +41,14 @@ const AdminReviewItem: FC<AdminReviewItemProps> = ({review, getReviews}) => {
             <div className={styles.review__data}>
                 <div className={styles.review__product}>
                     <Link to={`/products/${review.product.type}/${review.product.id}`}>
-                        <img className={styles.review__productImage} src={review.product.images[0]} alt=""/>
+                        <img className={styles.review__productImage} src={replaceLocalHost(review.product.images[0])} alt=""/>
                     </Link>
                     <span  className={styles.review__productTitle}>{review.product.name}</span>
                 </div>
                 <div className={styles.reviewInfo}>
                     <div className={styles.review__user}>
                         <img className={styles.review__image}
-                             src={review.user.image ? review.user.image : clearUser} alt=""/>
+                             src={review.user.image ? replaceLocalHost(review.user.image) : clearUser} alt=""/>
                         <div className={styles.review__userInfo}>
                             <span>{review.user.name} {review.user.surname}</span>
                             <Rating name="read-only" size="small" value={Number(review.rating)}

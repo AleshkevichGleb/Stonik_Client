@@ -8,6 +8,7 @@ import MyInput from "../../../common/Input/MyInput.tsx";
 import {toast} from "react-toastify";
 import Button from "../../../common/Button/Button.tsx";
 import {AxiosError} from "axios";
+import replaceLocalHost from "../../../helpers/replaceLocalHost.ts";
 const AdminNews = () => {
     const ref = useRef<HTMLInputElement | null>(null);
     const [news, setNews] = useState<INews[]>([]);
@@ -91,7 +92,7 @@ const AdminNews = () => {
                     ?
                     <div className={styles.newsBlock}>
                         {news.map(newsItem =>
-                            <Link to = {`/news/${newsItem.id}`} className={styles.newsItem} style={{backgroundImage: `url(${newsItem.image})`}} key={newsItem.id}>
+                            <Link to = {`/news/${newsItem.id}`} className={styles.newsItem} style={{backgroundImage: `url(${replaceLocalHost(newsItem.image)})`}} key={newsItem.id}>
                                 <div className={styles.newsAddInfo}>
                                     <Button onClick={async (e) => {
                                         e.stopPropagation();

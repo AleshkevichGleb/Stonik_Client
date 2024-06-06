@@ -11,6 +11,7 @@ import {useAppSelector} from "../../hooks/useReducer.ts";
 import {toast} from "react-toastify";
 import productService from "../../services/productService.ts";
 import {AxiosError} from "axios";
+import replaceLocalHost from "../../helpers/replaceLocalHost.ts";
 interface ProductItemProps {
     product: IProduct,
     setIsChooseFilter?: (isChooseFilter: boolean) => void,
@@ -59,7 +60,7 @@ const ProductItem: FC<ProductItemProps> = ({product, setIsChooseFilter, isChoose
         <div className={styles.product} key={product.id}>
             <div className={product.isSale ? styles.product__imageBlock : styles.product__imageBlockNotSale}>
                 <img
-                    src={product.images[0]}
+                    src={replaceLocalHost(product.images[0])}
                     alt={'product'}
                     className={styles.product__image}
                 />

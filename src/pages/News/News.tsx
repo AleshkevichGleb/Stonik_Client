@@ -5,6 +5,7 @@ import styles from "./News.module.scss";
 import {Link} from "react-router-dom";
 import sliceText from "../../helpers/sliceText.ts";
 import loaderImage from "../../assets/images/loader-icon.svg";
+import replaceLocalHost from "../../helpers/replaceLocalHost.ts";
 
     const News: FC = () => {
         const [news, setNews] = useState<INews[]>([]);
@@ -35,7 +36,7 @@ import loaderImage from "../../assets/images/loader-icon.svg";
                         ?
                         <div className={styles.newsBlock}>
                             {news.map(newsItem =>
-                                <Link to = {`/news/${newsItem.id}`} className={styles.newsItem} style={{backgroundImage: `url(${newsItem.image})`}} key={newsItem.id}>
+                                <Link to = {`/news/${newsItem.id}`} className={styles.newsItem} style={{backgroundImage: `url(${replaceLocalHost(newsItem.image)})`}} key={newsItem.id}>
                                     <span className={styles.newsDate}>
                                         {new Date(newsItem.createdAt).toLocaleDateString()}
                                     </span>

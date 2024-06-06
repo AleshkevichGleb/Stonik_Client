@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import styles from "./Settings.module.scss";
 import clearUserImage from "../../assets/images/clearUser.png";
 import MyInput from "../../common/Input/MyInput.tsx";
+import replaceLocalHost from "../../helpers/replaceLocalHost.ts";
 const Settings = () => {
 
     const {user} = useAppSelector(state => state.user);
@@ -126,7 +127,7 @@ const Settings = () => {
                     </button>
                 </div>
                 <div className={styles.userImageBlock}>
-                    <img className={styles.image} src={user.image ? user.image : clearUserImage} alt=""/>
+                    <img className={styles.image} src={user.image ? replaceLocalHost(user.image) : clearUserImage} alt=""/>
                     <label className={styles.inputFile}>
                         <input ref={ref} type="file" name="file" onChange={updatePhoto}/>
                         <span>{user.image ? 'Изменить фото' : 'Добавить фото'}</span>

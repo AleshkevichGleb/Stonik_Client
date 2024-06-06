@@ -7,6 +7,7 @@ import formatTimeDifference from "../../helpers/getTimeAgo.ts";
 import styles from "./ProductReviewItem.module.scss";
 import {IRegistrationUser, IReview} from "../../types/types.ts";
 import {toast} from "react-toastify";
+import replaceLocalHost from "../../helpers/replaceLocalHost.ts";
 
 interface ProductReviewItemProps {
     user: IRegistrationUser,
@@ -45,7 +46,7 @@ const ProductReviewItem: FC<ProductReviewItemProps> = ({user, review, getReviews
 
                 <div className={styles.review__user}>
                     <img className={styles.review__image}
-                         src={review.user.image ? review.user.image : clearUser} alt=""/>
+                         src={review.user.image ? replaceLocalHost(review.user.image) : clearUser} alt=""/>
                     <div className={styles.review__userInfo}>
                         <span>{review.user.name} {review.user.surname}</span>
                         <Rating name="read-only" size="small" value={Number(review.rating)} precision={0.5} readOnly/>

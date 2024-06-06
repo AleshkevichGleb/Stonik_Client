@@ -11,6 +11,7 @@ const initialState: IFilter = {
     lastPrice: '',
     type: [],
     searchValue: '',
+    maxPrice: 0,
 }
 
 const productFilterSlice = createSlice({

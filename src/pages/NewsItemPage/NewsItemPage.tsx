@@ -5,6 +5,7 @@ import {instance} from "../../api/axios.ts";
 import {useParams} from "react-router-dom";
 import {AxiosError} from "axios";
 import BackLink from "../../common/BackLink/BackLink.tsx";
+import replaceLocalHost from "../../helpers/replaceLocalHost.ts";
 const NewsItemPage = () => {
     const [newsItem, setNewsItem] = useState<INews | null>(null);
     const [error, setError] = useState<string>('');
@@ -33,7 +34,7 @@ const NewsItemPage = () => {
             </div>
             {
                 !error ? <>
-                    <div className={styles.image} style={{backgroundImage: `url(${newsItem?.image})`}}>
+                    <div className={styles.image} style={{backgroundImage: `url(${replaceLocalHost(newsItem?.image)})`}}>
                         <div className={styles.dateBlock}>
                             <span
                                 className={styles.date}>{new Date(newsItem?.createdAt as string).toLocaleString()}
